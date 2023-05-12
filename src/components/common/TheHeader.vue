@@ -74,6 +74,10 @@ li a {
   text-decoration: none;
   color: #494949;
 }
+li a:hover {
+  color: #69beee;
+  transition: 0.2s;
+}
 .nav-logo {
   width: 100px;
   vertical-align: middle; /* 추가 */
