@@ -12,40 +12,61 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "PlannerView",
   components: {},
   data() {
     return {
       map: null,
+      marker: null,
+      attractions: null,
     };
   },
-  created() {},
-
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=02399938b90e8b081af8d7b1d6e4873d";
-      document.head.appendChild(script);
-    }
+  async mounted() {
+    await axios.get("http://localhost:8080/locations").then(({ data }) => {
+      this.attractions = data.result;
+    });
+    this.initKakaoMap();
   },
 
   methods: {
+    initKakaoMap() {
+      if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
+        document.head.appendChild(script);
+      }
+    },
     initMap() {
       const container = document.getElementById("map");
+
       const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng),
         level: 5,
       };
 
-      //지도 객체를 등록합니다.
-      //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
       this.map = new kakao.maps.Map(container, options);
+
+      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      for (var i = 0; i < this.attractions.length; i++) {
+        var imageSize = new kakao.maps.Size(30, 30);
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        var latlng = new kakao.maps.LatLng(this.attractions[i].lat, this.attractions[i].lng);
+
+        new kakao.maps.Marker({
+          map: this.map,
+          position: latlng,
+          title: this.attractions[i].title,
+          image: markerImage,
+        });
+      }
     },
   },
 };
