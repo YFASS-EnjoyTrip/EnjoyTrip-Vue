@@ -17,7 +17,9 @@
           <plannerAttractionDetail></plannerAttractionDetail>
         </div>
       </div>
-      <div class="right-container"></div>
+      <div class="right-container">
+        <PlannerAttractionList></PlannerAttractionList>
+      </div>
     </div>
   </div>
 </template>
@@ -25,10 +27,12 @@
 <script>
 import axios from "axios";
 import plannerAttractionDetail from "../planner/plannerViewComponents/PlannerAttractionDetail.vue";
+import PlannerAttractionList from "../planner/plannerViewComponents/PlannerAttractionList.vue";
 export default {
   name: "PlannerView",
   components: {
     plannerAttractionDetail,
+    PlannerAttractionList
   },
   data() {
     return {
@@ -55,7 +59,7 @@ export default {
         /* global kakao */
         script.onload = () => kakao.maps.load(this.initMap);
         script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=02399938b90e8b081af8d7b1d6e4873d";
         document.head.appendChild(script);
       }
     },

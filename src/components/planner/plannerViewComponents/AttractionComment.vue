@@ -86,9 +86,9 @@ export default {
   align-items: center;
 }
 .like-rank {
-  margin-top: 5px;
+  margin-top: 10px;
   display: flex;
-  padding-bottom: 2px;
+  /* padding-bottom: 2px; */
 }
 .rank {
   margin-left: 30px;
