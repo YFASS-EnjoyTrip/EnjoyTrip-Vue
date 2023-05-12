@@ -1,10 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import AppMain from "../views/AppMain.vue";
+
+import AttractionMain from "../views/AttractionMain.vue";
+import HotplaceMain from "../views/HotplaceMain.vue";
+import PlannerMain from "../views/PlannerMain.vue";
+
 import HotplaceList from "../components/hotplace/HotplaceList.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
+import PlannerView from "../components/planner/PlannerView.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -16,12 +23,48 @@ const routes = [
   {
     path: "/hotplace",
     name: "hotplace",
-    component: HotplaceList,
+    redirect: "/hotplace/list",
+    component: HotplaceMain,
+    children: [
+      {
+        path: "list",
+        name: "hotplaceList",
+        component: HotplaceList,
+      },
+    ],
   },
   {
     path: "/attraction",
     name: "attraction",
-    component: AttractionList,
+    redirect: "/attraction/list",
+    component: AttractionMain,
+    children: [
+      {
+        path: "list",
+        name: "attractionList",
+        component: AttractionList,
+      },
+    ],
+  },
+
+  // planner 생성 페이지부터 만들거라 redirect view로 설정
+  {
+    path: "/planner",
+    name: "planner",
+    redirect: "/planner/view",
+    component: PlannerMain,
+    children: [
+      {
+        path: "view",
+        name: "plannerView",
+        component: PlannerView,
+      },
+    ],
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: PlannerMain,
   },
   {
     path: "/login",
