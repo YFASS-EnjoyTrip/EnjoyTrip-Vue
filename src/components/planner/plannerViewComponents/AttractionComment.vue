@@ -75,7 +75,6 @@ export default {
 .comment-container {
   height: 180px;
   overflow: scroll;
-  scrollbar-width: thin;
 }
 .comment-container::-webkit-scrollbar {
   width: 0px;
@@ -98,8 +97,8 @@ img {
   width: 15px;
 }
 .cnt {
-  font-family: "CookieRun-Regular";
-  color: #353535;
+  font-family: "CookieRun-Bold";
+  color: #5f5f5f;
   font-size: 0.7rem;
 }
 .comment-content-container {

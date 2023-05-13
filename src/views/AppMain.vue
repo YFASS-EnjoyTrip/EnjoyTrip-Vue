@@ -94,9 +94,13 @@ export default {
   position: absolute;
   right: 30px;
   top: 50%;
-  transform: translateY(-50%);
   width: 30px;
-  margin-top: 85px;
+  margin-top: 70px;
+  cursor: pointer;
+}
+.search-icon:hover {
+  transform: scale(1.2);
+  transition: 0.2s;
 }
 
 .background {

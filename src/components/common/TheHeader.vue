@@ -4,28 +4,49 @@
       <div class="nav-menu">
         <router-link to="/">
           <li class="nav-item logo">
-            <img
-              src="../../assets/img/navLogo.png"
-              alt="logo"
-              class="nav-logo"
-            />
+            <img src="../../assets/img/navLogo.png" alt="logo" class="nav-logo" />
           </li>
         </router-link>
         <li class="nav-item hotplace">
-          <router-link to="/hotplace">핫플레이스</router-link>
+          <router-link to="/hotplace">
+            <div class="hover-effect">
+              <span class="nav-item-title">핫플레이스</span>
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_G.png" alt="이미지">
+            </div>
+          </router-link>
         </li>
         <li class="nav-item attraction-search">
-          <router-link to="/attraction">여행지검색</router-link>
+          <router-link to="/attraction">
+            <div class="hover-effect">
+              <span class="nav-item-title">여행지검색</span>
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_R.png" alt="이미지">
+            </div>
+          </router-link>
         </li>
         <li class="nav-item planner">
-          <router-link to="/planner">플래너조회</router-link>
+          <router-link to="/planner">
+            <div class="hover-effect">
+              <span class="nav-item-title">플래너조회</span>
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_Y.png" alt="이미지">
+            </div>
+          </router-link>
         </li>
       </div>
       <div class="nav-member">
         <li class="login">
-          <router-link to="/login">로그인</router-link>
+          <router-link to="/login">
+            <div class="hover-effect">
+              <span class="nav-item-title">로그인</span>
+              <img class="nav-item-img" src="../../assets/img/icon/heart_fill.png" alt="이미지">
+            </div>
+          </router-link>
         </li>
-        <li class="signup"><router-link to="/signup">회원가입</router-link></li>
+        <li class="signup"><router-link to="/signup">
+            <div class="hover-effect">
+              <span class="nav-item-title">회원가입</span>
+              <img class="nav-item-img" src="../../assets/img/icon/heart_fill.png" alt="이미지">
+            </div>
+          </router-link></li>
       </div>
     </nav>
   </div>
@@ -40,30 +61,71 @@ export default {
       message: "",
     };
   },
-  created() {},
+  created() { },
   methods: {},
 };
 </script>
 
 <style scoped>
+.hover-effect {
+  position: relative;
+  display: inline-flex;
+  height: 30px;
+}
+
+.hover-effect img {
+  position: absolute;
+  margin-top: -10px;
+  top: 100%;
+  /* 이미지를 초기에 아래로 위치시킵니다. */
+  transition: top 0.3s ease;
+  left: 30%;
+  /* 이미지가 왼쪽에 정렬되도록 설정합니다. */
+  width: 40px;
+  /* 이미지를 부모 요소에 맞게 확장합니다. */
+  visibility: hidden;
+}
+
+.hover-effect:hover img {
+  top: 10%;
+  /* 이미지를 위로 올리면서 나타나도록 설정합니다. */
+  visibility: visible;
+}
+
+.hover-effect span {
+  bottom: 0; /* 아래쪽으로 정렬될 수 있도록 설정합니다. */
+  transition: transform 0.3s ease, opacity 0.1s ease;/* transform 속성에 대한 트랜지션을 추가합니다. */
+}
+
+.hover-effect:hover span {
+  transform: translateY(100%); /* span 요소를 아래로 이동시킵니다. */
+  opacity: 0;
+}
+
 * {
   font-family: CookieRun-Regular;
 }
+
 .header {
   margin-top: 30px;
   display: flex;
   justify-content: center;
 }
+
 .navbar {
   display: flex;
-  justify-content: space-between; /* 아이템 간에 공간을 동일하게 배분 */
-  align-items: center; /* 아이템을 수직 가운데로 정렬 */
+  justify-content: space-between;
+  /* 아이템 간에 공간을 동일하게 배분 */
+  align-items: center;
+  /* 아이템을 수직 가운데로 정렬 */
   width: 1200px;
   /* background-color: antiquewhite; */
 }
+
 .nav-member {
   text-align: right;
 }
+
 li {
   display: inline-block;
   margin-right: 30px;
@@ -74,12 +136,9 @@ li a {
   text-decoration: none;
   color: #494949;
 }
-li a:hover {
-  color: #69beee;
-  transition: 0.2s;
-}
+
 .nav-logo {
   width: 100px;
-  vertical-align: middle; /* 추가 */
-}
-</style>
+  vertical-align: middle;
+  /* 추가 */
+}</style>

@@ -4,10 +4,12 @@
       <div class="user">{{ userId }} 님의</div>
       <div class="location-date">
         <div class="location">
-          <span>{{ locationName }}</span
-          >여행
+          <span>{{ locationName }}</span>여행
         </div>
         <div class="date">2023.05.04~2023.05.06</div>
+        <div class="modify-button">
+          <span>편집</span>
+        </div>
       </div>
     </div>
     <div class="inner-container">
@@ -18,7 +20,14 @@
         </div>
       </div>
       <div class="right-container">
-        <PlannerAttractionList></PlannerAttractionList>
+        <div class="day-container">
+          <img src="../../assets/img/icon/arrow_left.png" alt="<" />
+          <span>1일</span>
+          <img src="../../assets/img/icon/arrow_right.png" alt=">" />
+        </div>
+        <div class="for-scroll">
+          <PlannerAttractionList></PlannerAttractionList>
+        </div>
       </div>
     </div>
   </div>
@@ -32,7 +41,7 @@ export default {
   name: "PlannerView",
   components: {
     plannerAttractionDetail,
-    PlannerAttractionList
+    PlannerAttractionList,
   },
   data() {
     return {
@@ -41,7 +50,7 @@ export default {
       map: null,
     };
   },
-  created() {},
+  created() { },
 
   async mounted() {
     await axios.get("http://localhost:8080/locations").then(({ data }) => {
@@ -99,27 +108,60 @@ export default {
 </script>
 
 <style scoped>
+.modify-button {
+  width: 80px;
+  height: 35px;
+  background-color: #F24849;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-top: 30px;
+  border-radius: 12px;
+}
+
+.modify-button>span {
+  font-family: "CookieRun-Regular";
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-top: -5px;
+}
+
+.modify-button:hover {
+  background-color: #fd7272;
+  transform: scale(1.1);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
 .title-container {
   margin-left: 100px;
   padding-top: 50px;
   margin-bottom: -60px;
+  cursor: default;
 }
+
 .user {
   font-family: "CookieRun-Regular";
   color: #696969;
   font-size: 0.9rem;
 }
+
 .location-date {
   display: flex;
+  width: 85%;
 }
+
 .location {
   font-family: "CookieRun-Black";
   font-size: 2.5rem;
   color: #696969;
 }
-.location > span {
+
+.location>span {
   color: #69beee;
 }
+
 .date {
   margin-left: 10px;
   margin-top: 30px;
@@ -127,6 +169,7 @@ export default {
   color: #696969;
   font-size: 0.9rem;
 }
+
 .container {
   width: 1200px;
   height: 800px;
@@ -134,10 +177,12 @@ export default {
   border-radius: 90px;
   /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
 }
+
 .title-container {
   width: 1200px;
   height: 130px;
 }
+
 .inner-container {
   margin-top: 30px;
   display: flex;
@@ -156,7 +201,7 @@ export default {
   height: 320px;
   border-radius: 30px;
   background-color: #fffaeb;
-  border: 1px solid #ffc930;
+  border: 1px solid #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -168,5 +213,64 @@ export default {
   background-color: #e3f5ff;
   /* border: 2px solid #69beee; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.day-container {
+  margin-top: 7px;
+  display: flex;
+  justify-content: center;
+}
+
+.day-container img:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  transition: 0.2s;
+}
+
+.day-container>img {
+  margin-top: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.day-container>span {
+  font-family: "CookieRun-Bold";
+  color: #525252;
+  font-size: 1.7rem;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.for-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.for-scroll::-webkit-scrollbar-thumb {
+  background-color: #69beee;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+.for-scroll::-webkit-scrollbar-thumb:active {
+  background-color: #2e88bd;
+  /* 스크롤바 색상 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #e3f5ff;
+  /* 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+
+  background-color: transparent;
+}
+
+.for-scroll {
+  height: 540px;
+  overflow: scroll;
+  border-radius: 30px;
 }
 </style>

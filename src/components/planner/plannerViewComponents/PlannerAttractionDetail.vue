@@ -42,7 +42,7 @@ export default {
     return {
       attractionName: "광안대교",
       attractionDetail:
-        "상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다",
+        "상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다",
     };
   },
   created() {},
@@ -60,13 +60,13 @@ export default {
   width: 160px;
   height: 100px;
   border-radius: 10px;
-  /* border: 1px solid #ffc930; */
+  border: 3px solid #888888;
 }
 .attraction-text {
   margin-left: 20px;
 }
 .attraction-title {
-  font-family: "CookieRun-Regular";
+  font-family: "CookieRun-Bold";
   color: #4d4d4d;
   font-size: 1.5rem;
 }
@@ -76,9 +76,12 @@ export default {
   color: #757575;
   font-size: 0.8rem;
   width: 19.5rem;
-  height: 4rem;
+  height: 4.5rem;
   background-color: rgba(250, 235, 215, 0);
-  overflow: hidden;
+  overflow: scroll;
+}
+.attraction-detail::-webkit-scrollbar{
+  width: 0;
 }
 .review-container {
   display: flex;

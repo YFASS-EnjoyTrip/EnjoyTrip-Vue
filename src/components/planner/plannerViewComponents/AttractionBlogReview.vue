@@ -11,7 +11,7 @@
             :key="index"
             class="comment-content-container"
           >
-            <a :href="'//' + review.blogUrl" style="text-decoration: none">
+            <a :href="'//' + review.blogUrl" style="text-decoration: none" target="_blank">
               <div class="comment-nickname">
                 {{ review.userNickname }} <span>{{ review.blogName }}</span>
               </div>
@@ -73,8 +73,8 @@ export default {
 
 <style scoped>
 .like-rank > span {
-  font-family: "CookieRun-Regular";
-  color: #353535;
+  font-family: "CookieRun-Bold";
+  color: #5f5f5f;
   font-size: 0.8rem;
 }
 .comment-container {
@@ -113,6 +113,15 @@ img {
   background-color: #ffffff;
   border: 1px solid #ffc930;
   border-radius: 10px;
+}
+.comment-content-container:hover{
+  background-color: #fff3f4;
+  border: 1px solid #FE646F;
+  transition: 0.2s;
+}
+.comment-content-container:hover .comment-nickname{
+  color: #ff8e95;
+  transition: 0.2s;
 }
 .comment-nickname {
   margin-left: 10px;
