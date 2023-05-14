@@ -9,6 +9,7 @@ import PlannerMain from "../views/PlannerMain.vue";
 import HotplaceList from "../components/hotplace/HotplaceList.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
 import PlannerView from "../components/planner/PlannerView.vue";
+import plannerModify from "../components/planner/PlannerModify.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
 
@@ -58,6 +59,11 @@ const routes = [
         path: "view",
         name: "plannerView",
         component: PlannerView,
+      },
+      {
+        path: "modify",
+        name: "plannerModify",
+        component: plannerModify,
       },
     ],
   },

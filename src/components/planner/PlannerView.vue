@@ -8,7 +8,9 @@
         </div>
         <div class="date">2023.05.04~2023.05.06</div>
         <div class="modify-button">
-          <span>편집</span>
+          <router-link to="/planner/modify">
+            <span>편집</span>
+          </router-link>
         </div>
       </div>
     </div>
@@ -48,6 +50,7 @@ export default {
       userId: "사용자1111",
       locationName: "부산",
       map: null,
+      attractions: "",
     };
   },
   created() { },
@@ -108,6 +111,7 @@ export default {
 </script>
 
 <style scoped>
+
 .modify-button {
   width: 80px;
   height: 35px;
@@ -120,7 +124,8 @@ export default {
   border-radius: 12px;
 }
 
-.modify-button>span {
+a {
+  text-decoration: none;
   font-family: "CookieRun-Regular";
   color: #ffffff;
   font-size: 1.2rem;
