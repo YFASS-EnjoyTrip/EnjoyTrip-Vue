@@ -2,29 +2,29 @@
   <div>
     <div class="outer-container">
       <div class="attraction-list-container">
-        <div v-for="(attraction, index) in attractions" :key="index" class="attraction-list">
+        <div v-for="(attraction, index) in attractions[0]" :key="index" class="attraction-list">
           <div class="attraction-order">{{ index + 1 }}</div>
           <div class="attraction-img">
             <!-- attracion.imgSrc로 변경 예정 -->
-            <img class="attractionImg" src="../../../assets/img/광안대교.jpg" alt="사진" />
+            <img class="attractionImg" :src="attarction[0].image" alt="사진" />
           </div>
           <div class="attraction-container">
             <div class="attraction-info">
-              <div class="attraction-name">{{ attraction.attractionName }}</div>
+              <div class="attraction-name">{{ attraction[0].title }}</div>
               <div class="like-rank-container">
                 <span>
                   <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
-                  <span>({{ attraction.likeCnt }})</span>
+                  <span>({{ attraction[0].likeCount }})</span>
                 </span>
                 <span>
                   <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
-                  <span>{{ attraction.rank }}</span>
-                  <span>({{ attraction.rankCnt }})</span>
+                  <span>{{ attraction[0].rate }}</span>
+                  <span>({{ attraction[0].likeCount }})</span>
                 </span>
               </div>
             </div>
             <div class="attraction-desc-container">
-              <div class="attraction-desc">{{ attraction.attractionDesc }}</div>
+              <div class="attraction-desc">{{ attraction[0].overView }}</div>
             </div>
           </div>
         </div>
@@ -39,75 +39,12 @@ export default {
   components: {},
   data() {
     return {
-      attractions: [
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc:
-            "상세설명입니다상세설명입니다상세설명상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-      ],
+      attractions: [],
     };
   },
-  created() {},
+  created() {
+    console.log(this.attractions);
+  },
   methods: {},
 };
 </script>

@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="right-container">
-        <planner-attraction-list></planner-attraction-list>
+        <planner-attraction-list :attractions="planDetailInfo"></planner-attraction-list>
       </div>
     </div>
   </div>
@@ -91,7 +91,6 @@ export default {
     },
     initMap() {
       const container = document.getElementById("map");
-      console.log(this.planDetailInfo);
       const options = {
         center: new kakao.maps.LatLng(this.planDetailInfo[0][0].lat, this.planDetailInfo[0][0].lng),
         level: 5,
