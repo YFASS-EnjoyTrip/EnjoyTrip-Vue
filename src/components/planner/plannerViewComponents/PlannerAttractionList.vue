@@ -2,36 +2,22 @@
   <div>
     <div class="outer-container">
       <div class="attraction-list-container">
-        <div
-          v-for="(attraction, index) in attractions"
-          :key="index"
-          class="attraction-list"
-        >
+        <div v-for="(attraction, index) in attractions" :key="index" class="attraction-list">
           <div class="attraction-order">{{ index + 1 }}</div>
           <div class="attraction-img">
             <!-- attracion.imgSrc로 변경 예정 -->
-            <img
-              class="attractionImg"
-              src="../../../assets/img/광안대교.jpg"
-              alt="사진"
-            />
+            <img class="attractionImg" src="../../../assets/img/광안대교.jpg" alt="사진" />
           </div>
           <div class="attraction-container">
             <div class="attraction-info">
               <div class="attraction-name">{{ attraction.attractionName }}</div>
               <div class="like-rank-container">
                 <span>
-                  <img
-                    src="../../../assets/img/icon/heart_fill.png"
-                    alt="좋아요"
-                  />
+                  <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
                   <span>({{ attraction.likeCnt }})</span>
                 </span>
                 <span>
-                  <img
-                    src="../../../assets/img/icon/star_fill.png"
-                    alt="별점"
-                  />
+                  <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
                   <span>{{ attraction.rank }}</span>
                   <span>({{ attraction.rankCnt }})</span>
                 </span>
@@ -134,7 +120,7 @@ export default {
 .attraction-order {
   font-family: "CookieRun-Black";
   font-size: 1.1rem;
-  color: #FE646F;
+  color: #fe646f;
   align-items: center;
   margin-top: 1.6em;
   margin-right: 20px;
@@ -149,18 +135,17 @@ export default {
   border: 1px solid #69beee;
   border-radius: 17px;
   margin-top: 10px;
-  
 }
 .attraction-list:hover {
   background-color: #fff3f4;
-  border: 1px solid #FE646F;
+  border: 1px solid #fe646f;
   transition: 0.2s;
   cursor: pointer;
-} 
-.attraction-list:hover .attraction-name{
-  color: #FE646F;
+}
+.attraction-list:hover .attraction-name {
+  color: #fe646f;
   transition: 0.2s;
-} 
+}
 
 img {
   width: 15px;
@@ -172,8 +157,7 @@ img {
   height: 70px;
   border-radius: 10px;
 }
-.attraction-list-container{
-  
+.attraction-list-container {
 }
 .attraction-container {
   width: 330px;
