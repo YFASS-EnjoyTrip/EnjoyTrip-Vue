@@ -4,7 +4,8 @@
       <div class="user">{{ userId }} 님의</div>
       <div class="location-date">
         <div class="location">
-          <span>{{ locationName }}</span>여행
+          <span>{{ locationName }}</span
+          >여행
         </div>
         <div class="date">2023.05.04~2023.05.06</div>
         <div class="modify-button">
@@ -53,7 +54,7 @@ export default {
       attractions: "",
     };
   },
-  created() { },
+  created() {},
 
   async mounted() {
     await axios.get("http://localhost:8080/locations").then(({ data }) => {
@@ -111,11 +112,10 @@ export default {
 </script>
 
 <style scoped>
-
 .modify-button {
   width: 80px;
   height: 35px;
-  background-color: #F24849;
+  background-color: #f24849;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -163,7 +163,7 @@ a {
   color: #696969;
 }
 
-.location>span {
+.location > span {
   color: #69beee;
 }
 
@@ -232,13 +232,13 @@ a {
   transition: 0.2s;
 }
 
-.day-container>img {
+.day-container > img {
   margin-top: 10px;
   width: 20px;
   height: 20px;
 }
 
-.day-container>span {
+.day-container > span {
   font-family: "CookieRun-Bold";
   color: #525252;
   font-size: 1.7rem;
@@ -269,7 +269,6 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-
   background-color: transparent;
 }
 
