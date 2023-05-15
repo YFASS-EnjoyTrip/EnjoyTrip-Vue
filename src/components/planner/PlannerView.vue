@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="title-container">
-      <div class="user">{{ userId }} 님의</div>
+      <div class="user">{{ planInfo.nickName }} 님의</div>
       <div class="location-date">
         <div class="location">
-          <span>{{ locationName }}</span
+          <span>{{ planInfo.title }}</span
           >여행
         </div>
-        <div class="date">2023.05.04~2023.05.06</div>
+        <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
       </div>
     </div>
     <div class="inner-container">
@@ -17,34 +17,64 @@
           <plannerAttractionDetail></plannerAttractionDetail>
         </div>
       </div>
-      <div class="right-container"></div>
+      <div class="right-container">
+        <planner-attraction-list></planner-attraction-list>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 import plannerAttractionDetail from "../planner/plannerViewComponents/PlannerAttractionDetail.vue";
+import PlannerAttractionList from "./plannerViewComponents/PlannerAttractionList.vue";
+
 export default {
   name: "PlannerView",
   components: {
     plannerAttractionDetail,
+    PlannerAttractionList,
   },
   data() {
     return {
-      userId: "사용자1111",
-      locationName: "부산",
       map: null,
+      attractions: null,
+      planInfo: {
+        nickName: "",
+        titel: "",
+        startDate: "",
+        endDate: "",
+        viewCount: "",
+        likeCount: "",
+      },
+      planDetailInfo: [],
+      planId: 17, // 이거 나중에 동적으로 처리 예정
+      jwtToken:
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDEzNjU4MywiZXhwIjoxNjg0MjIyOTgzfQ.0juAc5bY--PFAkTayPtDPZWgGYqWbdYlvnFaOaKhb4U",
     };
   },
-  created() {},
+  async created() {
+    await axios
+      .get(`http://localhost:8080/planner/list/${this.planId}`, {
+        headers: {
+          Authorization: `Bearer ${this.jwtToken}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data.status === 200) {
+          this.planInfo = data.result.planInfo;
 
-  async mounted() {
-    await axios.get("http://localhost:8080/locations").then(({ data }) => {
-      this.attractions = data.result;
-    });
+          Object.keys(data.result.dayInfo).forEach((key) => {
+            this.planDetailInfo.push(data.result.dayInfo[key]);
+          });
+        }
+      });
+
     this.initKakaoMap();
   },
+
+  async mounted() {},
 
   methods: {
     initKakaoMap() {
@@ -61,34 +91,39 @@ export default {
     },
     initMap() {
       const container = document.getElementById("map");
-
+      console.log(this.planDetailInfo);
       const options = {
-        center: new kakao.maps.LatLng(
-          this.attractions[0].lat,
-          this.attractions[0].lng
-        ),
+        center: new kakao.maps.LatLng(this.planDetailInfo[0][0].lat, this.planDetailInfo[0][0].lng),
         level: 5,
       };
 
       this.map = new kakao.maps.Map(container, options);
 
-      const imageSrc =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      for (var i = 0; i < this.attractions.length; i++) {
-        var imageSize = new kakao.maps.Size(30, 30);
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        var latlng = new kakao.maps.LatLng(
-          this.attractions[i].lat,
-          this.attractions[i].lng
-        );
+      let imageSrc = "";
+      const imageFood = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
+      const imageAcom = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageLoca = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
 
-        new kakao.maps.Marker({
-          map: this.map,
-          position: latlng,
-          title: this.attractions[i].title,
-          image: markerImage,
-        });
-      }
+      this.planDetailInfo.forEach((item) => {
+        for (let i = 0; i < item.length; i++) {
+          const planType = item[i].type;
+          var imageSize = new kakao.maps.Size(30, 30);
+
+          if (planType == 39) imageSrc = imageFood;
+          else if (planType == 32) imageSrc = imageAcom;
+          else imageSrc = imageLoca;
+
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+          var latlng = new kakao.maps.LatLng(item[i].lat, item[i].lng);
+
+          new kakao.maps.Marker({
+            map: this.map,
+            position: latlng,
+            title: item[i].title,
+            image: markerImage,
+          });
+        }
+      });
     },
   },
 };
