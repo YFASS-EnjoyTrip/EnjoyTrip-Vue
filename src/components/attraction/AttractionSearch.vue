@@ -2,36 +2,17 @@
   <div>
     <div class="search-container">
       <div class="input-container">
-        <select
-          class="sido-dropdown"
-          name="sido"
-          id="location"
-          v-model="sidoOption"
-        >
+        <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
           <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
             {{ sido.text }}
           </option>
         </select>
-        <select
-          class="gugun-dropdown"
-          name="gugun"
-          id="location"
-          v-model="gugunOption"
-        >
-          <option
-            v-for="gugun in guguns"
-            :value="gugun.value"
-            :key="gugun.value"
-          >
+        <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
+          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
             {{ gugun.text }}
           </option>
         </select>
-        <input
-          class="input-keyword"
-          type="text"
-          v-model="keyword"
-          placeholder="관광지, 지역"
-        />
+        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
         <div class="search-button"><span>검색</span></div>
       </div>
       <div class="checkbox-outer-container">
@@ -49,19 +30,39 @@
             <label for="res"><span>맛집</span></label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              name="types"
-              id="acc"
-              value="accommodation"
-            />
-            <label for="acc">숙소</label>
+            <input type="checkbox" name="types" id="acc" value="accommodation" />
+            <label for="acc"><span>숙소</span></label>
           </div>
         </div>
       </div>
     </div>
-    <div class="for-scroll">asdf</div>
-    <div class="plannerCreate-button"></div>
+    <div class="for-scroll">
+      <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
+        <div class="img-heart">
+          <img class="attractionImg" :src="attraction.img" :alt="attraction.title">
+
+        </div>
+        <div class="attraction-info">
+          <div class="attraction-title">
+            <span>{{ attraction.title }}</span>
+          </div>
+          <div class="like-heart">
+            <img class="icon"
+              :src="attraction.isLike ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png' : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'"
+              alt="하트">
+            <span>({{ attraction.likeCnt }})</span>
+            <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별">
+            <span>{{ attraction.rank }}</span>
+            <span>({{ attraction.rankCnt }})</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="plannerCreate-button">
+      <img src="../../assets/img/icon/capsule_R.png" alt="capR">
+      <span>플래너 생성하기</span>
+      <img src="../../assets/img/icon/capsule_Y.png" alt="capY">
+    </div>
   </div>
 </template>
 
@@ -95,6 +96,24 @@ export default {
         { value: "39", text: "제주도" },
       ],
       guguns: [],
+      attractions: [
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+      ],
     };
   },
   watch: {
@@ -110,6 +129,7 @@ export default {
       let response = await axios.get(
         `http://localhost:8080/locations/search/gugun?sido=${option}`
       );
+      console.log(response.data.result);
       this.guguns = response.data.result;
       this.gugunOption = this.guguns[0].value;
     },
@@ -118,43 +138,147 @@ export default {
 </script>
 
 <style scoped>
+.plannerCreate-button {
+  display: flex;
+  justify-content: center;
+  background-color: #69BEEE;
+  width: 500px;
+  margin-top: 20px;
+  margin-left: 45px;
+  height: 60px;
+  border-radius: 15px;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.plannerCreate-button:hover{
+  background-color: #49C46F;
+  transition: 0.5s;
+}
+.plannerCreate-button:active{
+  background-color: #89e7a7;
+  transition: 0.5s;
+}
+.plannerCreate-button:active span{
+  color: #4d4d4d;
+  transition: 0.5s;
+}
+.plannerCreate-button:hover img{
+  transform: rotate(360deg);
+  transition: 0.5s;
+}
+.plannerCreate-button:hover span{
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+.plannerCreate-button img {
+  width: 50px;
+  height: 50px;
+  caret-color: transparent;
+  user-select: none;
+}
+
+.plannerCreate-button span {
+  font-size: 20px;
+  /* 폰트 크기 설정 */
+  font-family: "CookieRun-Regular";
+  color: #ffffff;
+  margin: 10px;
+  caret-color: transparent;
+  user-select: none;
+}
+
+.like-heart {
+  margin-top: 5px;
+  display: flex;
+  /* Flexbox 사용 */
+  align-items: center;
+  /* 수직 정렬: 요소들을 수직 중앙에 정렬 */
+}
+
+.like-heart span {
+  margin-right: 3px;
+  font-size: 13px;
+  /* 폰트 크기 설정 */
+  font-family: "CookieRun-Regular";
+  color: #757575;
+}
+
+.attraction-title {
+  margin-top: 5px;
+}
+
+.attraction-title span {
+  font-size: 20px;
+  /* 폰트 크기 설정 */
+  font-family: "CookieRun-Black";
+  color: #4d4d4d;
+}
+
+.attraction-container {
+  margin-left: 28px;
+  margin-top: 30px;
+  margin-right: 28px;
+}
+
+.icon {
+  width: 17px;
+  margin-left: 3px;
+  margin-right: 2px;
+}
+
+.attractionImg {
+  width: 140px;
+  height: 100px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  /* 그림자 스타일 및 값 설정 */
+}
+
 .search-container {
   margin-top: 30px;
   justify-content: center;
 }
+
 input[type="checkbox"] {
   width: 15px;
   height: 15px;
-  border: 3px solid #ff9090; /* 원하는 스타일로 설정 */
+  border: 3px solid #ff9090;
+  /* 원하는 스타일로 설정 */
+
   display: none;
 }
-input[type="checkbox"] + label {
+
+input[type="checkbox"]+label {
   cursor: pointer;
   caret-color: transparent;
   user-select: none;
 }
 
-input[type="checkbox"] + label > span {
+input[type="checkbox"]+label>span {
   /* vertical-align: middle; */
   margin-left: 5px;
-  font-size: 15px; /* 폰트 크기 설정 */
+  font-size: 15px;
+  /* 폰트 크기 설정 */
   font-family: "CookieRun-Regular";
   color: #f24849;
 }
 
 /* label:before에 체크하기 전 상태 CSS */
-input[type="checkbox"] + label:before {
+input[type="checkbox"]+label:before {
   content: "";
   display: inline-block;
   width: 17px;
   height: 17px;
   border: 2px solid #acacac;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   vertical-align: middle;
 }
 
 /* label:before에 체크 된 상태 CSS */
-input[type="checkbox"]:checked + label:before {
+input[type="checkbox"]:checked+label:before {
   content: "";
   background-color: #f24849;
   border-color: #f24849;
@@ -166,21 +290,28 @@ input[type="checkbox"]:checked + label:before {
   display: flex;
   justify-content: center;
 }
+
 .checkbox-container {
   margin-top: 10px;
   width: 60%;
   display: flex;
   justify-content: space-between;
 }
+
 .input-container {
   display: flex;
   justify-content: center;
 }
+
 .sido-dropdown {
-  border: 2px solid #c4c4c4; /* 테두리 스타일 추가 */
-  border-radius: 8px; /* 테두리 모서리 둥글게 설정 */
-  outline: none; /* 포커스 시 테두리 제거 */
-  font-size: 15px; /* 폰트 크기 설정 */
+  border: 2px solid #c4c4c4;
+  /* 테두리 스타일 추가 */
+  border-radius: 8px;
+  /* 테두리 모서리 둥글게 설정 */
+  outline: none;
+  /* 포커스 시 테두리 제거 */
+  font-size: 15px;
+  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
@@ -188,11 +319,16 @@ input[type="checkbox"]:checked + label:before {
   margin-right: 10px;
   width: 100px;
 }
+
 .gugun-dropdown {
-  border: 2px solid #c4c4c4; /* 테두리 스타일 추가 */
-  border-radius: 8px; /* 테두리 모서리 둥글게 설정 */
-  outline: none; /* 포커스 시 테두리 제거 */
-  font-size: 15px; /* 폰트 크기 설정 */
+  border: 2px solid #c4c4c4;
+  /* 테두리 스타일 추가 */
+  border-radius: 8px;
+  /* 테두리 모서리 둥글게 설정 */
+  outline: none;
+  /* 포커스 시 테두리 제거 */
+  font-size: 15px;
+  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
@@ -200,11 +336,16 @@ input[type="checkbox"]:checked + label:before {
   margin-right: 20px;
   width: 130px;
 }
+
 .input-keyword {
-  border: 2px solid #c4c4c4; /* 테두리 스타일 추가 */
-  border-radius: 8px; /* 테두리 모서리 둥글게 설정 */
-  outline: none; /* 포커스 시 테두리 제거 */
-  font-size: 15px; /* 폰트 크기 설정 */
+  border: 2px solid #c4c4c4;
+  /* 테두리 스타일 추가 */
+  border-radius: 8px;
+  /* 테두리 모서리 둥글게 설정 */
+  outline: none;
+  /* 포커스 시 테두리 제거 */
+  font-size: 15px;
+  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
@@ -230,29 +371,38 @@ input[type="checkbox"]:checked + label:before {
   cursor: pointer;
   caret-color: transparent;
   user-select: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-.search-button > span {
+
+.search-button:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+  background-color: #fc6d6d;
+}
+
+.search-button>span {
   margin-top: 3px;
 }
+
 .for-scroll::-webkit-scrollbar {
   width: 10px;
   height: 0;
 }
 
 .for-scroll::-webkit-scrollbar-thumb {
-  background-color: #69beee;
+  background-color: #ffb9b9;
   /* 스크롤바 색상 */
   border-radius: 5px;
   /* 스크롤바 모서리의 곡률 */
 }
 
 .for-scroll::-webkit-scrollbar-thumb:active {
-  background-color: #2e88bd;
+  background-color: #fc6d6d;
   /* 스크롤바 색상 */
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #e3f5ff;
+  background-color: #ffffff;
   /* 트랙 배경색 */
 }
 
@@ -261,8 +411,13 @@ input[type="checkbox"]:checked + label:before {
 }
 
 .for-scroll {
-  height: 540px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+  margin-top: 10px;
+  height: 600px;
+  width: 600px;
   overflow: scroll;
-  background-color: #69bdee59;
 }
 </style>
