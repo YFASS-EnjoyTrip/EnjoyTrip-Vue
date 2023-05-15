@@ -2,30 +2,37 @@
   <div>
     <div class="outer-container">
       <div class="attraction-list-container">
-        <div v-for="(attraction, index) in attractions[0]" :key="index" class="attraction-list">
+        <div
+          v-for="(attraction, index) in attractions[selectedDay - 1]"
+          :key="index"
+          class="attraction-list"
+          @click="handleAttractionClick(attraction)"
+        >
           <div class="attraction-order">{{ index + 1 }}</div>
           <div class="attraction-img">
             <!-- attracion.imgSrc로 변경 예정 -->
-            <img class="attractionImg" :src="attarction[0].image" alt="사진" />
+            <img class="attractionImg" :src="attraction.image" alt="사진" />
           </div>
           <div class="attraction-container">
             <div class="attraction-info">
-              <div class="attraction-name">{{ attraction[0].title }}</div>
+              <div class="attraction-name">{{ attraction.title }}</div>
               <div class="like-rank-container">
-                <span>
-                  <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
-                  <span>({{ attraction[0].likeCount }})</span>
-                </span>
-                <span>
-                  <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
-                  <span>{{ attraction[0].rate }}</span>
-                  <span>({{ attraction[0].likeCount }})</span>
-                </span>
+                <div>
+                  <span>
+                    <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
+                    <span>({{ attraction.likeCount }})</span>
+                  </span>
+                  <span>
+                    <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
+                    <span>{{ attraction.rate }}</span>
+                    <span>({{ attraction.likeCount }})</span>
+                  </span>
+                </div>
               </div>
             </div>
-            <div class="attraction-desc-container">
-              <div class="attraction-desc">{{ attraction[0].overView }}</div>
-            </div>
+            <!-- <div class="attraction-desc-container">
+              <div class="attraction-desc">{{ attraction.overView }}</div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -38,14 +45,26 @@ export default {
   name: "PlannerAttractionList",
   components: {},
   data() {
-    return {
-      attractions: [],
-    };
+    return {};
   },
-  created() {
-    console.log(this.attractions);
+  props: {
+    selectedDay: {
+      type: Number,
+      required: true,
+    },
+    attractions: {
+      type: Array,
+      required: true,
+    },
   },
-  methods: {},
+
+  created() {},
+
+  methods: {
+    handleAttractionClick(attraction) {
+      this.$emit("attractionClicked", attraction);
+    },
+  },
 };
 </script>
 
