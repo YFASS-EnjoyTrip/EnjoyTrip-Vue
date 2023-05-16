@@ -17,7 +17,7 @@
       <div class="attraction-review">
         <div class="comment">
           <div>
-            <AttractionComment></AttractionComment>
+            <AttractionComment :attraction="attraction"></AttractionComment>
           </div>
         </div>
         <div class="blog">
@@ -64,11 +64,16 @@ export default {
 }
 .attraction-text {
   margin-left: 20px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .attraction-title {
   font-family: "CookieRun-Bold";
   color: #4d4d4d;
   font-size: 1.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .attraction-detail {
   margin-top: 5px;

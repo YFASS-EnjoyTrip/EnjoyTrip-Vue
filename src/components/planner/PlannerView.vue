@@ -30,8 +30,7 @@
             @click="
               decreaseSelectedDay();
               renderMap();
-            "
-          />
+            " />
           <span>{{ selectedDay }}일</span>
           <img
             src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_right.png"
@@ -39,15 +38,13 @@
             @click="
               increaseSelectedDay();
               renderMap();
-            "
-          />
+            " />
         </div>
         <div class="for-scroll">
           <planner-attraction-list
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
-            @attractionClicked="handleAttractionClick"
-          ></planner-attraction-list>
+            @attractionClicked="handleAttractionClick"></planner-attraction-list>
         </div>
       </div>
     </div>
@@ -80,7 +77,7 @@ export default {
       planDetailInfo: [],
       planId: 17, // 이거 나중에 동적으로 처리 예정
       jwtToken:
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDEzNjU4MywiZXhwIjoxNjg0MjIyOTgzfQ.0juAc5bY--PFAkTayPtDPZWgGYqWbdYlvnFaOaKhb4U",
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDE5NTIyNSwiZXhwIjoxNjg0MjgxNjI1fQ.zNWz_RiIr8IIaIGMqvX97Zt72JRyJJ-qUdpt6jDfwm0",
     };
   },
 
