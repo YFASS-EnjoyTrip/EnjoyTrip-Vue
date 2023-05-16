@@ -22,8 +22,7 @@ export default {
     };
   },
 
-  async created() {
-    // await this.loadKakaoMap();
+  created() {
   },
 
   mounted() {},
@@ -48,7 +47,9 @@ export default {
     initKakaoMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng),
+        center: this.attractions.length > 0 
+        ? new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng) 
+        : new kakao.maps.LatLng(37.5665, 126.9780),  // Default location
         level: 7,
       };
 
@@ -77,10 +78,17 @@ export default {
     },
 
     updateExistingMarkers() {
-      for (let i = 0; i < this.markers.length; i++) {
+      const length = Math.min(this.attractions.length, this.markers.length);
+
+      for (let i = 0; i < length; i++) {
         const attraction = this.attractions[i];
-        const latlng = new kakao.maps.LatLng(attraction.lat, attraction.lng);
-        this.markers[i].setPosition(latlng);
+        // attraction이 유효하고 lat, lng 속성을 가지고 있는지 확인
+        if (attraction && attraction.lat && attraction.lng) {
+            const latlng = new kakao.maps.LatLng(attraction.lat, attraction.lng);
+            this.markers[i].setPosition(latlng);
+        } else {
+          console.warn(`Attraction at index ${i} is missing lat/lng properties.`);
+        }
       }
     },
 

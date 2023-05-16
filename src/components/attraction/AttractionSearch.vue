@@ -170,16 +170,13 @@ export default {
     },
 
     async selectAllAttractions() {
-      console.log(this.selectedTypes);
       const selectedTypeCodes = this.selectedTypes
-        .map((type) => type.code)
-        .filter((code) => !!code)
-        .join(",");
+          .filter((code) => !!code)
+          .join(",");
 
-      console.log(selectedTypeCodes);
+      console.log(this.keyword);
       const response = await axios.get(
-        `http://localhost:8080/locations/search?sido=${this.sidoOption}&gugun=${this.gugunOption}&
-        keyword=${this.keyword}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
+        `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
       );
       this.attractions = response.data.result;
       this.$emit("attractions-updated", this.attractions);
