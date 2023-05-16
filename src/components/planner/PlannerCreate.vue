@@ -7,7 +7,7 @@
       <div>
         <div class="ticket-top">
           <div class="nickname">
-            <span>사용자11111 님의</span>
+            <span>{{ nickname }} 님의</span>
           </div>
           <div class="ticket-title">
             <span>플래너 티켓</span>
@@ -105,13 +105,13 @@ export default {
 .info-title {
   margin-bottom: 10px;
   font-size: 20px;
-  font-family: "CookieRun-Bold";
+  font-family: "CookieRun-Regular";
   color: #ffffff;
 }
 .info-value {
   margin-bottom: 30px;
   font-size: 15px;
-  font-family: "CookieRun-Bold";
+  font-family: "CookieRun-Regular";
   color: #ffffff;
 }
 .info {
@@ -156,7 +156,7 @@ export default {
   width: 150px;
 }
 .location-input {
-  padding-top: 30px;
+  padding-top: 50px;
   width: 720px;
 }
 
@@ -219,9 +219,14 @@ export default {
   width: 700px;
   height: 190px;
   text-align: center;
+  caret-color: transparent;
+  user-select: none;
 }
 .ticket-right {
   width: 270px;
   height: 380px;
+  caret-color: transparent;
+  user-select: none;
+  pointer-events: none;
 }
 </style>
