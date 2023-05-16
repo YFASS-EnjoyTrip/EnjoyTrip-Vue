@@ -2,56 +2,98 @@
   <div>
     <div class="search-container">
       <div class="input-container">
-        <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
+        <select
+          class="sido-dropdown"
+          name="sido"
+          id="location"
+          v-model="sidoOption"
+        >
           <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
             {{ sido.text }}
           </option>
         </select>
-        <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
-          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
+        <select
+          class="gugun-dropdown"
+          name="gugun"
+          id="location"
+          v-model="gugunOption"
+        >
+          <option
+            v-for="gugun in guguns"
+            :value="gugun.value"
+            :key="gugun.value"
+          >
             {{ gugun.text }}
           </option>
         </select>
-        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
+        <input
+          class="input-keyword"
+          type="text"
+          v-model="keyword"
+          placeholder="관광지, 지역"
+        />
         <div class="search-button"><span>검색</span></div>
       </div>
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
-          <div>
-            <input type="checkbox" name="types" id="fes" value="festival" />
-            <label for="fes"><span>행사</span></label>
-          </div>
-          <div>
-            <input type="checkbox" name="types" id="att" value="attraction" />
-            <label for="att"><span>관광지</span></label>
-          </div>
-          <div>
-            <input type="checkbox" name="types" id="res" value="restaurant" />
-            <label for="res"><span>맛집</span></label>
-          </div>
-          <div>
-            <input type="checkbox" name="types" id="acc" value="accommodation" />
-            <label for="acc"><span>숙소</span></label>
+          <input
+            type="checkbox"
+            name="types"
+            id="all"
+            value="all"
+            v-model="allSelected"
+          />
+          <label for="all"><span>전체</span></label>
+          <div v-for="(item, index) in allTypes" :key="index">
+            <div>
+              <input
+                type="checkbox"
+                name="types"
+                :id="item.code"
+                :value="item.code"
+                v-model="selectedTypes"
+              />
+              <label :for="item.code"
+                ><span>{{ item.name }}</span></label
+              >
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="for-scroll">
-      <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
+      <div
+        class="attraction-container"
+        v-for="(attraction, index) in attractions"
+        :key="index"
+      >
         <div class="img-heart">
-          <img class="attractionImg" :src="attraction.img" :alt="attraction.title">
-
+          <img
+            class="attractionImg"
+            :src="attraction.img"
+            :alt="attraction.title"
+          />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
             <span>{{ attraction.title }}</span>
           </div>
           <div class="like-heart">
-            <img class="icon"
-              :src="attraction.isLike ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png' : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'"
-              alt="하트">
+            <img
+              class="icon"
+              :src="
+                attraction.isLike
+                  ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
+                  : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
+              "
+              alt="하트"
+            />
             <span>({{ attraction.likeCnt }})</span>
-            <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별">
+            <img
+              class="icon"
+              src="../../assets/img/icon/star_fill.png"
+              alt="별"
+            />
             <span>{{ attraction.rank }}</span>
             <span>({{ attraction.rankCnt }})</span>
           </div>
@@ -59,9 +101,9 @@
       </div>
     </div>
     <div class="plannerCreate-button">
-      <img src="../../assets/img/icon/capsule_R.png" alt="capR">
+      <img src="../../assets/img/icon/capsule_R.png" alt="capR" />
       <span>플래너 생성하기</span>
-      <img src="../../assets/img/icon/capsule_Y.png" alt="capY">
+      <img src="../../assets/img/icon/capsule_Y.png" alt="capY" />
     </div>
   </div>
 </template>
@@ -96,23 +138,22 @@ export default {
         { value: "39", text: "제주도" },
       ],
       guguns: [],
+      allTypes: [
+        { code: "festival", name: "행사" },
+        { code: "attraction", name: "관광지" },
+        { code: "restaurant", name: "맛집" },
+        { code: "accommodation", name: "숙소" },
+      ],
+      selectedTypes: [],
       attractions: [
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 1 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
-        { img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg", title: "광안대교", likeCnt: "301", rank: "4.3", rankCnt: "300", isLike: 0 },
+        {
+          img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg",
+          title: "광안대교",
+          likeCnt: "301",
+          rank: "4.3",
+          rankCnt: "300",
+          isLike: 1,
+        },
       ],
     };
   },
@@ -124,9 +165,21 @@ export default {
   async created() {
     this.updateGuguns(this.sidoOption);
   },
+  computed: {
+    allSelected: {
+      //getter
+      get: function () {
+        return this.allTypes.length === this.selectedTypes.length;
+      },
+      //setter allSelected 속성이 변경되었을 때 호출되며, 인자 e는 새로운 allSelected 값
+      set: function (e) {
+        this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
+      },
+    },
+  },
   methods: {
     async updateGuguns(option) {
-      let response = await axios.get(
+      const response = await axios.get(
         `http://localhost:8080/locations/search/gugun?sido=${option}`
       );
       console.log(response.data.result);
@@ -141,7 +194,7 @@ export default {
 .plannerCreate-button {
   display: flex;
   justify-content: center;
-  background-color: #69BEEE;
+  background-color: #69beee;
   width: 500px;
   margin-top: 20px;
   margin-left: 45px;
@@ -151,23 +204,23 @@ export default {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
-.plannerCreate-button:hover{
-  background-color: #49C46F;
+.plannerCreate-button:hover {
+  background-color: #49c46f;
   transition: 0.5s;
 }
-.plannerCreate-button:active{
+.plannerCreate-button:active {
   background-color: #89e7a7;
   transition: 0.5s;
 }
-.plannerCreate-button:active span{
+.plannerCreate-button:active span {
   color: #4d4d4d;
   transition: 0.5s;
 }
-.plannerCreate-button:hover img{
+.plannerCreate-button:hover img {
   transform: rotate(360deg);
   transition: 0.5s;
 }
-.plannerCreate-button:hover span{
+.plannerCreate-button:hover span {
   transform: scale(1.1);
   transition: 0.5s;
 }
@@ -180,7 +233,7 @@ export default {
 }
 
 .plannerCreate-button span {
-  font-size: 20px;
+  font-size: 25px;
   /* 폰트 크기 설정 */
   font-family: "CookieRun-Regular";
   color: #ffffff;
@@ -220,6 +273,9 @@ export default {
   margin-left: 28px;
   margin-top: 30px;
   margin-right: 28px;
+  caret-color: transparent;
+  user-select: none;
+  cursor: pointer;
 }
 
 .icon {
@@ -250,13 +306,13 @@ input[type="checkbox"] {
   display: none;
 }
 
-input[type="checkbox"]+label {
+input[type="checkbox"] + label {
   cursor: pointer;
   caret-color: transparent;
   user-select: none;
 }
 
-input[type="checkbox"]+label>span {
+input[type="checkbox"] + label > span {
   /* vertical-align: middle; */
   margin-left: 5px;
   font-size: 15px;
@@ -266,7 +322,7 @@ input[type="checkbox"]+label>span {
 }
 
 /* label:before에 체크하기 전 상태 CSS */
-input[type="checkbox"]+label:before {
+input[type="checkbox"] + label:before {
   content: "";
   display: inline-block;
   width: 17px;
@@ -278,7 +334,7 @@ input[type="checkbox"]+label:before {
 }
 
 /* label:before에 체크 된 상태 CSS */
-input[type="checkbox"]:checked+label:before {
+input[type="checkbox"]:checked + label:before {
   content: "";
   background-color: #f24849;
   border-color: #f24849;
@@ -311,7 +367,6 @@ input[type="checkbox"]:checked+label:before {
   outline: none;
   /* 포커스 시 테두리 제거 */
   font-size: 15px;
-  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
@@ -380,7 +435,7 @@ input[type="checkbox"]:checked+label:before {
   background-color: #fc6d6d;
 }
 
-.search-button>span {
+.search-button > span {
   margin-top: 3px;
 }
 

@@ -61,7 +61,7 @@ export default {
       const imageSrc =
         "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
       for (var i = 0; i < this.attractions.length; i++) {
-        var imageSize = new kakao.maps.Size(30, 30);
+        var imageSize = new kakao.maps.Size(50, 50);
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
         var latlng = new kakao.maps.LatLng(
           this.attractions[i].lat,
