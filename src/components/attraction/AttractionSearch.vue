@@ -32,7 +32,9 @@
           v-model="keyword"
           placeholder="관광지, 지역"
         />
-        <div class="search-button"><span>검색</span></div>
+        <div class="search-button" @click="selectAllAttractions">
+          <span>검색</span>
+        </div>
       </div>
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
@@ -70,7 +72,7 @@
         <div class="img-heart">
           <img
             class="attractionImg"
-            :src="attraction.img"
+            :src="attraction.image"
             :alt="attraction.title"
           />
         </div>
@@ -88,7 +90,7 @@
               "
               alt="하트"
             />
-            <span>({{ attraction.likeCnt }})</span>
+            <span>({{ attraction.likeCount }})</span>
             <img
               class="icon"
               src="../../assets/img/icon/star_fill.png"
@@ -145,16 +147,7 @@ export default {
         { code: "accommodation", name: "숙소" },
       ],
       selectedTypes: [],
-      attractions: [
-        {
-          img: "http://tong.visitkorea.or.kr/cms/resource/20/2780520_image2_1.jpg",
-          title: "광안대교",
-          likeCnt: "301",
-          rank: "4.3",
-          rankCnt: "300",
-          isLike: 1,
-        },
-      ],
+      attractions: [],
     };
   },
   watch: {
@@ -164,6 +157,8 @@ export default {
   },
   async created() {
     this.updateGuguns(this.sidoOption);
+    this.selectAllAttractions();
+    this.allSelected = true;
   },
   computed: {
     allSelected: {
@@ -185,6 +180,11 @@ export default {
       console.log(response.data.result);
       this.guguns = response.data.result;
       this.gugunOption = this.guguns[0].value;
+    },
+    async selectAllAttractions() {
+      const response = await axios.get(`http://localhost:8080/locations`);
+      console.log(response.data.result);
+      this.attractions = response.data.result;
     },
   },
 };
@@ -260,9 +260,15 @@ export default {
 
 .attraction-title {
   margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .attraction-title span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 20px;
   /* 폰트 크기 설정 */
   font-family: "CookieRun-Black";
@@ -276,6 +282,7 @@ export default {
   caret-color: transparent;
   user-select: none;
   cursor: pointer;
+  width: 140px;
 }
 
 .icon {
