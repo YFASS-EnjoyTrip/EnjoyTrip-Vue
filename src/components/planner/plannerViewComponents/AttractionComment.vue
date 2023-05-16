@@ -3,25 +3,18 @@
     <div class="comment-in-container">
       <div class="like-rank">
         <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
-        <div class="cnt">{{ likeCnt }}</div>
-        <img
-          src="../../../assets/img/icon/star_fill.png"
-          alt="별점"
-          class="rank"
-        />
-        <div class="cnt">{{ rankCnt }}</div>
+        <div class="cnt">{{ attraction.likeCount }}</div>
+        <img src="../../../assets/img/icon/star_fill.png" alt="별점" class="rank" />
+        <div class="cnt">{{ attraction.rate }}</div>
       </div>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="comment-content-container"
-          >
+          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
-              {{ comment.userNickname }}
+              {{ comment.nickName }}
+              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
             </div>
             <div class="comment-content">
               {{ comment.content }}
@@ -34,40 +27,54 @@
 </template>
 
 <script>
+import axios from "axios";
+import moment from "moment";
+
 export default {
   name: "AttractionComment",
   components: {},
+  props: {
+    attraction: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      likeCnt: 5,
-      rankCnt: 3.5,
-      comments: [
-        {
-          userNickname: "닉네임1",
-          content:
-            "좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임2",
-          content: "싫어요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임3",
-          content: "좋아요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임2",
-          content: "싫어요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임3",
-          content: "좋아요~~!~!~!!~!!",
-        },
-      ],
+      comments: [],
     };
   },
-  created() {},
-  methods: {},
+  watch: {
+    attraction: {
+      immediate: true,
+      handler(newValue) {
+        this.fetchComments(newValue);
+        console.log(this.comments[0].createdAt);
+      },
+    },
+  },
+
+  created() {
+    this.fetchComments();
+  },
+
+  methods: {
+    formatDate(date) {
+      return moment(date).format("YY-MM-DD");
+    },
+
+    fetchComments() {
+      const contentId = this.attraction.contentId;
+      axios
+        .get(`http://localhost:8080/locations/detail/${contentId}/reviews`)
+        .then(({ data }) => {
+          this.comments = data.result;
+        })
+        .catch((error) => {
+          console.error("Failed to fetch comment:", error);
+        });
+    },
+  },
 };
 </script>
 
@@ -114,6 +121,10 @@ img {
   font-family: "CookieRun-Regular";
   color: #aaaaaa;
   font-size: 0.8rem;
+}
+
+.comment-date {
+  margin-left: auto;
 }
 .comment-content {
   margin-left: 10px;

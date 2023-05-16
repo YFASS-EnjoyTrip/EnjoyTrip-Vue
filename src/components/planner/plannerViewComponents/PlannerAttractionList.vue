@@ -2,29 +2,33 @@
   <div>
     <div class="outer-container">
       <div class="attraction-list-container">
-        <div v-for="(attraction, index) in attractions" :key="index" class="attraction-list">
+        <div
+          v-for="(attraction, index) in attractions[selectedDay - 1]"
+          :key="index"
+          class="attraction-list"
+          @click="handleAttractionClick(attraction)">
           <div class="attraction-order">{{ index + 1 }}</div>
           <div class="attraction-img">
-            <!-- attracion.imgSrc로 변경 예정 -->
-            <img class="attractionImg" src="../../../assets/img/광안대교.jpg" alt="사진" />
+            <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
           </div>
           <div class="attraction-container">
             <div class="attraction-info">
-              <div class="attraction-name">{{ attraction.attractionName }}</div>
-              <div class="like-rank-container">
-                <span>
-                  <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
-                  <span>({{ attraction.likeCnt }})</span>
-                </span>
-                <span>
-                  <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
-                  <span>{{ attraction.rank }}</span>
-                  <span>({{ attraction.rankCnt }})</span>
-                </span>
+              <div class="attraction-name">
+                {{ attraction.title }}
+                <div class="like-rank-container">
+                  <div class="like-rank-inner">
+                    <span>
+                      <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
+                      <span>{{ attraction.likeCount }}</span>
+                    </span>
+                    <span>
+                      <img src="../../../assets/img/icon/star_fill.png" alt="별점" />
+                      <span>{{ attraction.rate }}</span>
+                      <span>({{ attraction.likeCount }})</span>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="attraction-desc-container">
-              <div class="attraction-desc">{{ attraction.attractionDesc }}</div>
             </div>
           </div>
         </div>
@@ -39,76 +43,26 @@ export default {
   components: {},
   data() {
     return {
-      attractions: [
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc:
-            "상세설명입니다상세설명입니다상세설명상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-        {
-          order: 1,
-          imgsrc: "",
-          attractionName: "광안대교",
-          attractionDesc: "상세설명입니다",
-          likeCnt: 10,
-          rank: 3.5,
-          rankCnt: 30,
-        },
-      ],
+      defaultImage: "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png",
     };
   },
+  props: {
+    selectedDay: {
+      type: Number,
+      required: true,
+    },
+    attractions: {
+      type: Array,
+      required: true,
+    },
+  },
   created() {},
-  methods: {},
+
+  methods: {
+    handleAttractionClick(attraction) {
+      this.$emit("attractionClicked", attraction);
+    },
+  },
 };
 </script>
 
@@ -174,20 +128,25 @@ img {
   font-family: "CookieRun-Bold";
   font-size: 1.5rem;
   color: #696969;
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  overflow: hidden; /* 넘친 부분 감추기 */
+  text-overflow: ellipsis; /* 생략 부호 표시 */
 }
+
 .like-rank-container {
   font-family: "CookieRun-Bold";
   font-size: 0.9rem;
   color: #8a8a8a;
+  height: 30px;
+  position: relative;
+}
+
+.like-rank-inner {
+  display: flex;
+  align-items: center;
   margin-top: 5px;
-  margin-left: 5%;
 }
-.like-rank-container > span:nth-child(2) {
-  margin-left: 10px;
-}
-.like-rank-container > span > span {
-  margin-left: 5px;
-}
+
 .attraction-desc-container {
   height: 50px;
   overflow: scroll;

@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <div class="title-container">
-      <div class="user">{{ userId }} 님의</div>
+      <div class="user">{{ planInfo.nickName }} 님의</div>
       <div class="location-date">
         <div class="location">
-          <span>{{ locationName }}</span
+          <span>{{ planInfo.title }}</span
           >여행
         </div>
-        <div class="date">2023.05.04~2023.05.06</div>
+        <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
         <div class="modify-button">
           <router-link to="/planner/modify">
             <span>편집</span>
@@ -19,17 +19,32 @@
       <div class="left-container">
         <div id="map" class="map"></div>
         <div class="detail-view">
-          <plannerAttractionDetail></plannerAttractionDetail>
+          <plannerAttractionDetail ref="attractionDetail"></plannerAttractionDetail>
         </div>
       </div>
       <div class="right-container">
         <div class="day-container">
-          <img src="../../assets/img/icon/arrow_left.png" alt="<" />
-          <span>1일</span>
-          <img src="../../assets/img/icon/arrow_right.png" alt=">" />
+          <img
+            src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_left.png"
+            alt="<"
+            @click="
+              decreaseSelectedDay();
+              renderMap();
+            " />
+          <span>{{ selectedDay }}일</span>
+          <img
+            src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_right.png"
+            alt=">"
+            @click="
+              increaseSelectedDay();
+              renderMap();
+            " />
         </div>
         <div class="for-scroll">
-          <PlannerAttractionList></PlannerAttractionList>
+          <planner-attraction-list
+            :attractions="planDetailInfo"
+            :selectedDay="selectedDay"
+            @attractionClicked="handleAttractionClick"></planner-attraction-list>
         </div>
       </div>
     </div>
@@ -38,71 +53,120 @@
 
 <script>
 import axios from "axios";
-import plannerAttractionDetail from "../planner/plannerViewComponents/PlannerAttractionDetail.vue";
-import PlannerAttractionList from "../planner/plannerViewComponents/PlannerAttractionList.vue";
+
+import plannerAttractionDetail from "./plannerViewComponents/PlannerAttractionDetail.vue";
+import PlannerAttractionList from "./plannerViewComponents/PlannerAttractionList.vue";
+
 export default {
   name: "PlannerView",
   components: {
     plannerAttractionDetail,
     PlannerAttractionList,
   },
+  computed: {
+    selectedDayInfo() {
+      return this.planDetailInfo[this.selectedDay - 1];
+    },
+  },
   data() {
     return {
-      userId: "사용자1111",
-      locationName: "부산",
       map: null,
-      attractions: "",
+      selectedDay: 1,
+      attractions: [],
+      planInfo: {},
+      planDetailInfo: [],
+      planId: 17, // 이거 나중에 동적으로 처리 예정
+      jwtToken:
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDE5NTIyNSwiZXhwIjoxNjg0MjgxNjI1fQ.zNWz_RiIr8IIaIGMqvX97Zt72JRyJJ-qUdpt6jDfwm0",
     };
   },
-  created() {},
 
-  async mounted() {
-    await axios.get("http://localhost:8080/locations").then(({ data }) => {
-      this.attractions = data.result;
-    });
+  async created() {
+    await axios
+      .get(`http://localhost:8080/planner/list/${this.planId}`, {
+        headers: {
+          Authorization: `Bearer ${this.jwtToken}`,
+        },
+      })
+      .then(({ data }) => {
+        if (data.status === 200) {
+          this.planInfo = data.result.planInfo;
+
+          Object.keys(data.result.dayInfo).forEach((key) => {
+            this.planDetailInfo.push(data.result.dayInfo[key]);
+          });
+        }
+      });
+
     this.initKakaoMap();
   },
 
+  async mounted() {},
+
   methods: {
+    decreaseSelectedDay() {
+      if (this.selectedDay > 1) {
+        this.selectedDay--;
+        console.log(this.selectedDay);
+      }
+    },
+
+    increaseSelectedDay() {
+      if (this.selectedDay < this.planDetailInfo.length) {
+        this.selectedDay++;
+        console.log(this.selectedDay);
+      }
+    },
+
     initKakaoMap() {
       if (window.kakao && window.kakao.maps) {
-        this.initMap();
+        this.renderMap();
       } else {
         const script = document.createElement("script");
         /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
+        script.onload = () => kakao.maps.load(this.renderMap);
         script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=02399938b90e8b081af8d7b1d6e4873d";
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
         document.head.appendChild(script);
       }
     },
-    initMap() {
-      const container = document.getElementById("map");
 
+    handleAttractionClick(attraction) {
+      this.$refs.attractionDetail.setAttraction(attraction);
+    },
+
+    renderMap() {
+      const firstDay = this.planDetailInfo[this.selectedDay - 1];
+
+      this.handleAttractionClick(firstDay[0]);
+      const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(
-          this.attractions[0].lat,
-          this.attractions[0].lng
-        ),
+        center: new kakao.maps.LatLng(firstDay[0].lat, firstDay[0].lng),
         level: 5,
       };
 
       this.map = new kakao.maps.Map(container, options);
 
-      const imageSrc =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      for (var i = 0; i < this.attractions.length; i++) {
-        var imageSize = new kakao.maps.Size(30, 30);
+      let imageSrc = "";
+      const imageFood = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
+      const imageAcom = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageLoca = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
+
+      for (let i = 0; i < firstDay.length; i++) {
+        const planType = firstDay[i].type;
+        var imageSize = new kakao.maps.Size(60, 60);
+
+        if (planType == 39) imageSrc = imageFood;
+        else if (planType == 32) imageSrc = imageAcom;
+        else imageSrc = imageLoca;
+
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        var latlng = new kakao.maps.LatLng(
-          this.attractions[i].lat,
-          this.attractions[i].lng
-        );
+        var latlng = new kakao.maps.LatLng(firstDay[i].lat, firstDay[i].lng);
 
         new kakao.maps.Marker({
           map: this.map,
           position: latlng,
-          title: this.attractions[i].title,
+          title: firstDay[i].title,
           image: markerImage,
         });
       }

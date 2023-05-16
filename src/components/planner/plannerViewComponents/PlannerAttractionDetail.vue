@@ -2,18 +2,14 @@
   <div class="planner-attraction-detail-container">
     <div class="attraction-desc">
       <div>
-        <img
-          src="../../../assets/img/광안대교.jpg"
-          alt="관광지사진"
-          class="attraction-img"
-        />
+        <img :src="attraction.image" alt="관광지사진" class="attraction-img" />
       </div>
       <div class="attraction-text">
         <div class="attraction-title">
-          {{ attractionName }}
+          {{ attraction.title }}
         </div>
         <div class="attraction-detail">
-          {{ attractionDetail }}
+          {{ attraction.overView }}
         </div>
       </div>
     </div>
@@ -21,7 +17,7 @@
       <div class="attraction-review">
         <div class="comment">
           <div>
-            <AttractionComment></AttractionComment>
+            <AttractionComment :attraction="attraction"></AttractionComment>
           </div>
         </div>
         <div class="blog">
@@ -35,18 +31,22 @@
 <script>
 import AttractionComment from "../plannerViewComponents/AttractionComment.vue";
 import AttractionBlogReview from "../plannerViewComponents/AttractionBlogReview.vue";
+
 export default {
   name: "PlannerAttractionDetail",
   components: { AttractionComment, AttractionBlogReview },
   data() {
     return {
-      attractionName: "광안대교",
-      attractionDetail:
-        "상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다상세설명입니다",
+      attraction: {},
     };
   },
+
   created() {},
-  methods: {},
+  methods: {
+    setAttraction(attraction) {
+      this.attraction = attraction;
+    },
+  },
 };
 </script>
 
@@ -64,11 +64,16 @@ export default {
 }
 .attraction-text {
   margin-left: 20px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .attraction-title {
   font-family: "CookieRun-Bold";
   color: #4d4d4d;
   font-size: 1.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .attraction-detail {
   margin-top: 5px;
@@ -80,7 +85,7 @@ export default {
   background-color: rgba(250, 235, 215, 0);
   overflow: scroll;
 }
-.attraction-detail::-webkit-scrollbar{
+.attraction-detail::-webkit-scrollbar {
   width: 0;
 }
 .review-container {
