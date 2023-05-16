@@ -2,49 +2,24 @@
   <div>
     <div class="search-container">
       <div class="input-container">
-        <select
-          class="sido-dropdown"
-          name="sido"
-          id="location"
-          v-model="sidoOption"
-        >
+        <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
           <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
             {{ sido.text }}
           </option>
         </select>
-        <select
-          class="gugun-dropdown"
-          name="gugun"
-          id="location"
-          v-model="gugunOption"
-        >
-          <option
-            v-for="gugun in guguns"
-            :value="gugun.value"
-            :key="gugun.value"
-          >
+        <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
+          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
             {{ gugun.text }}
           </option>
         </select>
-        <input
-          class="input-keyword"
-          type="text"
-          v-model="keyword"
-          placeholder="관광지, 지역"
-        />
+        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
         <div class="search-button" @click="selectAllAttractions">
           <span>검색</span>
         </div>
       </div>
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
-          <input
-            type="checkbox"
-            name="types"
-            id="all"
-            value="all"
-            v-model="allSelected"
-          />
+          <input type="checkbox" name="types" id="all" value="all" v-model="allSelected" />
           <label for="all"><span>전체</span></label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
@@ -63,16 +38,12 @@
         </div>
       </div>
     </div>
-    <div class="for-scroll">
-      <div
-        class="attraction-container"
-        v-for="(attraction, index) in attractions"
-        :key="index"
-      >
+    <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
+      <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
         <div class="img-heart">
           <img
             class="attractionImg"
-            :src="attraction.image"
+            :src="attraction.image || defaultImage"
             :alt="attraction.title"
           />
         </div>
@@ -91,11 +62,7 @@
               alt="하트"
             />
             <span>({{ attraction.likeCount }})</span>
-            <img
-              class="icon"
-              src="../../assets/img/icon/star_fill.png"
-              alt="별"
-            />
+            <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
             <span>({{ attraction.rankCnt }})</span>
           </div>
@@ -119,8 +86,13 @@ export default {
   components: {},
   data() {
     return {
+      // 23.05.16 기본이미지, 페이지네이션 추가
+      defaultImage: "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png",
+      page: 1,
+      pageSize: 100,
+      //
       keyword: "",
-      sidoOption: "1",
+      sidoOption: "0",
       gugunOption: "",
       sidos: [
         { value: "0", text: "전체" },
@@ -144,10 +116,10 @@ export default {
       ],
       guguns: [],
       allTypes: [
-        { code: "festival", name: "행사" },
-        { code: "attraction", name: "관광지" },
-        { code: "restaurant", name: "맛집" },
-        { code: "accommodation", name: "숙소" },
+        { code: "15", name: "행사" },
+        { code: ["12", "14", "28"], name: "관광지" },
+        { code: "39", name: "맛집" },
+        { code: "32", name: "숙소" },
       ],
       selectedTypes: [],
       attractions: [],
@@ -160,7 +132,7 @@ export default {
   },
   async created() {
     this.updateGuguns(this.sidoOption);
-    this.selectAllAttractions();
+    this.initAttractions();
     this.allSelected = true;
   },
   computed: {
@@ -189,10 +161,49 @@ export default {
         this.gugunOption = this.guguns[0].value;
       }
     },
-    async selectAllAttractions() {
-      const response = await axios.get(`http://localhost:8080/locations`);
-      console.log(response.data.result);
+    async initAttractions() {
+      const response = await axios.get(
+        `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+      );
       this.attractions = response.data.result;
+      this.$emit("attractions-updated", this.attractions);
+    },
+
+    async selectAllAttractions() {
+      const selectedTypeCodes = this.selectedTypes
+          .filter((code) => !!code)
+          .join(",");
+
+      console.log(this.keyword);
+      const response = await axios.get(
+        `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
+      );
+      this.attractions = response.data.result;
+      this.$emit("attractions-updated", this.attractions);
+    },
+
+    // 스크롤 이벤트 핸들러
+    handleScroll() {
+      const container = this.$refs.scrollContainer;
+      const scrollBottom = container.scrollHeight - container.clientHeight - container.scrollTop;
+
+      // 스크롤이 맨 아래에 도달했을 때 추가 데이터 요청
+      if (scrollBottom <= 0) {
+        this.fetchAdditionalData();
+      }
+    },
+    async fetchAdditionalData() {
+      try {
+        this.page++; // 다음 페이지로 이동
+        const response = await axios.get(
+          `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+        );
+        const additionalData = response.data.result;
+        this.attractions = [...this.attractions, ...additionalData];
+        this.$emit("attractions-updated", this.attractions);
+      } catch (error) {
+        console.error("Failed to fetch additional data:", error);
+      }
     },
   },
 };
