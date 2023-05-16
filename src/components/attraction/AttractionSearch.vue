@@ -102,11 +102,13 @@
         </div>
       </div>
     </div>
-    <div class="plannerCreate-button">
-      <img src="../../assets/img/icon/capsule_R.png" alt="capR" />
-      <span>플래너 생성하기</span>
-      <img src="../../assets/img/icon/capsule_Y.png" alt="capY" />
-    </div>
+    <router-link :to="{ name: 'PlannerCreate' }">
+      <div class="plannerCreate-button">
+        <img src="../../assets/img/icon/capsule_R.png" alt="capR" />
+        <span>플래너 생성하기</span>
+        <img src="../../assets/img/icon/capsule_Y.png" alt="capY" />
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -121,6 +123,7 @@ export default {
       sidoOption: "1",
       gugunOption: "",
       sidos: [
+        { value: "0", text: "전체" },
         { value: "1", text: "서울" },
         { value: "2", text: "인천" },
         { value: "3", text: "대전" },
@@ -174,12 +177,17 @@ export default {
   },
   methods: {
     async updateGuguns(option) {
-      const response = await axios.get(
-        `http://localhost:8080/locations/search/gugun?sido=${option}`
-      );
-      console.log(response.data.result);
-      this.guguns = response.data.result;
-      this.gugunOption = this.guguns[0].value;
+      if (option == "0") {
+        this.guguns = [{ text: "전체", value: "0" }];
+        this.gugunOption = this.guguns[0].value;
+      } else {
+        const response = await axios.get(
+          `http://localhost:8080/locations/search/gugun?sido=${option}`
+        );
+        console.log(response.data.result);
+        this.guguns = response.data.result;
+        this.gugunOption = this.guguns[0].value;
+      }
     },
     async selectAllAttractions() {
       const response = await axios.get(`http://localhost:8080/locations`);
@@ -191,6 +199,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
 .plannerCreate-button {
   display: flex;
   justify-content: center;
@@ -269,7 +280,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 20px;
+  font-size: 18px;
   /* 폰트 크기 설정 */
   font-family: "CookieRun-Black";
   color: #4d4d4d;

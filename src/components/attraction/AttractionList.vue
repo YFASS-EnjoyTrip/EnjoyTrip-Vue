@@ -1,10 +1,19 @@
 <template>
-  <div class="container">
-    <div class="inner-container">
-      <div id="map" class="map"></div>
-      <div class="right-container">
-        <AttractionSearch></AttractionSearch>
+  <div>
+    <div class="container">
+      <div class="inner-container">
+        <div id="map" class="map"></div>
+        <div class="right-container">
+          <AttractionSearch></AttractionSearch>
+        </div>
       </div>
+    </div>
+    <div>
+      <img
+        src="../../assets/img/background_full.png"
+        alt="배경"
+        class="background"
+      />
     </div>
   </div>
 </template>
@@ -81,6 +90,13 @@ export default {
 </script>
 
 <style scoped>
+.background {
+  position: absolute;
+  right: 0;
+  top: 3%;
+  z-index: -1;
+  width: fit-content;
+}
 .container {
   width: 1200px;
   height: 800px;

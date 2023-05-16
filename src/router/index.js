@@ -10,6 +10,7 @@ import HotplaceList from "../components/hotplace/HotplaceList.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
 import PlannerView from "../components/planner/PlannerView.vue";
 import plannerModify from "../components/planner/PlannerModify.vue";
+import PlannerCreate from "../components/planner/PlannerCreate.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
 
@@ -64,6 +65,12 @@ const routes = [
         path: "modify",
         name: "plannerModify",
         component: plannerModify,
+      },
+      {
+        path: "create",
+        name: "PlannerCreate",
+        component: PlannerCreate,
+        props: true,
       },
     ],
   },
