@@ -16,26 +16,17 @@
         <div class="ticket-bottom">
           <div class="location-input">
             <span>지역</span>
-            <select
-              class="sido-dropdown"
-              name="sido"
-              id="location"
-              v-model="location"
-            >
-              <option
-                v-for="sido in sidos"
-                :value="sido.value"
-                :key="sido.value"
-              >
+            <select class="sido-dropdown" name="sido" id="location" v-model="location">
+              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
                 {{ sido.text }}
               </option>
             </select>
           </div>
           <div class="date-input">
             <span>일정</span>
-            <input class="calendar-pick" type="date" v-model="startDate" />
+            <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
             <span> ~</span>
-            <input class="calendar-pick" type="date" v-model="endDate" />
+            <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
           </div>
         </div>
       </div>
@@ -52,9 +43,15 @@
           </div>
           <div class="dateInfo">
             <div class="info-title">일자</div>
-            <div class="info-value">{{ startDate }} ~ {{ endDate }}</div>
+            <div class="info-value">시작일 : {{ startDate }}</div>
+            <div class="info-value end">종료일 : {{ endDate }}</div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="confirm-container">
+      <div class="confirm-text">
+        
       </div>
     </div>
   </div>
@@ -70,6 +67,7 @@ export default {
       location: "",
       startDate: "",
       endDate: "",
+      todayDate:"",
       sidos: [
         { value: "1", text: "서울" },
         { value: "2", text: "인천" },
@@ -91,7 +89,9 @@ export default {
       ],
     };
   },
-  created() {},
+  mounted() {
+    this.todayDate = new Date().toISOString().split('T')[0];
+   },
   methods: {
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
@@ -102,22 +102,29 @@ export default {
 </script>
 
 <style scoped>
+.info-value
++.end{
+  margin-top: -20px;
+}
 .info-title {
   margin-bottom: 10px;
   font-size: 20px;
   font-family: "CookieRun-Regular";
-  color: #ffffff;
+  color: #ffe8aa;
 }
+
 .info-value {
-  margin-bottom: 30px;
-  font-size: 15px;
+  margin-bottom: 20px;
+  font-size: 20px;
   font-family: "CookieRun-Regular";
   color: #ffffff;
 }
+
 .info {
-  padding-top: 30px;
+  padding-top: 20px;
   padding-left: 50px;
 }
+
 .side-title {
   padding-top: 30px;
   font-size: 30px;
@@ -125,6 +132,7 @@ export default {
   color: #3a3a3a;
   text-align: center;
 }
+
 .calendar-pick {
   border: 2px solid #c4c4c4;
   /* 테두리 스타일 추가 */
@@ -140,6 +148,7 @@ export default {
   margin-right: 10px;
   width: 170px;
 }
+
 .sido-dropdown {
   border: 2px solid #c4c4c4;
   /* 테두리 스타일 추가 */
@@ -155,37 +164,43 @@ export default {
   margin-right: 10px;
   width: 150px;
 }
+
 .location-input {
   padding-top: 50px;
   width: 720px;
 }
 
-.location-input > span {
-  font-family: "CookieRun-Regular";
+.location-input>span {
+  font-family: "CookieRun-Bold";
   color: #757575;
   font-size: 1.5rem;
   margin-right: 20px;
 }
+
 .date-input {
   margin-top: 20px;
 }
-.date-input > span {
-  font-family: "CookieRun-Regular";
+
+.date-input>span {
+  font-family: "CookieRun-Bold";
   color: #757575;
   font-size: 1.5rem;
   margin-right: 20px;
 }
+
 .nickname {
   font-family: "CookieRun-Regular";
   color: #fff0c7;
   font-size: 1.8rem;
   padding-top: 40px;
 }
+
 .ticket-title {
   font-family: "CookieRun-Black";
   color: #3a3a3a;
   font-size: 3rem;
 }
+
 .container {
   width: 1200px;
   height: 800px;
@@ -193,6 +208,7 @@ export default {
   border-radius: 90px;
   /* box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2); */
 }
+
 .img-container {
   display: flex;
   justify-content: center;
@@ -202,11 +218,13 @@ export default {
   width: 1200px;
   margin-top: 50px;
 }
+
 .text-container {
   display: flex;
   margin-left: 120px;
   margin-top: -440px;
 }
+
 .ticket-top {
   width: 700px;
   height: 190px;
@@ -215,6 +233,7 @@ export default {
   user-select: none;
   pointer-events: none;
 }
+
 .ticket-bottom {
   width: 700px;
   height: 190px;
@@ -222,11 +241,11 @@ export default {
   caret-color: transparent;
   user-select: none;
 }
+
 .ticket-right {
   width: 270px;
   height: 380px;
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
-}
-</style>
+}</style>
