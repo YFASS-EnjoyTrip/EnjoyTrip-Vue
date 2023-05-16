@@ -28,7 +28,8 @@
                 name="types"
                 :id="item.code"
                 :value="item.code"
-                v-model="selectedTypes" />
+                v-model="selectedTypes"
+              />
               <label :for="item.code"
                 ><span>{{ item.name }}</span></label
               >
@@ -43,7 +44,8 @@
           <img
             class="attractionImg"
             :src="attraction.image || defaultImage"
-            :alt="attraction.title" />
+            :alt="attraction.title"
+          />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
@@ -57,7 +59,8 @@
                   ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                   : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
               "
-              alt="하트" />
+              alt="하트"
+            />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
@@ -66,11 +69,13 @@
         </div>
       </div>
     </div>
-    <div class="plannerCreate-button">
-      <img src="../../assets/img/icon/capsule_R.png" alt="capR" />
-      <span>플래너 생성하기</span>
-      <img src="../../assets/img/icon/capsule_Y.png" alt="capY" />
-    </div>
+    <router-link :to="{ name: 'PlannerCreate' }">
+      <div class="plannerCreate-button">
+        <img src="../../assets/img/icon/capsule_R.png" alt="capR" />
+        <span>플래너 생성하기</span>
+        <img src="../../assets/img/icon/capsule_Y.png" alt="capY" />
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -87,7 +92,7 @@ export default {
       pageSize: 100,
       //
       keyword: "",
-      sidoOption: "1",
+      sidoOption: "0",
       gugunOption: "",
       sidos: [
         { value: "0", text: "전체" },
@@ -111,10 +116,10 @@ export default {
       ],
       guguns: [],
       allTypes: [
-        { code: "festival", name: "행사" },
-        { code: "attraction", name: "관광지" },
-        { code: "restaurant", name: "맛집" },
-        { code: "accommodation", name: "숙소" },
+        { code: "15", name: "행사" },
+        { code: ["12", "14", "28"], name: "관광지" },
+        { code: "39", name: "맛집" },
+        { code: "32", name: "숙소" },
       ],
       selectedTypes: [],
       attractions: [],
@@ -127,7 +132,7 @@ export default {
   },
   async created() {
     this.updateGuguns(this.sidoOption);
-    this.selectAllAttractions();
+    this.initAttractions();
     this.allSelected = true;
   },
   computed: {
@@ -156,9 +161,25 @@ export default {
         this.gugunOption = this.guguns[0].value;
       }
     },
-    async selectAllAttractions() {
+    async initAttractions() {
       const response = await axios.get(
         `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+      );
+      this.attractions = response.data.result;
+      this.$emit("attractions-updated", this.attractions);
+    },
+
+    async selectAllAttractions() {
+      console.log(this.selectedTypes);
+      const selectedTypeCodes = this.selectedTypes
+        .map((type) => type.code)
+        .filter((code) => !!code)
+        .join(",");
+
+      console.log(selectedTypeCodes);
+      const response = await axios.get(
+        `http://localhost:8080/locations/search?sido=${this.sidoOption}&gugun=${this.gugunOption}&
+        keyword=${this.keyword}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
       );
       this.attractions = response.data.result;
       this.$emit("attractions-updated", this.attractions);

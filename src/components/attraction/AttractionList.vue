@@ -23,7 +23,7 @@ export default {
   },
 
   async created() {
-    this.loadKakaoMap();
+    // await this.loadKakaoMap();
   },
 
   mounted() {},
@@ -35,7 +35,10 @@ export default {
       } else {
         const script = document.createElement("script");
         /* global kakao */
-        script.onload = () => kakao.maps.load(this.initKakaoMap);
+        script.onload = () =>
+          kakao.maps.load(() => {
+            this.initKakaoMap();
+          });
         script.src =
           "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
         document.head.appendChild(script);
@@ -68,9 +71,9 @@ export default {
 
     async updateAttractions(attractions) {
       this.attractions = attractions;
+      this.loadKakaoMap();
       this.updateExistingMarkers();
       this.addNewMarkers();
-      this.loadKakaoMap();
     },
 
     updateExistingMarkers() {
