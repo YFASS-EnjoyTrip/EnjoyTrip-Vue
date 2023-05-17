@@ -3,14 +3,10 @@
     <div class="search-container">
       <div class="input-container">
         <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
-          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
-            {{ sido.text }}
-          </option>
+          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
         </select>
         <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
-          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
-            {{ gugun.text }}
-          </option>
+          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">{{ gugun.text }}</option>
         </select>
         <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
         <div class="search-button" @click="selectAllAttractions">
@@ -20,7 +16,9 @@
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
           <input type="checkbox" name="types" id="all" value="all" v-model="allSelected" />
-          <label for="all"><span>전체</span></label>
+          <label for="all">
+            <span>전체</span>
+          </label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
               <input
@@ -28,10 +26,11 @@
                 name="types"
                 :id="item.code"
                 :value="item.code"
-                v-model="selectedTypes" />
-              <label :for="item.code"
-                ><span>{{ item.name }}</span></label
-              >
+                v-model="selectedTypes"
+              />
+              <label :for="item.code">
+                <span>{{ item.name }}</span>
+              </label>
             </div>
           </div>
         </div>
@@ -40,10 +39,13 @@
     <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
       <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
         <div class="img-heart">
-          <img
-            class="attractionImg"
-            :src="attraction.image || defaultImage"
-            :alt="attraction.title" />
+          <router-link :to="{ name: 'attractionDetail', params: { contentId: attraction.contentId } }">
+            <img
+              class="attractionImg"
+              :src="attraction.image || defaultImage"
+              :alt="attraction.title"
+            />
+          </router-link>
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
@@ -57,7 +59,8 @@
                   ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                   : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
               "
-              alt="하트" />
+              alt="하트"
+            />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
@@ -110,23 +113,23 @@ export default {
         { value: "36", text: "경상남도" },
         { value: "37", text: "전라북도" },
         { value: "38", text: "전라남도" },
-        { value: "39", text: "제주도" },
+        { value: "39", text: "제주도" }
       ],
       guguns: [],
       allTypes: [
         { code: "15", name: "행사" },
         { code: ["12", "14", "28"], name: "관광지" },
         { code: "39", name: "맛집" },
-        { code: "32", name: "숙소" },
+        { code: "32", name: "숙소" }
       ],
       selectedTypes: [],
-      attractions: [],
+      attractions: []
     };
   },
   watch: {
     sidoOption(newOption) {
       this.updateGuguns(newOption);
-    },
+    }
   },
   async created() {
     this.updateGuguns(this.sidoOption);
@@ -136,14 +139,14 @@ export default {
   computed: {
     allSelected: {
       //getter
-      get: function () {
+      get: function() {
         return this.allTypes.length === this.selectedTypes.length;
       },
       //setter allSelected 속성이 변경되었을 때 호출되며, 인자 e는 새로운 allSelected 값
-      set: function (e) {
-        this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
-      },
-    },
+      set: function(e) {
+        this.selectedTypes = e ? this.allTypes.map(item => item.code) : [];
+      }
+    }
   },
   methods: {
     async updateGuguns(option) {
@@ -167,7 +170,9 @@ export default {
     },
 
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
+      const selectedTypeCodes = this.selectedTypes
+        .filter(code => !!code)
+        .join(",");
 
       console.log(this.keyword);
       const response = await axios.get(
@@ -180,7 +185,8 @@ export default {
     // 스크롤 이벤트 핸들러
     handleScroll() {
       const container = this.$refs.scrollContainer;
-      const scrollBottom = container.scrollHeight - container.clientHeight - container.scrollTop;
+      const scrollBottom =
+        container.scrollHeight - container.clientHeight - container.scrollTop;
 
       // 스크롤이 맨 아래에 도달했을 때 추가 데이터 요청
       if (scrollBottom <= 0) {
@@ -199,8 +205,8 @@ export default {
       } catch (error) {
         console.error("Failed to fetch additional data:", error);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -288,7 +294,7 @@ a {
   white-space: nowrap;
   font-size: 18px;
   /* 폰트 크기 설정 */
-  font-family: "CookieRun-Black";
+  font-family: "CookieRun-Bold";
   color: #4d4d4d;
 }
 

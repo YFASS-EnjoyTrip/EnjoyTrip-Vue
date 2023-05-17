@@ -9,6 +9,7 @@ import MemberMain from "../views/MemberMain.vue";
 
 import HotplaceList from "../components/hotplace/HotplaceList.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
+import AttractionDetail from "../components/attraction/AttractionDetail.vue";
 import PlannerView from "../components/planner/PlannerView.vue";
 import plannerModify from "../components/planner/PlannerModify.vue";
 import PlannerCreate from "../components/planner/PlannerCreate.vue";
@@ -46,6 +47,12 @@ const routes = [
         path: "list",
         name: "attractionList",
         component: AttractionList,
+      },
+      {
+        path: "detail",
+        name: "attractionDetail",
+        component: AttractionDetail,
+        props: true,
       },
     ],
   },

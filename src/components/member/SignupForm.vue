@@ -181,7 +181,7 @@ export default {
 
 .submit {
   margin-top: 40px;
-  background-color: #f24849;
+  background-color: #69BEEE;
   border: 0;
   border-radius: 10px;
   width: 120px;
@@ -199,7 +199,7 @@ export default {
   transition: 0.2s;
 }
 .submit:active {
-  background-color: #f79d9d;
+  background-color: #69BEEE;
   color: #4b4b4b;
 }
 .input-container {
@@ -215,7 +215,7 @@ export default {
   margin-top: 40px;
   margin-bottom: 40px;
   font-family: "CookieRun-Black";
-  color: #f24849;
+  color: #69BEEE;
   font-size: 64px;
   caret-color: transparent;
   user-select: none;
@@ -243,9 +243,9 @@ export default {
 .container {
   width: 1200px;
   height: 800px;
-  background-color: rgb(255, 255, 255);
+  /* background-color: rgb(255, 255, 255); */
   border-radius: 90px;
-  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
+  /* box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2); */
   text-align: center;
 }
 </style>
