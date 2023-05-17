@@ -7,7 +7,9 @@
           <span>{{ planInfo.title }}</span
           >여행
         </div>
-        <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
+        <div class="date">
+          {{ planInfo.startDate }} ~ {{ planInfo.endDate }}
+        </div>
         <div class="modify-button">
           <router-link to="/planner/modify">
             <span>편집</span>
@@ -19,7 +21,9 @@
       <div class="left-container">
         <div id="map" class="map"></div>
         <div class="detail-view">
-          <plannerAttractionDetail ref="attractionDetail"></plannerAttractionDetail>
+          <plannerAttractionDetail
+            ref="attractionDetail"
+          ></plannerAttractionDetail>
         </div>
       </div>
       <div class="right-container">
@@ -30,7 +34,8 @@
             @click="
               decreaseSelectedDay();
               renderMap();
-            " />
+            "
+          />
           <span>{{ selectedDay }}일</span>
           <img
             src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_right.png"
@@ -38,13 +43,15 @@
             @click="
               increaseSelectedDay();
               renderMap();
-            " />
+            "
+          />
         </div>
         <div class="for-scroll">
           <planner-attraction-list
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
-            @attractionClicked="handleAttractionClick"></planner-attraction-list>
+            @attractionClicked="handleAttractionClick"
+          ></planner-attraction-list>
         </div>
       </div>
     </div>
@@ -77,7 +84,7 @@ export default {
       planDetailInfo: [],
       planId: 17, // 이거 나중에 동적으로 처리 예정
       jwtToken:
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDE5NTIyNSwiZXhwIjoxNjg0MjgxNjI1fQ.zNWz_RiIr8IIaIGMqvX97Zt72JRyJJ-qUdpt6jDfwm0",
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDI4MjE3MSwiZXhwIjoxNjg0MzY4NTcxfQ.jZfoGr4VfK-3S-WZ0RjDSEv91TTAfQknU-RRvuIou80",
     };
   },
 
@@ -148,9 +155,12 @@ export default {
       this.map = new kakao.maps.Map(container, options);
 
       let imageSrc = "";
-      const imageFood = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
-      const imageAcom = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      const imageLoca = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
+      const imageFood =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
+      const imageAcom =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageLoca =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
@@ -244,7 +254,7 @@ a {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
+  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
 }
 
 .title-container {

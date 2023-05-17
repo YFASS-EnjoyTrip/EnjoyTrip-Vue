@@ -3,7 +3,9 @@
     <div class="inner-container">
       <div id="map" class="map"></div>
       <div class="right-container">
-        <AttractionSearch @attractions-updated="updateAttractions"></AttractionSearch>
+        <AttractionSearch
+          @attractions-updated="updateAttractions"
+        ></AttractionSearch>
       </div>
     </div>
   </div>
@@ -22,8 +24,7 @@ export default {
     };
   },
 
-  created() {
-  },
+  created() {},
 
   mounted() {},
 
@@ -47,19 +48,27 @@ export default {
     initKakaoMap() {
       const container = document.getElementById("map");
       const options = {
-        center: this.attractions.length > 0 
-        ? new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng) 
-        : new kakao.maps.LatLng(37.5665, 126.9780),  // Default location
+        center:
+          this.attractions.length > 0
+            ? new kakao.maps.LatLng(
+                this.attractions[0].lat,
+                this.attractions[0].lng
+              )
+            : new kakao.maps.LatLng(37.5665, 126.978), // Default location
         level: 7,
       };
 
       this.map = new kakao.maps.Map(container, options);
-      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageSrc =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
 
       for (let i = 0; i < this.attractions.length; i++) {
         const imageSize = new kakao.maps.Size(50, 50);
         const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        const latlng = new kakao.maps.LatLng(this.attractions[i].lat, this.attractions[i].lng);
+        const latlng = new kakao.maps.LatLng(
+          this.attractions[i].lat,
+          this.attractions[i].lng
+        );
         const marker = new kakao.maps.Marker({
           map: this.map,
           position: latlng,
@@ -84,16 +93,19 @@ export default {
         const attraction = this.attractions[i];
         // attraction이 유효하고 lat, lng 속성을 가지고 있는지 확인
         if (attraction && attraction.lat && attraction.lng) {
-            const latlng = new kakao.maps.LatLng(attraction.lat, attraction.lng);
-            this.markers[i].setPosition(latlng);
+          const latlng = new kakao.maps.LatLng(attraction.lat, attraction.lng);
+          this.markers[i].setPosition(latlng);
         } else {
-          console.warn(`Attraction at index ${i} is missing lat/lng properties.`);
+          console.warn(
+            `Attraction at index ${i} is missing lat/lng properties.`
+          );
         }
       }
     },
 
     addNewMarkers() {
-      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageSrc =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
 
       for (let i = this.markers.length; i < this.attractions.length; i++) {
         const attraction = this.attractions[i];
@@ -121,7 +133,7 @@ export default {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
+  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
 }
 .inner-container {
   display: flex;
