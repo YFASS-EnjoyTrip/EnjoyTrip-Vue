@@ -8,24 +8,18 @@
           type="email"
           class="input-box"
           v-model="email"
-          @keyup="debouncedChecklDuplicate"
-        />
+          @keyup="debouncedCheckEmailDuplicate" />
       </div>
-      <span class="check" v-show="emailDuplicate"
-        >이미 가입된 이메일입니다.</span
-      >
+      <span class="check">{{ emailMessage }}</span>
       <div class="member-input">
         <span>닉네임 </span>
         <input
           class="input-box"
           type="text"
           v-model="nickname"
-          @keyup="debouncedChecklDuplicate"
-        />
+          @keyup="debouncedCheckNicknameDuplicate" />
       </div>
-      <span class="check" v-show="nicknameDuplicate"
-        >이미 사용중인 닉네임입니다.</span
-      >
+      <span class="check">{{ nicknameMessage }}</span>
       <div class="member-input">
         <span>비밀번호 </span>
         <input type="password" class="input-box" v-model="password" />
@@ -37,11 +31,8 @@
         <span>비밀번호 확인</span>
         <input type="password" class="input-box" v-model="confirmPassword" />
       </div>
-      <span
-        class="check"
-        v-show="password !== confirmPassword && confirmPassword.length > 0"
-      >
-        비밀번호가 일치하지 않습니다
+      <span class="check">
+        {{ passwordMessage }}
       </span>
       <div>
         <button class="submit" @click="submitForm">회원가입</button>
@@ -51,6 +42,12 @@
 </template>
 
 <script>
+import { apiInstance } from "@/api/index.js";
+import router from "@/router";
+import _ from "lodash";
+
+const api = apiInstance();
+
 export default {
   name: "SignupForm",
   components: {},
@@ -58,17 +55,94 @@ export default {
     return {
       email: "",
       nickname: "",
-      message: "",
+      password: "",
+      confirmPassword: "",
+      emailMsg: "",
       emailDuplicate: true,
       nicknameDuplicate: true,
-      confirmPassword: "asa",
-      password: "12",
     };
   },
-  created() {},
+  computed: {
+    emailMessage() {
+      return this.email.length == 0
+        ? ""
+        : this.emailDuplicate
+        ? "이미 사용중인 이메일입니다."
+        : "사용이 가능한 이메일입니다.";
+    },
+    nicknameMessage() {
+      return this.nickname.length == 0
+        ? ""
+        : this.nicknameDuplicate
+        ? "이미 사용중인 닉네임입니다."
+        : "사용이 가능한 닉네임입니다.";
+    },
+    passwordMessage() {
+      return this.password !== this.confirmPassword && this.confirmPassword.length > 0
+        ? "비밀번호가 일치하지 않습니다."
+        : "비밀번호가 일치합니다.";
+    },
+  },
+  created() {
+    this.debouncedCheckEmailDuplicate = _.debounce(this.checkEmailDuplicate, 500);
+    this.debouncedCheckNicknameDuplicate = _.debounce(this.checkNicknameDuplicate, 500);
+  },
+
   methods: {
-    debouncedChecklDuplicate() {},
-    submitForm() {},
+    checkEmailDuplicate() {
+      api
+        .get(`/member/check/${this.email}`)
+        .then(({ data }) => {
+          this.emailDuplicate = data.status !== 200;
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response && error.response.status === 409) {
+            this.emailDuplicate = true;
+          } else {
+            this.emailDuplicate = false;
+          }
+        });
+    },
+
+    checkNicknameDuplicate() {
+      api
+        .get(`/member/check/${this.nickname}`)
+        .then(({ data }) => {
+          this.nicknameDuplicate = data.status !== 200;
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 409) {
+            this.nicknameDuplicate = true;
+          } else {
+            this.nicknameDuplicate = false;
+          }
+        });
+    },
+
+    submitForm() {
+      // 이메일 형식 검증을 위한 정규 표현식
+      const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+
+      // 이메일 형식이 올바르지 않은 경우
+      if (!emailRegex.test(this.email)) {
+        alert("올바른 이메일 형식이 아닙니다.");
+        return;
+      }
+
+      api
+        .post("/member/signup", {
+          email: this.email,
+          password: this.password,
+          nickname: this.nickname,
+        })
+        .then(() => {
+          router.push("/login");
+        })
+        .catch((error) => {
+          console.error("Signup failed", error);
+        });
+    },
   },
 };
 </script>

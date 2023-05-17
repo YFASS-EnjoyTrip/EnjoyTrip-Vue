@@ -64,8 +64,6 @@ export default {
 }
 .attraction-text {
   margin-left: 20px;
-  overflow: hidden;
-  white-space: nowrap;
 }
 .attraction-title {
   font-family: "CookieRun-Bold";

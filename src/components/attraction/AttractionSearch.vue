@@ -2,49 +2,24 @@
   <div>
     <div class="search-container">
       <div class="input-container">
-        <select
-          class="sido-dropdown"
-          name="sido"
-          id="location"
-          v-model="sidoOption"
-        >
+        <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
           <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
             {{ sido.text }}
           </option>
         </select>
-        <select
-          class="gugun-dropdown"
-          name="gugun"
-          id="location"
-          v-model="gugunOption"
-        >
-          <option
-            v-for="gugun in guguns"
-            :value="gugun.value"
-            :key="gugun.value"
-          >
+        <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
+          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
             {{ gugun.text }}
           </option>
         </select>
-        <input
-          class="input-keyword"
-          type="text"
-          v-model="keyword"
-          placeholder="관광지, 지역"
-        />
+        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
         <div class="search-button" @click="selectAllAttractions">
           <span>검색</span>
         </div>
       </div>
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
-          <input
-            type="checkbox"
-            name="types"
-            id="all"
-            value="all"
-            v-model="allSelected"
-          />
+          <input type="checkbox" name="types" id="all" value="all" v-model="allSelected" />
           <label for="all"><span>전체</span></label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
@@ -53,8 +28,7 @@
                 name="types"
                 :id="item.code"
                 :value="item.code"
-                v-model="selectedTypes"
-              />
+                v-model="selectedTypes" />
               <label :for="item.code"
                 ><span>{{ item.name }}</span></label
               >
@@ -64,17 +38,12 @@
       </div>
     </div>
     <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
-      <div
-        class="attraction-container"
-        v-for="(attraction, index) in attractions"
-        :key="index"
-      >
+      <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
         <div class="img-heart">
           <img
             class="attractionImg"
             :src="attraction.image || defaultImage"
-            :alt="attraction.title"
-          />
+            :alt="attraction.title" />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
@@ -88,14 +57,9 @@
                   ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                   : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
               "
-              alt="하트"
-            />
+              alt="하트" />
             <span>({{ attraction.likeCount }})</span>
-            <img
-              class="icon"
-              src="../../assets/img/icon/star_fill.png"
-              alt="별"
-            />
+            <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
             <span>({{ attraction.rankCnt }})</span>
           </div>
@@ -190,7 +154,6 @@ export default {
         const response = await axios.get(
           `http://localhost:8080/locations/search/gugun?sido=${option}`
         );
-        console.log(response.data.result);
         this.guguns = response.data.result;
         this.gugunOption = this.guguns[0].value;
       }
@@ -204,9 +167,7 @@ export default {
     },
 
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes
-        .filter((code) => !!code)
-        .join(",");
+      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
 
       console.log(this.keyword);
       const response = await axios.get(
@@ -219,8 +180,7 @@ export default {
     // 스크롤 이벤트 핸들러
     handleScroll() {
       const container = this.$refs.scrollContainer;
-      const scrollBottom =
-        container.scrollHeight - container.clientHeight - container.scrollTop;
+      const scrollBottom = container.scrollHeight - container.clientHeight - container.scrollTop;
 
       // 스크롤이 맨 아래에 도달했을 때 추가 데이터 요청
       if (scrollBottom <= 0) {

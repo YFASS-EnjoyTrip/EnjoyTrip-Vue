@@ -93,16 +93,6 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/login",
-    name: "login",
-    component: LoginForm,
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: SignupForm,
-  },
 ];
 
 const router = new VueRouter({
