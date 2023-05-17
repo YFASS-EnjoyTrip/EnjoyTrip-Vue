@@ -9,38 +9,51 @@
     </div>
     <div class="input-container">
       <div>
-        <input class="input-box" type="text" placeholder="이메일" />
+        <input class="input-box" type="text" v-model="user.email" placeholder="이메일" />
       </div>
       <div>
-        <input class="input-box" type="password" placeholder="비밀번호" />
+        <input class="input-box" type="password" v-model="user.password" placeholder="비밀번호" />
       </div>
     </div>
     <div class="button-container">
-      <div class="button login">로그인</div>
+      <div class="button login" @click="confirm">로그인</div>
       <div class="button findPwd">비밀번호 찾기</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+const memberStore = "memberStore";
+
 export default {
-  name: "SignupForm",
+  name: "LoginForm",
   components: {},
   data() {
     return {
-      email: "",
-      nickname: "",
-      message: "",
-      emailDuplicate: true,
-      nicknameDuplicate: true,
-      confirmPassword: "asa",
-      password: "12",
+      user: {
+        email: null,
+        password: null,
+      }
     };
   },
-  created() {},
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+  },
   methods: {
-    debouncedChecklDuplicate() {},
-    submitForm() {},
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    async confirm() {
+      console.log(this.user);
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        this.$router.push({ name: "main" });
+      }
+    },
+    movePage() {
+      this.$router.push({ name: "join" });
+    },
   },
 };
 </script>

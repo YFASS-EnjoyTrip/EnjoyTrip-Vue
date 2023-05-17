@@ -37,11 +37,11 @@ const memberStore = {
     async userConfirm({ commit }, user) {
       await login(
         user,
-        ({ data }) => {
+        ({ data, headers }) => {
           if (data.status === 200) {
-            let accessToken = data["access-token"];
-            let refreshToken = data["refresh-token"];
-            // console.log("login success token created!!!! >> ", accessToken, refreshToken);
+            let accessToken = headers["authorization"];
+            let refreshToken = data.result;
+            console.log("login success token created!!!! >> ", accessToken, refreshToken);
             commit("SET_IS_LOGIN", true);
             commit("SET_IS_LOGIN_ERROR", false);
             commit("SET_IS_VALID_TOKEN", true);
