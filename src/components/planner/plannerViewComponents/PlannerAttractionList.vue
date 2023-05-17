@@ -6,8 +6,7 @@
           v-for="(attraction, index) in attractions[selectedDay - 1]"
           :key="index"
           class="attraction-list"
-          @click="handleAttractionClick(attraction)"
-        >
+          @click="handleAttractionClick(attraction)">
           <div class="attraction-order">{{ index + 1 }}</div>
           <div class="attraction-img">
             <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />

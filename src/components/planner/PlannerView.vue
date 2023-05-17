@@ -77,7 +77,7 @@ export default {
       planDetailInfo: [],
       planId: 17, // 이거 나중에 동적으로 처리 예정
       jwtToken:
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDE5NTIyNSwiZXhwIjoxNjg0MjgxNjI1fQ.zNWz_RiIr8IIaIGMqvX97Zt72JRyJJ-qUdpt6jDfwm0",
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDI4MjE1NywiZXhwIjoxNjg0MzY4NTU3fQ.zZIkQpbyyL8cVoPVxf5UPLib_X37x1uCKst7IySe9rg",
     };
   },
 
@@ -107,14 +107,12 @@ export default {
     decreaseSelectedDay() {
       if (this.selectedDay > 1) {
         this.selectedDay--;
-        console.log(this.selectedDay);
       }
     },
 
     increaseSelectedDay() {
       if (this.selectedDay < this.planDetailInfo.length) {
         this.selectedDay++;
-        console.log(this.selectedDay);
       }
     },
 

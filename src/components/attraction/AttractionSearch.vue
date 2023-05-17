@@ -28,8 +28,7 @@
                 name="types"
                 :id="item.code"
                 :value="item.code"
-                v-model="selectedTypes"
-              />
+                v-model="selectedTypes" />
               <label :for="item.code"
                 ><span>{{ item.name }}</span></label
               >
@@ -44,8 +43,7 @@
           <img
             class="attractionImg"
             :src="attraction.image || defaultImage"
-            :alt="attraction.title"
-          />
+            :alt="attraction.title" />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
@@ -59,8 +57,7 @@
                   ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                   : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
               "
-              alt="하트"
-            />
+              alt="하트" />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
@@ -156,7 +153,6 @@ export default {
         const response = await axios.get(
           `http://localhost:8080/locations/search/gugun?sido=${option}`
         );
-        console.log(response.data.result);
         this.guguns = response.data.result;
         this.gugunOption = this.guguns[0].value;
       }
@@ -170,9 +166,7 @@ export default {
     },
 
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes
-          .filter((code) => !!code)
-          .join(",");
+      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
 
       console.log(this.keyword);
       const response = await axios.get(

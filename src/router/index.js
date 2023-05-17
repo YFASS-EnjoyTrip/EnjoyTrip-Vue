@@ -75,11 +75,6 @@ const routes = [
     ],
   },
   {
-    path: "/signup",
-    name: "signup",
-    component: PlannerMain,
-  },
-  {
     path: "/login",
     name: "login",
     component: LoginForm,

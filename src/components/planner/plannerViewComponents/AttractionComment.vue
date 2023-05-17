@@ -49,7 +49,6 @@ export default {
       immediate: true,
       handler(newValue) {
         this.fetchComments(newValue);
-        console.log(this.comments[0].createdAt);
       },
     },
   },
@@ -63,16 +62,16 @@ export default {
       return moment(date).format("YY-MM-DD");
     },
 
-    fetchComments() {
+    async fetchComments() {
       const contentId = this.attraction.contentId;
-      axios
-        .get(`http://localhost:8080/locations/detail/${contentId}/reviews`)
-        .then(({ data }) => {
-          this.comments = data.result;
-        })
-        .catch((error) => {
-          console.error("Failed to fetch comment:", error);
-        });
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8080/locations/detail/${contentId}/reviews`
+        );
+        this.comments = data.result;
+      } catch (error) {
+        console.error("Failed to fetch comment:", error);
+      }
     },
   },
 };
