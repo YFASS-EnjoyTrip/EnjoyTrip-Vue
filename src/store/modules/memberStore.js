@@ -38,7 +38,7 @@ const memberStore = {
       await login(
         user,
         ({ data }) => {
-          if (data.message === "success") {
+          if (data.status === 200) {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
             // console.log("login success token created!!!! >> ", accessToken, refreshToken);
@@ -72,7 +72,10 @@ const memberStore = {
           }
         },
         async (error) => {
-          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+          console.log(
+            "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
+            error.response.status
+          );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }

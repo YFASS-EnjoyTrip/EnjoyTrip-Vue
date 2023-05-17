@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="plannerCreate-text">
+      {{ nickname }} 님의 여행가챠 쿠폰이 발급되었습니다
+    </div>
     <div class="img-container">
       <img src="../../assets/img/ticket.png" alt="티켓" />
     </div>
@@ -10,28 +13,47 @@
             <span>{{ nickname }} 님의</span>
           </div>
           <div class="ticket-title">
-            <span>플래너 티켓</span>
+            <span>가챠 쿠폰</span>
           </div>
         </div>
         <div class="ticket-bottom">
           <div class="location-input">
             <span>지역</span>
-            <select class="sido-dropdown" name="sido" id="location" v-model="location">
-              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
+            <select
+              class="sido-dropdown"
+              name="sido"
+              id="location"
+              v-model="location"
+            >
+              <option
+                v-for="sido in sidos"
+                :value="sido.value"
+                :key="sido.value"
+              >
                 {{ sido.text }}
               </option>
             </select>
           </div>
           <div class="date-input">
             <span>일정</span>
-            <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
+            <input
+              class="calendar-pick"
+              type="date"
+              :min="todayDate"
+              v-model="startDate"
+            />
             <span> ~</span>
-            <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
+            <input
+              class="calendar-pick"
+              type="date"
+              :min="startDate"
+              v-model="endDate"
+            />
           </div>
         </div>
       </div>
       <div class="ticket-right">
-        <div class="side-title">플래너 티켓</div>
+        <div class="side-title">-플래너 정보-</div>
         <div class="info">
           <div>
             <div class="info-title">사용자</div>
@@ -51,12 +73,18 @@
     </div>
     <div class="confirm-container">
       <div class="confirm-text">
-        
+        <span>쿠폰을 사용하면<br /></span>
+        <span
+          ><span>{{ nickname }}</span> 님 만의 여행 계획을 만들어 드려요!</span
+        >
       </div>
+    </div>
+    <div class="confirm-button">
+      <div class="button cancel">취소</div>
+      <div class="button submit">사용</div>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   name: "PlannerCreate",
@@ -67,7 +95,7 @@ export default {
       location: "",
       startDate: "",
       endDate: "",
-      todayDate:"",
+      todayDate: "",
       sidos: [
         { value: "1", text: "서울" },
         { value: "2", text: "인천" },
@@ -90,8 +118,8 @@ export default {
     };
   },
   mounted() {
-    this.todayDate = new Date().toISOString().split('T')[0];
-   },
+    this.todayDate = new Date().toISOString().split("T")[0];
+  },
   methods: {
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
@@ -102,8 +130,87 @@ export default {
 </script>
 
 <style scoped>
-.info-value
-+.end{
+.plannerCreate-text {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-family: "CookieRun-Regular";
+  color: #8d8d8d;
+
+  caret-color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+.button {
+  width: 120px;
+  margin-right: 40px;
+  margin-left: 40px;
+  height: 35px;
+  font-size: 20px;
+  font-family: "CookieRun-Regular";
+  color: #ffffff;
+  text-align: center;
+  padding-top: 5px;
+  border-radius: 10px;
+}
+.cancel {
+  background-color: #8f8f8f;
+}
+.submit {
+  background-color: #69beee;
+}
+.submit:hover {
+  background-color: #49c46f;
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+.submit:active {
+  background-color: #aae4bc;
+  color: #474747;
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+.cancel:hover {
+  background-color: #616161;
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+.cancel:active {
+  background-color: #bebebe;
+  color: #474747;
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+.confirm-text > span > span {
+  color: #69beee;
+}
+.confirm-text {
+  text-align: center;
+
+  caret-color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+.confirm-text span {
+  font-size: 30px;
+  font-family: "CookieRun-Regular";
+  color: #8d8d8d;
+}
+.confirm-container {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+.confirm-button {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  caret-color: transparent;
+  user-select: none;
+  cursor: pointer;
+}
+.info-value + .end {
   margin-top: -20px;
 }
 .info-title {
@@ -170,7 +277,7 @@ export default {
   width: 720px;
 }
 
-.location-input>span {
+.location-input > span {
   font-family: "CookieRun-Bold";
   color: #757575;
   font-size: 1.5rem;
@@ -181,7 +288,7 @@ export default {
   margin-top: 20px;
 }
 
-.date-input>span {
+.date-input > span {
   font-family: "CookieRun-Bold";
   color: #757575;
   font-size: 1.5rem;
@@ -206,7 +313,7 @@ export default {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  /* box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2); */
+  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
 }
 
 .img-container {
@@ -216,7 +323,7 @@ export default {
   user-select: none;
   pointer-events: none;
   width: 1200px;
-  margin-top: 50px;
+  margin-top: -30px;
 }
 
 .text-container {
@@ -248,4 +355,5 @@ export default {
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
-}</style>
+}
+</style>

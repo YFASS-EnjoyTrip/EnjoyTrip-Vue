@@ -5,6 +5,7 @@ import AppMain from "../views/AppMain.vue";
 import AttractionMain from "../views/AttractionMain.vue";
 import HotplaceMain from "../views/HotplaceMain.vue";
 import PlannerMain from "../views/PlannerMain.vue";
+import MemberMain from "../views/MemberMain.vue";
 
 import HotplaceList from "../components/hotplace/HotplaceList.vue";
 import AttractionList from "../components/attraction/AttractionList.vue";
@@ -75,14 +76,22 @@ const routes = [
     ],
   },
   {
-    path: "/login",
-    name: "login",
-    component: LoginForm,
-  },
-  {
-    path: "/signup",
-    name: "signup",
-    component: SignupForm,
+    path: "/member",
+    name: "member",
+    component: MemberMain,
+    children: [
+      {
+        path: "signup",
+        name: "signup",
+        component: SignupForm,
+      },
+      {
+        path: "login",
+        name: "login",
+        component: LoginForm,
+        props: true,
+      },
+    ],
   },
 ];
 

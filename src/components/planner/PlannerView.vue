@@ -77,7 +77,7 @@ export default {
       planDetailInfo: [],
       planId: 17, // 이거 나중에 동적으로 처리 예정
       jwtToken:
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDI4MjE1NywiZXhwIjoxNjg0MzY4NTU3fQ.zZIkQpbyyL8cVoPVxf5UPLib_X37x1uCKst7IySe9rg",
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDI4MjE3MSwiZXhwIjoxNjg0MzY4NTcxfQ.jZfoGr4VfK-3S-WZ0RjDSEv91TTAfQknU-RRvuIou80",
     };
   },
 
@@ -242,7 +242,7 @@ a {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
+  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
 }
 
 .title-container {

@@ -84,7 +84,8 @@ export default {
   data() {
     return {
       // 23.05.16 기본이미지, 페이지네이션 추가
-      defaultImage: "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png",
+      defaultImage:
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
       page: 1,
       pageSize: 100,
       //

@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div>
     <h2>Login</h2>
 
@@ -8,9 +8,9 @@
     <label>비밀번호 </label>
     <input type="password" v-model="password" />
 
-    <button @click="submitForm">로그인</button>
+    <!-- <button @click="submitForm">로그인</button> -->
   </div>
-</template> -->
+</template>
 
 <script>
 import { mapState, mapActions } from "vuex";
