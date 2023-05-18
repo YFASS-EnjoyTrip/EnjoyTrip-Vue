@@ -42,12 +42,12 @@
     <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
       <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
         <div class="img-heart">
-          <router-link @click.native="goToAttractionDetail(attraction)">
             <img
               class="attractionImg"
               :src="attraction.image || defaultImage"
-              :alt="attraction.title" />
-          </router-link>
+              :alt="attraction.title"
+              @click="goToAttractionDetail(attraction)"
+              />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
