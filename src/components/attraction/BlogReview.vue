@@ -78,6 +78,29 @@ a {
 }
 </style>
 
+<style scoped>
+.blog-title {
+  padding-left: 15px;
+  margin-top: 15px;
+  font-family: "CookieRun-Regular";
+  color: #666666;
+  font-size: 20px;
+}
+.main-container {
+  margin-top: 5px;
+}
+.blog-container {
+  margin: 0 auto;
+  width: 520px;
+  background-color: rgb(255, 255, 255);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-right: 30px;
+  border: 2px solid #ffc930;
+  border-radius: 11px;
+}
+</style>
+
 <script>
 import axios from "axios";
 import moment from "moment";
