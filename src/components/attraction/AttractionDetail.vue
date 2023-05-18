@@ -100,12 +100,17 @@ export default {
 <style scoped>
 .blog-container {
   width: 630px;
-  background-color: rgba(127, 255, 212, 0.452);
+
+  border-radius: 18px;
+  background-color: #FFF8E5;
+  box-shadow: 0px 0px 5px 2px rgba(103, 103, 103, 0.315);
 }
 .comment-container {
   width: 450px;
   margin-right: 20px;
-  background-color: rgb(192, 225, 255);
+  border-radius: 18px;
+  background-color: #FFF8E5;
+  box-shadow: 0px 0px 5px 2px rgba(107, 107, 107, 0.315);
 }
 .review-container {
   display: flex;
@@ -119,6 +124,8 @@ export default {
   font-size: 16px;
   font-family: "CookieRun-Regular";
   color: #383838;
+  word-break: keep-all;
+  line-height: 35px;
 }
 .attractionImg {
   width: 540px;
@@ -140,7 +147,7 @@ export default {
 .title-container {
   width: 1000px;
   height: 100px;
-  padding-left: 50px;
+  padding-left: 60px;
   padding-top: 40px;
 }
 .attraction-title {

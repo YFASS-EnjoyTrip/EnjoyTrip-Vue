@@ -207,9 +207,9 @@ export default {
 
     goToAttractionDetail(attraction) {
       sessionStorage.setItem("contentId", attraction.contentId);
+      sessionStorage.setItem("contentTitle", attraction.title);
       this.$router.push({
         name: "attractionDetail",
-        params: { contentId: attraction.contentId },
       });
     },
   },

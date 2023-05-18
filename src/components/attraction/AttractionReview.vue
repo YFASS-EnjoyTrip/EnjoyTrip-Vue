@@ -2,34 +2,35 @@
   <div>
     <div class="comment-in-container">
       <div class="like-rank">
-        <img src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
-        <div class="cnt">{{ contentId }}</div>
-        <img
-          src="../../assets/img/icon/star_fill.png"
-          alt="별점"
-          class="rank"
-        />
+        <div class="cnt main-title">한줄리뷰</div>
+        <img class="icon-img" src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
+        <div class="cnt">301</div>
+        <img src="../../assets/img/icon/star_fill.png" alt="별점" class="icon-img" />
         <div class="cnt">3.6</div>
+        <div class="cnt">300</div>
       </div>
+    </div>
+    <div class="nickname">댓글 작성하기</div>
+    <div class="write-container">
+      <textarea class="write-input" name id cols="30" rows="5" v-model="writeContext"></textarea>
+    </div>
+    <div class="write-button">
+      <span>작성</span>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
           <div class="write-comment"></div>
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="comment-content-container"
-          >
+          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
-              <span class="comment-date">{{
+              <span class="comment-date">
+                {{
                 formatDate(comment.createdAt)
-              }}</span>
+                }}
+              </span>
             </div>
-            <div class="comment-content">
-              {{ comment.content }}
-            </div>
+            <div class="comment-content">{{ comment.content }}</div>
           </div>
         </div>
       </div>
@@ -44,16 +45,16 @@ import moment from "moment";
 export default {
   name: "AttractionReview",
   components: {},
-  props: ["contentId"],
   data() {
     return {
       comments: [],
+      contentId: "",
+      writeContext:"",
     };
   },
-  watch: {
-    contentId() {
-      this.loadData();
-    },
+  created() {
+    this.contentId = sessionStorage.getItem("contentId");
+    this.loadData();
   },
 
   methods: {
@@ -70,14 +71,73 @@ export default {
     },
     formatDate(date) {
       return moment(date).format("YY-MM-DD");
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
+.nickname{
+  margin-top: 20px;
+  margin-left: 40px;
+  font-family: "CookieRun-Regular";
+  color: #ffbb00;
+  font-size: 20px;
+}
+.write-button {
+  margin-left: 340px;
+  text-align: center;
+  margin-top: 10px;
+  width: 80px;
+  height: 35px;
+  background-color: #ffc930;
+  border-radius: 8px;
+  box-shadow: 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
+  cursor: pointer;
+}
+.write-button span {
+  font-family: "CookieRun-Regular";
+  color: #404040;
+  font-size: 20px;
+}
+.write-button:hover {
+  background-color: #ffbe0d;
+  box-shadow: inset 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
+}
+.write-button:active {
+  background-color: #ffda75;
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+.write-input {
+  margin-left: 3px;
+  margin-top: 3px;
+  padding-left: 10px;
+  font-family: "CookieRun-Regular";
+  color: #6b6b6b;
+  font-size: 20px;
+  height: 100px;
+  border: 0;
+  outline-color: #fe6b8b00;
+}
+.write-container {
+  margin-top: 10px;
+  width: 380px;
+  height: 110px;
+  background-color: #ffffff;
+  border: 2px solid #ffc930;
+  margin-left: 35px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
+}
+.main-title {
+  padding-right: 10px;
+}
+.icon-img {
+  width: 25px;
+}
 .comment-container {
-  height: 180px;
+  height: 1000px;
   overflow: scroll;
 }
 .comment-container::-webkit-scrollbar {
@@ -89,7 +149,7 @@ export default {
   align-items: center;
 }
 .like-rank {
-  margin-top: 10px;
+  margin-top: 20px;
   display: flex;
   /* padding-bottom: 2px; */
 }
@@ -103,21 +163,28 @@ img {
 .cnt {
   font-family: "CookieRun-Bold";
   color: #5f5f5f;
-  font-size: 0.7rem;
+  font-size: 20px;
+  margin-right: 10px;
 }
 .comment-content-container {
-  margin-top: 5px;
-  width: 230px;
+  margin-top: 15px;
+  width: 380px;
   background-color: #ffffff;
-  border: 1px solid #ffc930;
+  border: 2px solid #ffc930;
   border-radius: 10px;
+  box-shadow: 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
+}
+.comment-content-container:hover {
+  background-color: #fff1c9;
+  transition: 0.2s;
 }
 .comment-nickname {
   margin-left: 10px;
   margin-top: 3px;
   font-family: "CookieRun-Regular";
   color: #aaaaaa;
-  font-size: 0.8rem;
+  font-size: 15px;
+  margin-top: 10px;
 }
 
 .comment-date {
@@ -126,8 +193,9 @@ img {
 .comment-content {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: "CookieRun-Regular";
+  font-family: "CookieRun-Bold";
   color: #757575;
-  font-size: 0.8rem;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 </style>
