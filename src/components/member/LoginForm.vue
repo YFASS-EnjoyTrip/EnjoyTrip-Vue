@@ -1,11 +1,7 @@
 <template>
   <div class="main-container">
     <div>
-      <img
-        class="main-logo"
-        src="../../assets/img/main_logo.png"
-        alt="로고이미지"
-      />
+      <img class="main-logo" src="../../assets/img/main_logo.png" alt="로고이미지" />
     </div>
     <div class="input-container">
       <div>
@@ -34,7 +30,7 @@ export default {
       user: {
         email: null,
         password: null,
-      }
+      },
     };
   },
   computed: {
@@ -48,7 +44,7 @@ export default {
       let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
         await this.getUserInfo(token);
-        this.$router.push({ name: "main" });
+        this.$router.push({ name: "AppMain" });
       }
     },
     movePage() {

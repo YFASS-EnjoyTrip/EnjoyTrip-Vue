@@ -38,15 +38,16 @@ const memberStore = {
       await login(
         user,
         ({ data, headers }) => {
+          // headers 추가
           if (data.status === 200) {
-            let accessToken = headers["authorization"];
-            let refreshToken = data.result;
-            console.log("login success token created!!!! >> ", accessToken, refreshToken);
+            let accessToken = headers["authorization"]; // headers에서 Authorization 값을 가져옵니다.
+            let refreshToken = data.result; // 쿠키에 저장해야 하는데...
+
             commit("SET_IS_LOGIN", true);
             commit("SET_IS_LOGIN_ERROR", false);
             commit("SET_IS_VALID_TOKEN", true);
             sessionStorage.setItem("access-token", accessToken);
-            sessionStorage.setItem("refresh-token", refreshToken);
+            sessionStorage.setItem("refresh-token", refreshToken); // 쿠키에 저장 해야하는데 ...
           } else {
             commit("SET_IS_LOGIN", false);
             commit("SET_IS_LOGIN_ERROR", true);
@@ -62,10 +63,11 @@ const memberStore = {
       let decodeToken = jwtDecode(token);
       // console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       await findById(
-        decodeToken.userid,
+        decodeToken.memberId,
         ({ data }) => {
-          if (data.message === "success") {
-            commit("SET_USER_INFO", data.userInfo);
+          if (data.status === 202) {
+            console.log(data.result);
+            commit("SET_USER_INFO", data.result.memberInfo);
             // console.log("3. getUserInfo data >> ", data);
           } else {
             console.log("유저 정보 없음!!!!");

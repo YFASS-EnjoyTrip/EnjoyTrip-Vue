@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="plannerCreate-text">
-      {{ nickname }} 님의 여행가챠 쿠폰이 발급되었습니다
+      {{ this.user.nickname }} 님의 여행가챠 쿠폰이 발급되었습니다
     </div>
     <div class="img-container">
       <img src="../../assets/img/ticket.png" alt="티켓" />
@@ -10,7 +10,7 @@
       <div>
         <div class="ticket-top">
           <div class="nickname">
-            <span>{{ nickname }} 님의</span>
+            <span>{{ this.user.nickname }} 님의</span>
           </div>
           <div class="ticket-title">
             <span>가챠 쿠폰</span>
@@ -19,36 +19,17 @@
         <div class="ticket-bottom">
           <div class="location-input">
             <span>지역</span>
-            <select
-              class="sido-dropdown"
-              name="sido"
-              id="location"
-              v-model="location"
-            >
-              <option
-                v-for="sido in sidos"
-                :value="sido.value"
-                :key="sido.value"
-              >
+            <select class="sido-dropdown" name="sido" id="location" v-model="location">
+              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
                 {{ sido.text }}
               </option>
             </select>
           </div>
           <div class="date-input">
             <span>일정</span>
-            <input
-              class="calendar-pick"
-              type="date"
-              :min="todayDate"
-              v-model="startDate"
-            />
+            <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
             <span> ~</span>
-            <input
-              class="calendar-pick"
-              type="date"
-              :min="startDate"
-              v-model="endDate"
-            />
+            <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
           </div>
         </div>
       </div>
@@ -57,7 +38,7 @@
         <div class="info">
           <div>
             <div class="info-title">사용자</div>
-            <div class="info-value">{{ nickname }}</div>
+            <div class="info-value">{{ this.user.nickname }}</div>
           </div>
           <div class="locationInfo">
             <div class="info-title">여행지역</div>
@@ -75,23 +56,40 @@
       <div class="confirm-text">
         <span>쿠폰을 사용하면<br /></span>
         <span
-          ><span>{{ nickname }}</span> 님 만의 여행 계획을 만들어 드려요!</span
+          ><span>{{ this.user.nickname }}</span> 님 만의 여행 계획을 만들어 드려요!</span
         >
       </div>
     </div>
     <div class="confirm-button">
       <div class="button cancel">취소</div>
-      <div class="button submit">사용</div>
+      <div class="button submit" @click="createaPlan">사용</div>
     </div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import { apiAuthInstance } from "@/api/index.js";
+
+const memberStore = "memberStore";
+const api = apiAuthInstance();
+
 export default {
   name: "PlannerCreate",
   components: {},
+  computed: {
+    ...mapGetters(memberStore, ["checkUserInfo"]),
+    user() {
+      return (
+        this.checkUserInfo || {
+          nickname: "",
+          profileImg: "",
+          bio: "",
+        }
+      );
+    },
+  },
   data() {
     return {
-      nickname: "지영~!~!!",
       location: "",
       startDate: "",
       endDate: "",
@@ -124,6 +122,27 @@ export default {
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
       return selectedSido ? selectedSido.text : "";
+    },
+
+    async createaPlan() {
+      try {
+        const response = await api.post("/planner/create", {
+          startDate: this.startDate,
+          endDate: this.endDate,
+          sidoCode: this.location,
+        });
+
+        // 플랜 생성 성공 시
+        if (response.status === 201) {
+          console.log(response.data.result);
+          this.$router.push({
+            name: "plannerView",
+            params: { planId: response.data.result },
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 };

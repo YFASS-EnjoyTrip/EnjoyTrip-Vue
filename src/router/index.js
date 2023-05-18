@@ -15,6 +15,28 @@ import PlannerCreate from "../components/planner/PlannerCreate.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
 
+import store from "@/store";
+
+const onlyAuthUser = async (to, from, next) => {
+  const checkUserInfo = store.getters["memberStore/checkUserInfo"];
+  const checkToken = store.getters["memberStore/checkToken"];
+  let token = sessionStorage.getItem("access-token");
+  // console.log("로그인 처리 전", checkUserInfo, token);
+
+  if (checkUserInfo != null && token) {
+    // console.log("토큰 유효성 체크하러 가자!!!!");
+    await store.dispatch("memberStore/getUserInfo", token);
+  }
+  if (!checkToken || checkUserInfo === null) {
+    // alert("로그인이 필요한 페이지입니다..");
+    // next({ name: "login" });
+    router.push({ name: "login" });
+  } else {
+    // console.log("로그인 했다!!!!!!!!!!!!!.");
+    next();
+  }
+};
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -58,18 +80,22 @@ const routes = [
     component: PlannerMain,
     children: [
       {
-        path: "view",
+        path: "view/:planId",
         name: "plannerView",
+        beforeEnter: onlyAuthUser,
         component: PlannerView,
+        props: true,
       },
       {
         path: "modify",
         name: "plannerModify",
+        beforeEnter: onlyAuthUser,
         component: plannerModify,
       },
       {
         path: "create",
         name: "PlannerCreate",
+        beforeEnter: onlyAuthUser,
         component: PlannerCreate,
         props: true,
       },

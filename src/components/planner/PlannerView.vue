@@ -52,7 +52,11 @@
 </template>
 
 <script>
-import axios from "axios";
+import { apiAuthInstance } from "@/api/index.js";
+import { mapGetters } from "vuex";
+
+const memberStore = "memberStore";
+const api = apiAuthInstance();
 
 import plannerAttractionDetail from "./plannerViewComponents/PlannerAttractionDetail.vue";
 import PlannerAttractionList from "./plannerViewComponents/PlannerAttractionList.vue";
@@ -64,10 +68,22 @@ export default {
     PlannerAttractionList,
   },
   computed: {
+    ...mapGetters(memberStore, ["checkUserInfo"]),
+    user() {
+      return (
+        this.checkUserInfo || {
+          nickname: "",
+          profileImg: "",
+          bio: "",
+        }
+      );
+    },
     selectedDayInfo() {
       return this.planDetailInfo[this.selectedDay - 1];
     },
   },
+  props: ["planId"],
+
   data() {
     return {
       map: null,
@@ -75,28 +91,20 @@ export default {
       attractions: [],
       planInfo: {},
       planDetailInfo: [],
-      planId: 17, // 이거 나중에 동적으로 처리 예정
-      jwtToken:
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZW1haWwiOiJ0ZXN0M0B0ZXN0LmNvbSIsImlhdCI6MTY4NDI4MjE3MSwiZXhwIjoxNjg0MzY4NTcxfQ.jZfoGr4VfK-3S-WZ0RjDSEv91TTAfQknU-RRvuIou80",
     };
   },
 
   async created() {
-    await axios
-      .get(`http://localhost:8080/planner/list/${this.planId}`, {
-        headers: {
-          Authorization: `Bearer ${this.jwtToken}`,
-        },
-      })
-      .then(({ data }) => {
-        if (data.status === 200) {
-          this.planInfo = data.result.planInfo;
+    console.log(this.planId);
+    await api.get(`http://localhost:8080/planner/list/${this.planId}`).then(({ data }) => {
+      if (data.status === 200) {
+        this.planInfo = data.result.planInfo;
 
-          Object.keys(data.result.dayInfo).forEach((key) => {
-            this.planDetailInfo.push(data.result.dayInfo[key]);
-          });
-        }
-      });
+        Object.keys(data.result.dayInfo).forEach((key) => {
+          this.planDetailInfo.push(data.result.dayInfo[key]);
+        });
+      }
+    });
 
     this.initKakaoMap();
   },
