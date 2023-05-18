@@ -540,7 +540,7 @@ input[type="checkbox"]:checked + label:before {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #ffffff;
+  background-color: #fff4d7;
   /* 트랙 배경색 */
 }
 

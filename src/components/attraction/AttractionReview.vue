@@ -4,7 +4,11 @@
       <div class="like-rank">
         <img src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
         <div class="cnt">{{ contentId }}</div>
-        <img src="../../assets/img/icon/star_fill.png" alt="별점" class="rank" />
+        <img
+          src="../../assets/img/icon/star_fill.png"
+          alt="별점"
+          class="rank"
+        />
         <div class="cnt">3.6</div>
       </div>
     </div>
@@ -12,10 +16,16 @@
       <div class="comment-in-container">
         <div>
           <div class="write-comment"></div>
-          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
+          <div
+            v-for="(comment, index) in comments"
+            :key="index"
+            class="comment-content-container"
+          >
             <div class="comment-nickname">
               {{ comment.nickName }}
-              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+              <span class="comment-date">{{
+                formatDate(comment.createdAt)
+              }}</span>
             </div>
             <div class="comment-content">
               {{ comment.content }}
