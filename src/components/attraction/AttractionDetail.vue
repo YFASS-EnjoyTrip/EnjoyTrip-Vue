@@ -11,23 +11,91 @@
       <img
         class="attractionImg"
         :src="attractionInfo.image || defaultImage"
-        :alt="attractionInfo.title"
-      />
-      <div class="overview">{{ attractionInfo.overview }}</div>
+        :alt="attractionInfo.title" />
+      <div class="overview">{{ attractionInfo.overView }}</div>
     </div>
     <div class="review-container">
       <div class="comment-container">
-        <AttractionReview
-          :contentId="this.attractionInfo.contentId"
-        ></AttractionReview>
+        <AttractionReview :contentId="this.attractionInfo.contentId"></AttractionReview>
       </div>
       <div class="blog-container">
-        asdfasdf
         <BlogReview></BlogReview>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import axios from "axios";
+import AttractionReview from "./AttractionReview.vue";
+import BlogReview from "./BlogReview.vue";
+export default {
+  name: "AttractionDetail",
+  components: { AttractionReview, BlogReview },
+  data() {
+    return {
+      map: null,
+      contentId: "",
+      attractionInfo: "",
+      defaultImage:
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
+    };
+  },
+
+  created() {
+    this.contentId = this.$route.params.contentId;
+    axios
+      .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
+      .then((response) => {
+        this.attractionInfo = response.data.result;
+        this.loadKakaoMap();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  },
+  mounted() {},
+
+  methods: {
+    loadKakaoMap() {
+      if (window.kakao && window.kakao.maps) {
+        this.initKakaoMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () =>
+          kakao.maps.load(() => {
+            this.initKakaoMap();
+          });
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
+        document.head.appendChild(script);
+      }
+    },
+
+    initKakaoMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng), // Default location
+        level: 7,
+      };
+
+      this.map = new kakao.maps.Map(container, options);
+      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+
+      const imageSize = new kakao.maps.Size(50, 50);
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      const latlng = new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng);
+      new kakao.maps.Marker({
+        map: this.map,
+        position: latlng,
+        title: this.attractionInfo.title,
+        image: markerImage,
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .blog-container {
@@ -93,85 +161,3 @@
   box-shadow: 0px 0px 5px 2px rgba(14, 14, 14, 0.315);
 }
 </style>
-
-<script>
-import axios from "axios";
-import AttractionReview from "./AttractionReview.vue";
-import BlogReview from "./BlogReview.vue";
-export default {
-  name: "AttractionDetail",
-  components: { AttractionReview, BlogReview },
-  data() {
-    return {
-      map: null,
-      contentId: "",
-      attractionInfo: "",
-      defaultImage:
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
-    };
-  },
-  created() {
-    this.contentId = this.$route.params.contentId;
-    axios
-      .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
-      .then((response) => {
-        console.log("Response Data:", response.data);
-        console.log(response.data.result);
-        this.attractionInfo = response.data.result;
-        console.log("Attraction Info:", this.attractionInfo);
-        this.loadKakaoMap();
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  },
-  mounted() {},
-
-  methods: {
-    loadKakaoMap() {
-      if (window.kakao && window.kakao.maps) {
-        this.initKakaoMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () =>
-          kakao.maps.load(() => {
-            this.initKakaoMap();
-          });
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
-        document.head.appendChild(script);
-      }
-    },
-
-    initKakaoMap() {
-      console.log("Attraction Info:", this.attractionInfo);
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(
-          this.attractionInfo.lat,
-          this.attractionInfo.lng
-        ), // Default location
-        level: 7,
-      };
-
-      this.map = new kakao.maps.Map(container, options);
-      const imageSrc =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-
-      const imageSize = new kakao.maps.Size(50, 50);
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-      const latlng = new kakao.maps.LatLng(
-        this.attractionInfo.lat,
-        this.attractionInfo.lng
-      );
-      new kakao.maps.Marker({
-        map: this.map,
-        position: latlng,
-        title: this.attractionInfo.title,
-        image: markerImage,
-      });
-    },
-  },
-};
-</script>

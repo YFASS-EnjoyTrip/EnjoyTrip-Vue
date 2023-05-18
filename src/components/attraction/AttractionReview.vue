@@ -4,28 +4,18 @@
       <div class="like-rank">
         <img src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
         <div class="cnt">{{ contentId }}</div>
-        <img
-          src="../../assets/img/icon/star_fill.png"
-          alt="별점"
-          class="rank"
-        />
+        <img src="../../assets/img/icon/star_fill.png" alt="별점" class="rank" />
         <div class="cnt">3.6</div>
       </div>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
-          <div class="write-comment">asdfasdfasdf</div>
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="comment-content-container"
-          >
+          <div class="write-comment"></div>
+          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
-              <span class="comment-date">{{
-                formatDate(comment.createdAt)
-              }}</span>
+              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
             </div>
             <div class="comment-content">
               {{ comment.content }}
@@ -50,20 +40,24 @@ export default {
       comments: [],
     };
   },
-  created() {
-    const Id2 = this.contentId;
-    console.log("한줄리뷰 contentId : ", this.contentId);
-    axios
-      .get(`http://localhost:8080/locations/detail/${Id2}/reviews`)
-      .then((response) => {
-        console.log(response.data.result);
-        this.comments = response.data.result;
-      })
-      .catch((error) => {
-        console.error("Failed to fetch comment:", error);
-      });
+  watch: {
+    contentId() {
+      this.loadData();
+    },
   },
+
   methods: {
+    async loadData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/locations/detail/${this.contentId}/reviews`
+        );
+
+        this.comments = response.data.result;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
     formatDate(date) {
       return moment(date).format("YY-MM-DD");
     },
