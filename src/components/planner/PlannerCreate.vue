@@ -153,6 +153,7 @@ export default {
   text-align: center;
   padding-top: 5px;
   border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
 }
 .cancel {
   background-color: #8f8f8f;
@@ -161,25 +162,21 @@ export default {
   background-color: #69beee;
 }
 .submit:hover {
-  background-color: #49c46f;
-  transform: scale(1.1);
-  transition: 0.3s;
+  background-color: #4ba0d1;
+  box-shadow: inset 0 2px 4px rgba(68, 68, 68, 0.5);
 }
 .submit:active {
-  background-color: #aae4bc;
-  color: #474747;
-  transform: scale(1.1);
+  background-color: #9edbfc;
+  color: #3a3a3a;
   transition: 0.3s;
 }
 .cancel:hover {
-  background-color: #616161;
-  transform: scale(1.1);
-  transition: 0.3s;
+  box-shadow: inset 0 2px 4px rgba(68, 68, 68, 0.5);
+  background-color: #858585;
 }
 .cancel:active {
-  background-color: #bebebe;
-  color: #474747;
-  transform: scale(1.1);
+  background-color: #c4c4c4;
+  color: #3a3a3a;
   transition: 0.3s;
 }
 .confirm-text > span > span {
@@ -313,7 +310,7 @@ export default {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
+  box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
 }
 
 .img-container {

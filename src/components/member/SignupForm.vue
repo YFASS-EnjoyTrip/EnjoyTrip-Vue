@@ -8,7 +8,8 @@
           type="email"
           class="input-box"
           v-model="email"
-          @keyup="debouncedCheckEmailDuplicate" />
+          @keyup="debouncedCheckEmailDuplicate"
+        />
       </div>
       <span class="check">{{ emailMessage }}</span>
       <div class="member-input">
@@ -17,7 +18,8 @@
           class="input-box"
           type="text"
           v-model="nickname"
-          @keyup="debouncedCheckNicknameDuplicate" />
+          @keyup="debouncedCheckNicknameDuplicate"
+        />
       </div>
       <span class="check">{{ nicknameMessage }}</span>
       <div class="member-input">
@@ -78,14 +80,21 @@ export default {
         : "사용이 가능한 닉네임입니다.";
     },
     passwordMessage() {
-      return this.password !== this.confirmPassword && this.confirmPassword.length > 0
+      return this.password !== this.confirmPassword &&
+        this.confirmPassword.length > 0
         ? "비밀번호가 일치하지 않습니다."
         : "비밀번호가 일치합니다.";
     },
   },
   created() {
-    this.debouncedCheckEmailDuplicate = _.debounce(this.checkEmailDuplicate, 500);
-    this.debouncedCheckNicknameDuplicate = _.debounce(this.checkNicknameDuplicate, 500);
+    this.debouncedCheckEmailDuplicate = _.debounce(
+      this.checkEmailDuplicate,
+      500
+    );
+    this.debouncedCheckNicknameDuplicate = _.debounce(
+      this.checkNicknameDuplicate,
+      500
+    );
   },
 
   methods: {
@@ -181,7 +190,7 @@ export default {
 
 .submit {
   margin-top: 40px;
-  background-color: #69BEEE;
+  background-color: #69beee;
   border: 0;
   border-radius: 10px;
   width: 120px;
@@ -193,13 +202,14 @@ export default {
   caret-color: transparent;
   user-select: none;
   cursor: pointer;
+  box-shadow: 4px 4px 4px rgba(116, 116, 116, 0.5);
 }
 .submit:hover {
-  transform: scale(1.1);
+  background-color: #49c46f;
   transition: 0.2s;
 }
 .submit:active {
-  background-color: #69BEEE;
+  background-color: #94e0ac;
   color: #4b4b4b;
 }
 .input-container {
@@ -209,13 +219,13 @@ export default {
   margin: auto;
   border-radius: 50px;
   padding-top: 30px;
-  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
+  box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
 }
 .info-text {
   margin-top: 40px;
   margin-bottom: 40px;
   font-family: "CookieRun-Black";
-  color: #69BEEE;
+  color: #69beee;
   font-size: 64px;
   caret-color: transparent;
   user-select: none;

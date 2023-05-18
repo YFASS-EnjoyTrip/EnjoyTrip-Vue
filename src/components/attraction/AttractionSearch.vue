@@ -2,20 +2,49 @@
   <div>
     <div class="search-container">
       <div class="input-container">
-        <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
-          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
+        <select
+          class="sido-dropdown"
+          name="sido"
+          id="location"
+          v-model="sidoOption"
+        >
+          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
+            {{ sido.text }}
+          </option>
         </select>
-        <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
-          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">{{ gugun.text }}</option>
+        <select
+          class="gugun-dropdown"
+          name="gugun"
+          id="location"
+          v-model="gugunOption"
+        >
+          <option
+            v-for="gugun in guguns"
+            :value="gugun.value"
+            :key="gugun.value"
+          >
+            {{ gugun.text }}
+          </option>
         </select>
-        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
+        <input
+          class="input-keyword"
+          type="text"
+          v-model="keyword"
+          placeholder="관광지, 지역"
+        />
         <div class="search-button" @click="selectAllAttractions">
           <span>검색</span>
         </div>
       </div>
       <div class="checkbox-outer-container">
         <div class="checkbox-container">
-          <input type="checkbox" name="types" id="all" value="all" v-model="allSelected" />
+          <input
+            type="checkbox"
+            name="types"
+            id="all"
+            value="all"
+            v-model="allSelected"
+          />
           <label for="all">
             <span>전체</span>
           </label>
@@ -37,9 +66,18 @@
       </div>
     </div>
     <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
-      <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
+      <div
+        class="attraction-container"
+        v-for="(attraction, index) in attractions"
+        :key="index"
+      >
         <div class="img-heart">
-          <router-link :to="{ name: 'attractionDetail', params: { contentId: attraction.contentId } }">
+          <router-link
+            :to="{
+              name: 'attractionDetail',
+              params: { contentId: attraction.contentId },
+            }"
+          >
             <img
               class="attractionImg"
               :src="attraction.image || defaultImage"
@@ -62,7 +100,11 @@
               alt="하트"
             />
             <span>({{ attraction.likeCount }})</span>
-            <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
+            <img
+              class="icon"
+              src="../../assets/img/icon/star_fill.png"
+              alt="별"
+            />
             <span>{{ attraction.rank }}</span>
             <span>({{ attraction.rankCnt }})</span>
           </div>
@@ -113,23 +155,23 @@ export default {
         { value: "36", text: "경상남도" },
         { value: "37", text: "전라북도" },
         { value: "38", text: "전라남도" },
-        { value: "39", text: "제주도" }
+        { value: "39", text: "제주도" },
       ],
       guguns: [],
       allTypes: [
         { code: "15", name: "행사" },
         { code: ["12", "14", "28"], name: "관광지" },
         { code: "39", name: "맛집" },
-        { code: "32", name: "숙소" }
+        { code: "32", name: "숙소" },
       ],
       selectedTypes: [],
-      attractions: []
+      attractions: [],
     };
   },
   watch: {
     sidoOption(newOption) {
       this.updateGuguns(newOption);
-    }
+    },
   },
   async created() {
     this.updateGuguns(this.sidoOption);
@@ -139,14 +181,14 @@ export default {
   computed: {
     allSelected: {
       //getter
-      get: function() {
+      get: function () {
         return this.allTypes.length === this.selectedTypes.length;
       },
       //setter allSelected 속성이 변경되었을 때 호출되며, 인자 e는 새로운 allSelected 값
-      set: function(e) {
-        this.selectedTypes = e ? this.allTypes.map(item => item.code) : [];
-      }
-    }
+      set: function (e) {
+        this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
+      },
+    },
   },
   methods: {
     async updateGuguns(option) {
@@ -171,7 +213,7 @@ export default {
 
     async selectAllAttractions() {
       const selectedTypeCodes = this.selectedTypes
-        .filter(code => !!code)
+        .filter((code) => !!code)
         .join(",");
 
       console.log(this.keyword);
@@ -205,8 +247,8 @@ export default {
       } catch (error) {
         console.error("Failed to fetch additional data:", error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -224,15 +266,17 @@ a {
   height: 60px;
   border-radius: 15px;
   align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
   cursor: pointer;
 }
 .plannerCreate-button:hover {
   background-color: #49c46f;
+  box-shadow: inset 4px 0px 4px rgba(68, 68, 68, 0.5);
   transition: 0.5s;
 }
 .plannerCreate-button:active {
   background-color: #89e7a7;
+  transform: scale(0.95);
   transition: 0.5s;
 }
 .plannerCreate-button:active span {
@@ -257,7 +301,6 @@ a {
 
 .plannerCreate-button span {
   font-size: 25px;
-  /* 폰트 크기 설정 */
   font-family: "CookieRun-Regular";
   color: #ffffff;
   margin: 10px;
@@ -318,8 +361,18 @@ a {
   width: 140px;
   height: 100px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
   /* 그림자 스타일 및 값 설정 */
+}
+.attractionImg:hover {
+  transform: scale(1.1);
+  filter: brightness(60%);
+  transition: 0.2s;
+}
+
+.attractionImg:active {
+  transform: scale(0.9);
+  transition: 0.2s;
 }
 
 .search-container {
@@ -332,7 +385,6 @@ input[type="checkbox"] {
   height: 15px;
   border: 3px solid #ff9090;
   /* 원하는 스타일로 설정 */
-
   display: none;
 }
 
@@ -358,9 +410,10 @@ input[type="checkbox"] + label:before {
   width: 17px;
   height: 17px;
   border: 2px solid #acacac;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.4);
   border-radius: 4px;
   vertical-align: middle;
+  background-color: #ffffff;
 }
 
 /* label:before에 체크 된 상태 CSS */
@@ -370,6 +423,7 @@ input[type="checkbox"]:checked + label:before {
   border-color: #f24849;
   background-repeat: no-repeat;
   background-position: 50%;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .checkbox-outer-container {
@@ -391,11 +445,8 @@ input[type="checkbox"]:checked + label:before {
 
 .sido-dropdown {
   border: 2px solid #c4c4c4;
-  /* 테두리 스타일 추가 */
   border-radius: 8px;
-  /* 테두리 모서리 둥글게 설정 */
   outline: none;
-  /* 포커스 시 테두리 제거 */
   font-size: 15px;
   text-indent: 10px;
   font-family: "CookieRun-Regular";
@@ -403,40 +454,37 @@ input[type="checkbox"]:checked + label:before {
 
   margin-right: 10px;
   width: 100px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .gugun-dropdown {
   border: 2px solid #c4c4c4;
-  /* 테두리 스타일 추가 */
   border-radius: 8px;
-  /* 테두리 모서리 둥글게 설정 */
   outline: none;
-  /* 포커스 시 테두리 제거 */
   font-size: 15px;
-  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
 
   margin-right: 20px;
   width: 130px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .input-keyword {
   border: 2px solid #c4c4c4;
-  /* 테두리 스타일 추가 */
   border-radius: 8px;
-  /* 테두리 모서리 둥글게 설정 */
   outline: none;
-  /* 포커스 시 테두리 제거 */
   font-size: 15px;
-  /* 폰트 크기 설정 */
   text-indent: 10px;
   font-family: "CookieRun-Regular";
   color: #757575;
 
   margin-right: 20px;
   width: 130px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .input-keyword::placeholder {
@@ -460,9 +508,14 @@ input[type="checkbox"]:checked + label:before {
 }
 
 .search-button:hover {
-  transform: scale(1.1);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: 0.2s;
-  background-color: #fc6d6d;
+  color: #d8d8d8;
+  background-color: #da4343;
+}
+.search-button:active {
+  transform: scale(0.9);
+  transition: 0.2s;
 }
 
 .search-button > span {

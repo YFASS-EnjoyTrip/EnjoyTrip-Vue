@@ -133,7 +133,7 @@ export default {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
+  box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
 }
 .inner-container {
   display: flex;
@@ -143,14 +143,14 @@ export default {
   width: 600px;
   height: 800px;
   border-radius: 90px 0px 0px 90px;
+  box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.5);
 }
 
 .right-container {
   width: 600px;
   height: 800px;
-  border-radius: 0px 90px 90px 90px;
-  background-color: #ffffff;
+  border-radius: 0px 90px 90px 0px;
+  background-color: #fff4d7;
   /* border: 2px solid #69beee; */
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
 }
 </style>
