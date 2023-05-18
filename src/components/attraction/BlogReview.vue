@@ -1,7 +1,12 @@
 <template>
   <div>
-    <span>
-      <div v-for="(blog, index) in blogListNaver" :key="index">
+    <div class="blog-title">블로그리뷰</div>
+    <div class="main-container">
+      <div
+        class="blog-container"
+        v-for="(blog, index) in blogListNaver"
+        :key="index"
+      >
         <div>
           {{ blog.bloggerlink }}
         </div>
@@ -17,9 +22,32 @@
         </div>
         <div v-html="blog.title"></div>
       </div>
-    </span>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.blog-title {
+  padding-left: 15px;
+  margin-top: 15px;
+  font-family: "CookieRun-Regular";
+  color: #666666;
+  font-size: 20px;
+}
+.main-container {
+  margin-top: 5px;
+}
+.blog-container {
+  margin: 0 auto;
+  width: 520px;
+  background-color: rgb(255, 255, 255);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-right: 30px;
+  border: 2px solid #ffc930;
+  border-radius: 11px;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -32,10 +60,13 @@ export default {
     };
   },
   props: ["contentTitle"],
+  created() {
+    this.searchQuery = this.contentTitle;
+    this.getBlogList();
+  },
   watch: {
     contentTitle() {
       this.searchQuery = this.contentTitle;
-      this.getBlogList();
     },
   },
   methods: {

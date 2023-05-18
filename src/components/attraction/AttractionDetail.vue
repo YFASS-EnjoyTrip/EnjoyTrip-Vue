@@ -110,8 +110,38 @@ export default {
 <style scoped>
 .blog-container {
   width: 630px;
-  background-color: rgba(127, 255, 212, 0.452);
+  max-height: 1000px;
+  overflow: scroll;
+  background-color: #fff8e5;
+  border-radius: 18px;
 }
+
+.blog-container::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.blog-container::-webkit-scrollbar-thumb {
+  background-color: #ffb9b9;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+.blog-container::-webkit-scrollbar-thumb:active {
+  background-color: #fc6d6d;
+  /* 스크롤바 색상 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff4d7;
+  /* 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
 .comment-container {
   width: 450px;
   margin-right: 20px;
