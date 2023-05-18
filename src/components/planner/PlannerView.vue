@@ -7,7 +7,9 @@
           <span>{{ planInfo.title }}</span
           >여행
         </div>
-        <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
+        <div class="date">
+          {{ planInfo.startDate }} ~ {{ planInfo.endDate }}
+        </div>
         <div class="modify-button">
           <router-link to="/planner/modify">
             <span>편집</span>
@@ -19,7 +21,9 @@
       <div class="left-container">
         <div id="map" class="map"></div>
         <div class="detail-view">
-          <plannerAttractionDetail ref="attractionDetail"></plannerAttractionDetail>
+          <plannerAttractionDetail
+            ref="attractionDetail"
+          ></plannerAttractionDetail>
         </div>
       </div>
       <div class="right-container">
@@ -30,7 +34,8 @@
             @click="
               decreaseSelectedDay();
               renderMap();
-            " />
+            "
+          />
           <span>{{ selectedDay }}일</span>
           <img
             src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_right.png"
@@ -38,13 +43,15 @@
             @click="
               increaseSelectedDay();
               renderMap();
-            " />
+            "
+          />
         </div>
         <div class="for-scroll">
           <planner-attraction-list
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
-            @attractionClicked="handleAttractionClick"></planner-attraction-list>
+            @attractionClicked="handleAttractionClick"
+          ></planner-attraction-list>
         </div>
       </div>
     </div>
@@ -154,9 +161,12 @@ export default {
       this.map = new kakao.maps.Map(container, options);
 
       let imageSrc = "";
-      const imageFood = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
-      const imageAcom = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      const imageLoca = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
+      const imageFood =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
+      const imageAcom =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageLoca =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
@@ -192,6 +202,7 @@ export default {
   margin-left: auto;
   margin-top: 30px;
   border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 a {
@@ -203,10 +214,13 @@ a {
 }
 
 .modify-button:hover {
-  background-color: #fd7272;
-  transform: scale(1.1);
-  transition: 0.2s;
+  background-color: #d43333;
   cursor: pointer;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.modify-button:active {
+  background-color: #f8a9a9;
+  color: #525252;
 }
 
 .title-container {
@@ -250,7 +264,7 @@ a {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);
+  box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
 }
 
 .title-container {

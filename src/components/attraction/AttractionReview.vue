@@ -2,19 +2,20 @@
   <div>
     <div class="comment-in-container">
       <div class="like-rank">
-        <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
-        <div class="cnt">{{ attraction.likeCount }}</div>
+        <img src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
+        <div class="cnt">{{ contentId }}</div>
         <img
-          src="../../../assets/img/icon/star_fill.png"
+          src="../../assets/img/icon/star_fill.png"
           alt="별점"
           class="rank"
         />
-        <div class="cnt">{{ attraction.rate }}</div>
+        <div class="cnt">3.6</div>
       </div>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
+          <div class="write-comment"></div>
           <div
             v-for="(comment, index) in comments"
             :key="index"
@@ -41,47 +42,34 @@ import axios from "axios";
 import moment from "moment";
 
 export default {
-  name: "AttractionComment",
+  name: "AttractionReview",
   components: {},
-  props: {
-    attraction: {
-      type: Object,
-      required: true,
-    },
-  },
+  props: ["contentId"],
   data() {
     return {
       comments: [],
     };
   },
   watch: {
-    attraction: {
-      immediate: true,
-      handler(newValue) {
-        this.fetchComments(newValue);
-      },
+    contentId() {
+      this.loadData();
     },
-  },
-
-  created() {
-    this.fetchComments();
   },
 
   methods: {
+    async loadData() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/locations/detail/${this.contentId}/reviews`
+        );
+
+        this.comments = response.data.result;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    },
     formatDate(date) {
       return moment(date).format("YY-MM-DD");
-    },
-
-    async fetchComments() {
-      const contentId = this.attraction.contentId;
-      try {
-        const { data } = await axios.get(
-          `http://localhost:8080/locations/detail/${contentId}/reviews`
-        );
-        this.comments = data.result;
-      } catch (error) {
-        console.error("Failed to fetch comment:", error);
-      }
     },
   },
 };

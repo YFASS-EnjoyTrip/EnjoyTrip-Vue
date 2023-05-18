@@ -31,6 +31,10 @@ export default {
   height: 800px;
   background-color: rgb(255, 255, 255);
   border-radius: 90px;
-  /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
+  box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
+  overflow-y: scroll;
+}
+.inner-container::-webkit-scrollbar {
+  width: 0;
 }
 </style>
