@@ -43,7 +43,8 @@ export default {
   components: {},
   data() {
     return {
-      defaultImage: "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png",
+      defaultImage:
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
     };
   },
   props: {

@@ -160,7 +160,7 @@ export default {
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
-        var imageSize = new kakao.maps.Size(60, 60);
+        var imageSize = new kakao.maps.Size(45, 45);
 
         if (planType == 39) imageSrc = imageFood;
         else if (planType == 32) imageSrc = imageAcom;

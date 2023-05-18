@@ -9,6 +9,11 @@
     <div class="text-container">
       <div>
         <div class="ticket-top">
+          <div v-if="loading" class="modal">
+            <div class="modal-content">
+              <img src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+            </div>
+          </div>
           <div class="nickname">
             <span>{{ this.user.nickname }} 님의</span>
           </div>
@@ -90,7 +95,9 @@ export default {
   },
   data() {
     return {
+      loading: false,
       location: "",
+      locName: "",
       startDate: "",
       endDate: "",
       todayDate: "",
@@ -121,7 +128,8 @@ export default {
   methods: {
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
-      return selectedSido ? selectedSido.text : "";
+      this.locName = selectedSido ? selectedSido.text : "";
+      return this.locName;
     },
 
     async createaPlan() {
@@ -130,15 +138,24 @@ export default {
           startDate: this.startDate,
           endDate: this.endDate,
           sidoCode: this.location,
+          sidoName: this.locName,
         });
 
         // 플랜 생성 성공 시
         if (response.status === 201) {
           console.log(response.data.result);
-          this.$router.push({
-            name: "plannerView",
-            params: { planId: response.data.result },
-          });
+
+          // 로딩 gif 표시를 위한 데이터 프로퍼티
+          this.loading = true;
+
+          setTimeout(() => {
+            this.loading = false;
+
+            this.$router.push({
+              name: "plannerView",
+              params: { planId: response.data.result },
+            });
+          }, 3000); // 2초 후에 실행
         }
       } catch (error) {
         console.error(error);
@@ -374,5 +391,26 @@ export default {
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
+}
+
+.modal {
+  /* 모달의 위치를 고정하고 전체 페이지를 덮게 하려면 다음을 사용하세요 */
+  position: fixed;
+  z-index: 9999; /* 다른 콘텐츠 위에 표시 */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 </style>

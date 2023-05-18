@@ -2,7 +2,7 @@
   <div class="planner-attraction-detail-container">
     <div class="attraction-desc">
       <div>
-        <img :src="attraction.image" alt="관광지사진" class="attraction-img" />
+        <img :src="attraction.image || defaultImage" alt="관광지사진" class="attraction-img" />
       </div>
       <div class="attraction-text">
         <div class="attraction-title">
@@ -38,6 +38,8 @@ export default {
   data() {
     return {
       attraction: {},
+      defaultImage:
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
     };
   },
 
