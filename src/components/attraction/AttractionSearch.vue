@@ -12,7 +12,7 @@
             {{ gugun.text }}
           </option>
         </select>
-        <input class="input-keyword" type="text" v-model="keyword" placeholder="관광지, 지역" />
+        <input class="input-keyword" type="text" v-model="keyword" @keyup.enter="selectAllAttractions" placeholder="관광지, 지역" />
         <div class="search-button" @click="selectAllAttractions">
           <span>검색</span>
         </div>
@@ -133,9 +133,17 @@ export default {
     },
   },
   async created() {
+    this.keyword = sessionStorage.getItem("keyword");
+
     this.updateGuguns(this.sidoOption);
-    this.initAttractions();
     this.allSelected = true;
+
+    if (this.keyword === null) {
+      this.initAttractions();
+    } else {
+      this.selectAllAttractions();
+      sessionStorage.removeItem("keyword");
+    }
   },
   computed: {
     allSelected: {
@@ -173,7 +181,7 @@ export default {
     async selectAllAttractions() {
       const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
 
-      console.log(this.keyword);
+      this.page = 1; // 검색하면 page 초기화
       const response = await axios.get(
         `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
       );
@@ -194,8 +202,17 @@ export default {
     async fetchAdditionalData() {
       try {
         this.page++; // 다음 페이지로 이동
+        let url = "";
+        const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
+
+        // 만약 검색중인 상태라면
+        if (this.keyword == "") {
+          url = `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+        } else {
+          url = `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
+        }
         const response = await axios.get(
-          `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+          url
         );
         const additionalData = response.data.result;
         this.attractions = [...this.attractions, ...additionalData];

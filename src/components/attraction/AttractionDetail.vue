@@ -44,7 +44,6 @@ export default {
 
   created() {
     this.contentId = sessionStorage.getItem("contentId");
-    console.log(this.contentId);
     axios
       .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
       .then((response) => {
