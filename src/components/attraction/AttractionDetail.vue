@@ -11,15 +11,12 @@
       <img
         class="attractionImg"
         :src="attractionInfo.image || defaultImage"
-        :alt="attractionInfo.title"
-      />
-      <div class="overview">{{ attractionInfo.overview }}</div>
+        :alt="attractionInfo.title" />
+      <div class="overview">{{ attractionInfo.overView }}</div>
     </div>
     <div class="review-container">
       <div class="comment-container">
-        <AttractionReview
-          :contentId="this.attractionInfo.contentId"
-        ></AttractionReview>
+        <AttractionReview :contentId="this.attractionInfo.contentId"></AttractionReview>
       </div>
       <div class="blog-container">
         <BlogReview :contentTitle="this.attractionInfo.title"></BlogReview>
@@ -47,6 +44,7 @@ export default {
 
   created() {
     this.contentId = this.$route.params.contentId;
+    console.log(this.contentId);
     axios
       .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
       .then((response) => {
@@ -57,7 +55,6 @@ export default {
         console.error("Error fetching data:", error);
       });
   },
-  mounted() {},
 
   methods: {
     loadKakaoMap() {
@@ -79,23 +76,16 @@ export default {
     initKakaoMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(
-          this.attractionInfo.lat,
-          this.attractionInfo.lng
-        ), // Default location
+        center: new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng), // Default location
         level: 7,
       };
 
       this.map = new kakao.maps.Map(container, options);
-      const imageSrc =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
 
       const imageSize = new kakao.maps.Size(50, 50);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-      const latlng = new kakao.maps.LatLng(
-        this.attractionInfo.lat,
-        this.attractionInfo.lng
-      );
+      const latlng = new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng);
       new kakao.maps.Marker({
         map: this.map,
         position: latlng,
