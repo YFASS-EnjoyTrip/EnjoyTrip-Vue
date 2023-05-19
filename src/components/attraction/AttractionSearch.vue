@@ -12,7 +12,13 @@
             {{ gugun.text }}
           </option>
         </select>
-        <input class="input-keyword" type="text" v-model="keyword" @keyup.enter="selectAllAttractions" placeholder="관광지, 지역" />
+        <input
+          class="input-keyword"
+          type="text"
+          v-model="keyword"
+          @keyup.enter="selectAllAttractions"
+          placeholder="관광지, 지역"
+        />
         <div class="search-button" @click="selectAllAttractions">
           <span>검색</span>
         </div>
@@ -25,12 +31,7 @@
           </label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
-              <input
-                type="checkbox"
-                name="types"
-                :id="item.code"
-                :value="item.code"
-                v-model="selectedTypes" />
+              <input type="checkbox" name="types" :id="item.code" :value="item.code" v-model="selectedTypes" />
               <label :for="item.code">
                 <span>{{ item.name }}</span>
               </label>
@@ -42,12 +43,12 @@
     <div class="for-scroll" ref="scrollContainer" @scroll="handleScroll">
       <div class="attraction-container" v-for="(attraction, index) in attractions" :key="index">
         <div class="img-heart">
-            <img
-              class="attractionImg"
-              :src="attraction.image || defaultImage"
-              :alt="attraction.title"
-              @click="goToAttractionDetail(attraction)"
-              />
+          <img
+            class="attractionImg"
+            :src="attraction.image || defaultImage"
+            :alt="attraction.title"
+            @click="goToAttractionDetail(attraction)"
+          />
         </div>
         <div class="attraction-info">
           <div class="attraction-title">
@@ -61,7 +62,8 @@
                   ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                   : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
               "
-              alt="하트" />
+              alt="하트"
+            />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
             <span>{{ attraction.rank }}</span>
@@ -81,47 +83,46 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 export default {
-  name: "AttractionSearch",
+  name: 'AttractionSearch',
   components: {},
   data() {
     return {
       // 23.05.16 기본이미지, 페이지네이션 추가
-      defaultImage:
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
       page: 1,
       pageSize: 100,
       //
-      keyword: "",
-      sidoOption: "0",
-      gugunOption: "",
+      keyword: '',
+      sidoOption: '0',
+      gugunOption: '',
       sidos: [
-        { value: "0", text: "전체" },
-        { value: "1", text: "서울" },
-        { value: "2", text: "인천" },
-        { value: "3", text: "대전" },
-        { value: "4", text: "대구" },
-        { value: "5", text: "광주" },
-        { value: "6", text: "부산" },
-        { value: "7", text: "울산" },
-        { value: "8", text: "세종" },
-        { value: "31", text: "경기도" },
-        { value: "32", text: "강원도" },
-        { value: "33", text: "충청북도" },
-        { value: "34", text: "충청남도" },
-        { value: "35", text: "경상북도" },
-        { value: "36", text: "경상남도" },
-        { value: "37", text: "전라북도" },
-        { value: "38", text: "전라남도" },
-        { value: "39", text: "제주도" },
+        { value: '0', text: '전체' },
+        { value: '1', text: '서울' },
+        { value: '2', text: '인천' },
+        { value: '3', text: '대전' },
+        { value: '4', text: '대구' },
+        { value: '5', text: '광주' },
+        { value: '6', text: '부산' },
+        { value: '7', text: '울산' },
+        { value: '8', text: '세종' },
+        { value: '31', text: '경기도' },
+        { value: '32', text: '강원도' },
+        { value: '33', text: '충청북도' },
+        { value: '34', text: '충청남도' },
+        { value: '35', text: '경상북도' },
+        { value: '36', text: '경상남도' },
+        { value: '37', text: '전라북도' },
+        { value: '38', text: '전라남도' },
+        { value: '39', text: '제주도' },
       ],
       guguns: [],
       allTypes: [
-        { code: "15", name: "행사" },
-        { code: ["12", "14", "28"], name: "관광지" },
-        { code: "39", name: "맛집" },
-        { code: "32", name: "숙소" },
+        { code: '15', name: '행사' },
+        { code: ['12', '14', '28'], name: '관광지' },
+        { code: '39', name: '맛집' },
+        { code: '32', name: '숙소' },
       ],
       selectedTypes: [],
       attractions: [],
@@ -133,7 +134,7 @@ export default {
     },
   },
   async created() {
-    this.keyword = sessionStorage.getItem("keyword");
+    this.keyword = sessionStorage.getItem('keyword');
 
     this.updateGuguns(this.sidoOption);
     this.allSelected = true;
@@ -142,7 +143,7 @@ export default {
       this.initAttractions();
     } else {
       this.selectAllAttractions();
-      sessionStorage.removeItem("keyword");
+      sessionStorage.removeItem('keyword');
     }
   },
   computed: {
@@ -159,34 +160,33 @@ export default {
   },
   methods: {
     async updateGuguns(option) {
-      if (option == "0") {
-        this.guguns = [{ text: "전체", value: "0" }];
+      if (option == '0') {
+        this.guguns = [{ text: '전체', value: '0' }];
         this.gugunOption = this.guguns[0].value;
       } else {
-        const response = await axios.get(
-          `http://localhost:8080/locations/search/gugun?sido=${option}`
-        );
+        const response = await axios.get(`http://localhost:8080/locations/search/gugun?sido=${option}`);
         this.guguns = response.data.result;
         this.gugunOption = this.guguns[0].value;
       }
     },
     async initAttractions() {
-      const response = await axios.get(
-        `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
-      );
+      const response = await axios.get(`http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`);
       this.attractions = response.data.result;
-      this.$emit("attractions-updated", this.attractions);
+      this.$emit('attractions-updated', this.attractions);
     },
 
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
+      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
+
+      if (this.keyword == null) this.keyword = '';
 
       this.page = 1; // 검색하면 page 초기화
       const response = await axios.get(
-        `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
+        `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`,
       );
       this.attractions = response.data.result;
-      this.$emit("attractions-updated", this.attractions);
+      console.log(this.attractions);
+      this.$emit('attractions-updated', this.attractions);
     },
 
     // 스크롤 이벤트 핸들러
@@ -202,30 +202,28 @@ export default {
     async fetchAdditionalData() {
       try {
         this.page++; // 다음 페이지로 이동
-        let url = "";
-        const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(",");
+        let url = '';
+        const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
 
         // 만약 검색중인 상태라면
-        if (this.keyword == "") {
-          url = `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`
+        if (this.keyword == null) {
+          url = `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`;
         } else {
-          url = `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`
+          url = `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`;
         }
-        const response = await axios.get(
-          url
-        );
+        const response = await axios.get(url);
         const additionalData = response.data.result;
         this.attractions = [...this.attractions, ...additionalData];
-        this.$emit("attractions-updated", this.attractions);
+        this.$emit('attractions-updated', this.attractions);
       } catch (error) {
-        console.error("Failed to fetch additional data:", error);
+        console.error('Failed to fetch additional data:', error);
       }
     },
 
     goToAttractionDetail(attraction) {
-      sessionStorage.setItem("contentId", attraction.contentId);
+      sessionStorage.setItem('contentId', attraction.contentId);
       this.$router.push({
-        name: "attractionDetail",
+        name: 'attractionDetail',
         params: { contentId: attraction.contentId },
       });
     },
@@ -282,7 +280,7 @@ a {
 
 .plannerCreate-button span {
   font-size: 25px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
   margin: 10px;
   caret-color: transparent;
@@ -301,7 +299,7 @@ a {
   margin-right: 3px;
   font-size: 13px;
   /* 폰트 크기 설정 */
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 }
 
@@ -318,7 +316,7 @@ a {
   white-space: nowrap;
   font-size: 18px;
   /* 폰트 크기 설정 */
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #4d4d4d;
 }
 
@@ -361,7 +359,7 @@ a {
   justify-content: center;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   width: 15px;
   height: 15px;
   border: 3px solid #ff9090;
@@ -369,24 +367,24 @@ input[type="checkbox"] {
   display: none;
 }
 
-input[type="checkbox"] + label {
+input[type='checkbox'] + label {
   cursor: pointer;
   caret-color: transparent;
   user-select: none;
 }
 
-input[type="checkbox"] + label > span {
+input[type='checkbox'] + label > span {
   /* vertical-align: middle; */
   margin-left: 5px;
   font-size: 15px;
   /* 폰트 크기 설정 */
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #f24849;
 }
 
 /* label:before에 체크하기 전 상태 CSS */
-input[type="checkbox"] + label:before {
-  content: "";
+input[type='checkbox'] + label:before {
+  content: '';
   display: inline-block;
   width: 17px;
   height: 17px;
@@ -398,8 +396,8 @@ input[type="checkbox"] + label:before {
 }
 
 /* label:before에 체크 된 상태 CSS */
-input[type="checkbox"]:checked + label:before {
-  content: "";
+input[type='checkbox']:checked + label:before {
+  content: '';
   background-color: #f24849;
   border-color: #f24849;
   background-repeat: no-repeat;
@@ -430,7 +428,7 @@ input[type="checkbox"]:checked + label:before {
   outline: none;
   font-size: 15px;
   text-indent: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   margin-right: 10px;
@@ -445,7 +443,7 @@ input[type="checkbox"]:checked + label:before {
   outline: none;
   font-size: 15px;
   text-indent: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   margin-right: 20px;
@@ -459,7 +457,7 @@ input[type="checkbox"]:checked + label:before {
   outline: none;
   font-size: 15px;
   text-indent: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   margin-right: 20px;
@@ -479,7 +477,7 @@ input[type="checkbox"]:checked + label:before {
   height: 30px;
   border-radius: 5px;
   background-color: #f24849;
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   font-size: 16px;
   color: #ffffff;
   cursor: pointer;

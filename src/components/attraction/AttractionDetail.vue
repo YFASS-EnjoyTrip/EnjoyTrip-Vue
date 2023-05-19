@@ -8,10 +8,7 @@
       <div id="map" class="map"></div>
     </div>
     <div class="img-overview-container">
-      <img
-        class="attractionImg"
-        :src="attractionInfo.image || defaultImage"
-        :alt="attractionInfo.title" />
+      <img class="attractionImg" :src="attractionInfo.image || defaultImage" :alt="attractionInfo.title" />
       <div class="overview">{{ attractionInfo.overView }}</div>
     </div>
     <div class="review-container">
@@ -26,24 +23,23 @@
 </template>
 
 <script>
-import axios from "axios";
-import AttractionReview from "./AttractionReview.vue";
-import BlogReview from "./BlogReview.vue";
+import axios from 'axios';
+import AttractionReview from './AttractionReview.vue';
+import BlogReview from './BlogReview.vue';
 export default {
-  name: "AttractionDetail",
+  name: 'AttractionDetail',
   components: { AttractionReview, BlogReview },
   data() {
     return {
       map: null,
-      contentId: "",
-      attractionInfo: "",
-      defaultImage:
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
+      contentId: '',
+      attractionInfo: '',
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
     };
   },
 
   created() {
-    this.contentId = sessionStorage.getItem("contentId");
+    this.contentId = sessionStorage.getItem('contentId');
     axios
       .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
       .then((response) => {
@@ -51,7 +47,7 @@ export default {
         this.loadKakaoMap();
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       });
   },
 
@@ -60,27 +56,26 @@ export default {
       if (window.kakao && window.kakao.maps) {
         this.initKakaoMap();
       } else {
-        const script = document.createElement("script");
+        const script = document.createElement('script');
         /* global kakao */
         script.onload = () =>
           kakao.maps.load(() => {
             this.initKakaoMap();
           });
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
+        script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f';
         document.head.appendChild(script);
       }
     },
 
     initKakaoMap() {
-      const container = document.getElementById("map");
+      const container = document.getElementById('map');
       const options = {
         center: new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng), // Default location
         level: 7,
       };
 
       this.map = new kakao.maps.Map(container, options);
-      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageSrc = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png';
 
       const imageSize = new kakao.maps.Size(50, 50);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
@@ -116,7 +111,7 @@ export default {
   height: 300px;
   overflow: scroll;
   font-size: 16px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #383838;
 }
 .attractionImg {
@@ -133,7 +128,7 @@ export default {
 }
 .attraction-addr {
   font-size: 15px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #555555;
 }
 .title-container {
@@ -144,7 +139,7 @@ export default {
 }
 .attraction-title {
   font-size: 48px;
-  font-family: "CookieRun-Black";
+  font-family: 'CookieRun-Black';
   color: #69beee;
   margin-right: 10px;
   caret-color: transparent;

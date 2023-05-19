@@ -2,7 +2,19 @@
     "singleQuote": true,
     "semi": true,
     "useTabs": false,
-    "tabWidth": 4,
+    "tabWidth": 2,
     "trailingComma": "all",
-    "printWidth": 80
+    "printWidth": 80,
+    "htmlWhitespaceSensitivity": "strict",
+    "vueIndentScriptAndStyle": true,
+    "overrides": [
+        {
+            "files": "*.vue",
+            "options": {
+                "printWidth": 120,
+                "htmlWhitespaceSensitivity": "ignore",
+                "vueIndentScriptAndStyle": false
+            }
+        }
+    ]
 }
