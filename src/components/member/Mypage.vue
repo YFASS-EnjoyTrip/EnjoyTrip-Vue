@@ -1,98 +1,40 @@
 <template>
-  <div>
-    <div class="container">
-      <div>
-        <v-sheet tile height="54" class="d-flex">
-          <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-select
-            v-model="type"
-            :items="types"
-            dense
-            outlined
-            hide-details
-            class="ma-2"
-            label="type"
-          ></v-select>
-          <v-select
-            v-model="mode"
-            :items="modes"
-            dense
-            outlined
-            hide-details
-            label="event-overlap-mode"
-            class="ma-2"
-          ></v-select>
-          <v-select
-            v-model="weekday"
-            :items="weekdays"
-            dense
-            outlined
-            hide-details
-            label="weekdays"
-            class="ma-2"
-          ></v-select>
-          <v-spacer></v-spacer>
-          <v-btn icon class="ma-2" @click="$refs.calendar.next()">
-            <v-icon>mdi-chevron-right</v-icon>
-          </v-btn>
-        </v-sheet>
-        <v-sheet height="600">
-          <v-calendar
-            ref="calendar"
-            v-model="value"
-            :weekdays="weekday"
-            :type="type"
-            :events="events"
-            :event-overlap-mode="mode"
-            :event-overlap-threshold="30"
-            :event-color="getEventColor"
-            @change="getEvents"
-          ></v-calendar>
-        </v-sheet>
-      </div>
+  <v-app class="main-container">
+    <div class="my-container">
+      <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <v-btn icon class="ma-2" @click="$refs.calendar.next()">
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
+      <v-sheet height="450" width="700" class="v-sheet">
+        <v-calendar
+          class="calendar"
+          ref="calendar"
+          v-model="value"
+          type="month"
+          :events="events"
+          :event-color="getEventColor"
+          color="#F24849"
+          event-text-color="#3D3D3D"
+          @change="getEvents"
+        ></v-calendar>
+      </v-sheet>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
 export default {
   name: "MyPage",
-  data: () => ({
-    type: "month",
-    types: ["month", "week", "day", "4day"],
-    mode: "stack",
-    modes: ["stack", "column"],
-    weekday: [0, 1, 2, 3, 4, 5, 6],
-    weekdays: [
-      { text: "Sun - Sat", value: [0, 1, 2, 3, 4, 5, 6] },
-      { text: "Mon - Sun", value: [1, 2, 3, 4, 5, 6, 0] },
-      { text: "Mon - Fri", value: [1, 2, 3, 4, 5] },
-      { text: "Mon, Wed, Fri", value: [1, 3, 5] },
-    ],
-    value: "",
-    events: [],
-    colors: [
-      "blue",
-      "indigo",
-      "deep-purple",
-      "cyan",
-      "green",
-      "orange",
-      "grey darken-1",
-    ],
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party",
-    ],
-  }),
+  data() {
+    return {
+      value: "",
+      events: [],
+      colors: ["#69BEEE", "#49C46F", "#ffbb00", "#ff9090"],
+      names: ["PTO", "Travel", "Event", "Birthday", "Conference", "Party"],
+    };
+  },
   methods: {
     getEvents({ start, end }) {
       const events = [];
@@ -114,7 +56,6 @@ export default {
           start: first,
           end: second,
           color: this.colors[this.rnd(0, this.colors.length - 1)],
-          timed: !allDay,
         });
       }
 
@@ -129,8 +70,19 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.container {
+.calendar {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 3px;
+  box-shadow: 4px 4px 4px rgba(73, 73, 73, 0.2);
+}
+.main-container {
+  max-height: 800px;
+  background-color: transparent;
+}
+.my-container {
   width: 1200px;
   height: 800px;
   background-color: rgb(255, 255, 255);
