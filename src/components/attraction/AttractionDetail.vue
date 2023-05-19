@@ -11,17 +11,21 @@
       <img
         class="attractionImg"
         :src="attractionInfo.image || defaultImage"
-        :alt="attractionInfo.title" />
+        :alt="attractionInfo.title"
+      />
       <div class="overview">{{ attractionInfo.overView }}</div>
     </div>
     <div class="review-container">
       <div class="comment-container">
-        <AttractionReview :contentId="this.attractionInfo.contentId"></AttractionReview>
+        <AttractionReview
+          :contentId="this.attractionInfo.contentId"
+        ></AttractionReview>
       </div>
       <div class="blog-container">
         <BlogReview :contentTitle="this.attractionInfo.title"></BlogReview>
       </div>
     </div>
+    <div class="margin-bottom"></div>
   </div>
 </template>
 
@@ -76,16 +80,23 @@ export default {
     initKakaoMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng), // Default location
+        center: new kakao.maps.LatLng(
+          this.attractionInfo.lat,
+          this.attractionInfo.lng
+        ), // Default location
         level: 7,
       };
 
       this.map = new kakao.maps.Map(container, options);
-      const imageSrc = "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
+      const imageSrc =
+        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
 
       const imageSize = new kakao.maps.Size(50, 50);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-      const latlng = new kakao.maps.LatLng(this.attractionInfo.lat, this.attractionInfo.lng);
+      const latlng = new kakao.maps.LatLng(
+        this.attractionInfo.lat,
+        this.attractionInfo.lng
+      );
       new kakao.maps.Marker({
         map: this.map,
         position: latlng,
@@ -98,49 +109,22 @@ export default {
 </script>
 
 <style scoped>
+.margin-bottom {
+  margin-top: 50px;
+}
 .blog-container {
   width: 630px;
   max-height: 1000px;
-  overflow: scroll;
   background-color: #fff8e5;
   border-radius: 18px;
-}
-
-.blog-container::-webkit-scrollbar {
-  width: 10px;
-  height: 0;
-}
-
-.blog-container::-webkit-scrollbar-thumb {
-  background-color: #ffb9b9;
-  /* 스크롤바 색상 */
-  border-radius: 5px;
-  /* 스크롤바 모서리의 곡률 */
-}
-
-.blog-container::-webkit-scrollbar-thumb:active {
-  background-color: #fc6d6d;
-  /* 스크롤바 색상 */
-}
-
-::-webkit-scrollbar-track {
-  background-color: #fff4d7;
-  /* 트랙 배경색 */
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: transparent;
-
-  border-radius: 18px;
-  background-color: #FFF8E5;
-  box-shadow: 0px 0px 5px 2px rgba(103, 103, 103, 0.315);
+  box-shadow: 0px 0px 5px 2px rgba(107, 107, 107, 0.315);
 }
 
 .comment-container {
   width: 450px;
   margin-right: 20px;
   border-radius: 18px;
-  background-color: #FFF8E5;
+  background-color: #fff8e5;
   box-shadow: 0px 0px 5px 2px rgba(107, 107, 107, 0.315);
 }
 .review-container {
@@ -158,6 +142,24 @@ export default {
   word-break: keep-all;
   line-height: 35px;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffe6a1;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #ffc930;
+  /* 스크롤바 색상 */
+}
+
 .attractionImg {
   width: 540px;
   height: 300px;
