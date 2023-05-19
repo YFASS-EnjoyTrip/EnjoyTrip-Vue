@@ -47,6 +47,18 @@
             </div>
           </router-link>
         </li>
+        <li class="nav-item planner">
+          <router-link to="/member/mypage">
+            <div class="hover-effect">
+              <span class="nav-item-title">마이페이지</span>
+              <img
+                class="nav-item-img"
+                src="../../assets/img/icon/capsule_Y.png"
+                alt="이미지"
+              />
+            </div>
+          </router-link>
+        </li>
       </div>
       <div class="nav-member">
         <li class="login">
