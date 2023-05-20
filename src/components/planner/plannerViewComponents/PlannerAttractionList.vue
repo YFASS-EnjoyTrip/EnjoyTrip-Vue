@@ -5,12 +5,12 @@
         <div v-if="editMode">
           <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
             <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
-            <div
-              v-for="(attraction, index) in localAttractions"
-              :key="index"
-              class="attraction-list-item"
-              @click="handleAttractionClick(attraction)"
-            >
+            <div v-for="(attraction, index) in localAttractions" :key="index" class="attraction-list-item"
+              @click="handleAttractionClick(attraction)">
+              <div class="checkbox-container">
+                <input class="checkbox" type="checkbox" name="attractions" id="check" :value="attraction.contentId"
+                  v-model="selectedAttractions" />
+              </div>
               <div class="attraction-order">{{ index + 1 }}</div>
               <div class="attraction-img">
                 <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
@@ -39,13 +39,10 @@
           </draggable>
         </div>
         <div v-else>
-          <div
-            v-for="(attraction, index) in localAttractions"
-            :key="index"
-            class="attraction-list-item"
-            @click="handleAttractionClick(attraction)"
-          >
+          <div v-for="(attraction, index) in localAttractions" :key="index" class="attraction-list-item"
+            @click="handleAttractionClick(attraction)">
             <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
+
             <div class="attraction-order">{{ index + 1 }}</div>
             <div class="attraction-img">
               <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
@@ -90,6 +87,7 @@ export default {
       defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
       localPlan: [],
       localAttractions: [],
+      selectedAttractions: [],
     };
   },
   props: {
@@ -127,7 +125,7 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() { },
 
   methods: {
     initializeLocalAttractions() {
@@ -155,10 +153,18 @@ export default {
 </script>
 
 <style scoped>
+.checkbox-container {
+  display: flex;
+  justify-content: center;
+  margin-left: 20px;
+  margin-right: -10px;
+}
+
 .outer-container {
   display: flex;
   justify-content: center;
 }
+
 .attraction-order {
   font-family: 'CookieRun-Black';
   font-size: 1.1rem;
@@ -178,6 +184,7 @@ export default {
     border-radius: 17px;
     margin-top: 10px; */
 }
+
 .attraction-list-item {
   background-color: rgb(255, 255, 255);
   display: flex;
@@ -194,6 +201,7 @@ export default {
   transition: 0.2s;
   cursor: pointer;
 }
+
 .attraction-list-item:hover .attraction-name {
   color: #fe646f;
   transition: 0.2s;
@@ -209,9 +217,11 @@ img {
   height: 90%;
   border-radius: 10px;
 }
+
 .attraction-list-container {
   display: flex;
 }
+
 .attraction-container {
   width: 330px;
   height: 4.5rem;
@@ -223,13 +233,17 @@ img {
   display: flex;
   overflow: hidden;
 }
+
 .attraction-name {
   font-family: 'CookieRun-Bold';
   font-size: 1.5rem;
   color: #696969;
-  white-space: nowrap; /* 줄 바꿈 방지 */
-  overflow: hidden; /* 넘친 부분 감추기 */
-  text-overflow: ellipsis; /* 생략 부호 표시 */
+  white-space: nowrap;
+  /* 줄 바꿈 방지 */
+  overflow: hidden;
+  /* 넘친 부분 감추기 */
+  text-overflow: ellipsis;
+  /* 생략 부호 표시 */
 }
 
 .like-rank-container {
@@ -250,11 +264,13 @@ img {
   height: 50px;
   overflow: scroll;
 }
+
 .attraction-desc {
   font-family: 'CookieRun-Regular';
   font-size: 0.8rem;
   color: #696969;
 }
+
 ::-webkit-scrollbar {
   width: 0;
 }
