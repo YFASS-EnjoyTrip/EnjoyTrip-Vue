@@ -29,17 +29,16 @@
 </template>
 
 <script>
-import AttractionComment from "../plannerViewComponents/AttractionComment.vue";
-import AttractionBlogReview from "../plannerViewComponents/AttractionBlogReview.vue";
+import AttractionComment from '../plannerViewComponents/AttractionComment.vue';
+import AttractionBlogReview from '../plannerViewComponents/AttractionBlogReview.vue';
 
 export default {
-  name: "PlannerAttractionDetail",
+  name: 'PlannerAttractionDetail',
   components: { AttractionComment, AttractionBlogReview },
   data() {
     return {
       attraction: {},
-      defaultImage:
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
     };
   },
 
@@ -68,7 +67,7 @@ export default {
   margin-left: 20px;
 }
 .attraction-title {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #4d4d4d;
   font-size: 1.5rem;
   overflow: hidden;
@@ -77,7 +76,7 @@ export default {
 }
 .attraction-detail {
   margin-top: 5px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
   font-size: 0.8rem;
   width: 19.5rem;

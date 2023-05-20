@@ -1,8 +1,6 @@
 <template>
   <div class="container">
-    <div class="plannerCreate-text">
-      {{ this.user.nickname }} 님의 여행가챠 쿠폰이 발급되었습니다
-    </div>
+    <div class="plannerCreate-text">{{ this.user.nickname }} 님의 여행가챠 쿠폰이 발급되었습니다</div>
     <div class="img-container">
       <img src="../../assets/img/ticket.png" alt="티켓" />
     </div>
@@ -33,7 +31,7 @@
           <div class="date-input">
             <span>일정</span>
             <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
-            <span> ~</span>
+            <span>~</span>
             <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
           </div>
         </div>
@@ -59,10 +57,14 @@
     </div>
     <div class="confirm-container">
       <div class="confirm-text">
-        <span>쿠폰을 사용하면<br /></span>
-        <span
-          ><span>{{ this.user.nickname }}</span> 님 만의 여행 계획을 만들어 드려요!</span
-        >
+        <span>
+          쿠폰을 사용하면
+          <br />
+        </span>
+        <span>
+          <span>{{ this.user.nickname }}</span>
+          님 만의 여행 계획을 만들어 드려요!
+        </span>
       </div>
     </div>
     <div class="confirm-button">
@@ -72,23 +74,23 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
-import { apiAuthInstance } from "@/api/index.js";
+import { mapGetters } from 'vuex';
+import { apiAuthInstance } from '@/api/index.js';
 
-const memberStore = "memberStore";
+const memberStore = 'memberStore';
 const api = apiAuthInstance();
 
 export default {
-  name: "PlannerCreate",
+  name: 'PlannerCreate',
   components: {},
   computed: {
-    ...mapGetters(memberStore, ["checkUserInfo"]),
+    ...mapGetters(memberStore, ['checkUserInfo']),
     user() {
       return (
         this.checkUserInfo || {
-          nickname: "",
-          profileImg: "",
-          bio: "",
+          nickname: '',
+          profileImg: '',
+          bio: '',
         }
       );
     },
@@ -96,45 +98,45 @@ export default {
   data() {
     return {
       loading: false,
-      location: "",
-      locName: "",
-      startDate: "",
-      endDate: "",
-      todayDate: "",
+      location: '',
+      locName: '',
+      startDate: '',
+      endDate: '',
+      todayDate: '',
       sidos: [
-        { value: "1", text: "서울" },
-        { value: "2", text: "인천" },
-        { value: "3", text: "대전" },
-        { value: "4", text: "대구" },
-        { value: "5", text: "광주" },
-        { value: "6", text: "부산" },
-        { value: "7", text: "울산" },
-        { value: "8", text: "세종" },
-        { value: "31", text: "경기도" },
-        { value: "32", text: "강원도" },
-        { value: "33", text: "충청북도" },
-        { value: "34", text: "충청남도" },
-        { value: "35", text: "경상북도" },
-        { value: "36", text: "경상남도" },
-        { value: "37", text: "전라북도" },
-        { value: "38", text: "전라남도" },
-        { value: "39", text: "제주도" },
+        { value: '1', text: '서울' },
+        { value: '2', text: '인천' },
+        { value: '3', text: '대전' },
+        { value: '4', text: '대구' },
+        { value: '5', text: '광주' },
+        { value: '6', text: '부산' },
+        { value: '7', text: '울산' },
+        { value: '8', text: '세종' },
+        { value: '31', text: '경기도' },
+        { value: '32', text: '강원도' },
+        { value: '33', text: '충청북도' },
+        { value: '34', text: '충청남도' },
+        { value: '35', text: '경상북도' },
+        { value: '36', text: '경상남도' },
+        { value: '37', text: '전라북도' },
+        { value: '38', text: '전라남도' },
+        { value: '39', text: '제주도' },
       ],
     };
   },
   mounted() {
-    this.todayDate = new Date().toISOString().split("T")[0];
+    this.todayDate = new Date().toISOString().split('T')[0];
   },
   methods: {
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
-      this.locName = selectedSido ? selectedSido.text : "";
+      this.locName = selectedSido ? selectedSido.text : '';
       return this.locName;
     },
 
     async createaPlan() {
       try {
-        const response = await api.post("/planner/create", {
+        const response = await api.post('/planner/create', {
           startDate: this.startDate,
           endDate: this.endDate,
           sidoCode: this.location,
@@ -152,7 +154,7 @@ export default {
             this.loading = false;
 
             this.$router.push({
-              name: "plannerView",
+              name: 'plannerView',
               params: { planId: response.data.result },
             });
           }, 3000); // 2초 후에 실행
@@ -171,7 +173,7 @@ export default {
   margin-top: 40px;
   margin-bottom: 10px;
   font-size: 30px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #8d8d8d;
 
   caret-color: transparent;
@@ -184,7 +186,7 @@ export default {
   margin-left: 40px;
   height: 35px;
   font-size: 20px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
   text-align: center;
   padding-top: 5px;
@@ -227,7 +229,7 @@ export default {
 }
 .confirm-text span {
   font-size: 30px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #8d8d8d;
 }
 .confirm-container {
@@ -249,14 +251,14 @@ export default {
 .info-title {
   margin-bottom: 10px;
   font-size: 20px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffe8aa;
 }
 
 .info-value {
   margin-bottom: 20px;
   font-size: 20px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
 }
 
@@ -268,7 +270,7 @@ export default {
 .side-title {
   padding-top: 30px;
   font-size: 30px;
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #3a3a3a;
   text-align: center;
 }
@@ -281,7 +283,7 @@ export default {
   outline: none;
   /* 포커스 시 테두리 제거 */
   font-size: 20px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   text-indent: 5px;
@@ -298,7 +300,7 @@ export default {
   /* 포커스 시 테두리 제거 */
   font-size: 20px;
   text-indent: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   margin-right: 10px;
@@ -311,7 +313,7 @@ export default {
 }
 
 .location-input > span {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #757575;
   font-size: 1.5rem;
   margin-right: 20px;
@@ -322,21 +324,21 @@ export default {
 }
 
 .date-input > span {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #757575;
   font-size: 1.5rem;
   margin-right: 20px;
 }
 
 .nickname {
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #fff0c7;
   font-size: 1.8rem;
   padding-top: 40px;
 }
 
 .ticket-title {
-  font-family: "CookieRun-Black";
+  font-family: 'CookieRun-Black';
   color: #3a3a3a;
   font-size: 3rem;
 }
