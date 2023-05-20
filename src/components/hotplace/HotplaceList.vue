@@ -1,22 +1,17 @@
 <template>
-  <div>
-    <h1>핫플레이스1</h1>
-    <h1>핫플레이스2</h1>
-    <h1>핫플레이스3</h1>
-  </div>
+    <dvi> 핫플레이스~ </dvi>
 </template>
 
 <script>
 export default {
-  name: "HotplaceList",
-  components: {},
-  data() {
-    return {
-      message: "",
-    };
-  },
-  created() {},
-  methods: {},
+    name: 'HotplaceList',
+    components: {},
+
+    data() {
+        return {};
+    },
+    created() {},
+    methods: {},
 };
 </script>
 

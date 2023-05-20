@@ -4,16 +4,12 @@
       <div class="user">{{ planInfo.nickName }} 님의</div>
       <div class="location-date">
         <div class="location">
-          <span>{{ planInfo.title }}</span
-          >여행
+          <span>{{ planInfo.title }}</span>
+          여행
         </div>
-        <div class="date">
-          {{ planInfo.startDate }} ~ {{ planInfo.endDate }}
-        </div>
-        <div class="modify-button">
-          <router-link to="/planner/modify">
-            <span>편집</span>
-          </router-link>
+        <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
+        <div class="modify-button" @click="toggleEditMode">
+          {{ editMode ? '완료' : '편집' }}
         </div>
       </div>
     </div>
@@ -21,9 +17,7 @@
       <div class="left-container">
         <div id="map" class="map"></div>
         <div class="detail-view">
-          <plannerAttractionDetail
-            ref="attractionDetail"
-          ></plannerAttractionDetail>
+          <plannerAttractionDetail ref="attractionDetail"></plannerAttractionDetail>
         </div>
       </div>
       <div class="right-container">
@@ -50,8 +44,13 @@
           <planner-attraction-list
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
+            :editMode="editMode"
             @attractionClicked="handleAttractionClick"
+            @updatePlan="updatePlan"
           ></planner-attraction-list>
+        </div>
+        <div class="bottom-container">
+          <div class="add-list-item"><span>여행지 추가</span></div>
         </div>
       </div>
     </div>
@@ -59,29 +58,29 @@
 </template>
 
 <script>
-import { apiAuthInstance } from "@/api/index.js";
-import { mapGetters } from "vuex";
+import { apiAuthInstance } from '@/api/index.js';
+import { mapGetters } from 'vuex';
 
-const memberStore = "memberStore";
+const memberStore = 'memberStore';
 const api = apiAuthInstance();
 
-import plannerAttractionDetail from "./plannerViewComponents/PlannerAttractionDetail.vue";
-import PlannerAttractionList from "./plannerViewComponents/PlannerAttractionList.vue";
+import plannerAttractionDetail from './plannerViewComponents/PlannerAttractionDetail.vue';
+import PlannerAttractionList from './plannerViewComponents/PlannerAttractionList.vue';
 
 export default {
-  name: "PlannerView",
+  name: 'PlannerView',
   components: {
     plannerAttractionDetail,
     PlannerAttractionList,
   },
   computed: {
-    ...mapGetters(memberStore, ["checkUserInfo"]),
+    ...mapGetters(memberStore, ['checkUserInfo']),
     user() {
       return (
         this.checkUserInfo || {
-          nickname: "",
-          profileImg: "",
-          bio: "",
+          nickname: '',
+          profileImg: '',
+          bio: '',
         }
       );
     },
@@ -89,7 +88,7 @@ export default {
       return this.planDetailInfo[this.selectedDay - 1];
     },
   },
-  props: ["planId"],
+  props: ['planId'],
 
   data() {
     return {
@@ -98,27 +97,69 @@ export default {
       attractions: [],
       planInfo: {},
       planDetailInfo: [],
+      editMode: false,
     };
   },
 
-  async created() {
-    console.log(this.planId);
-    await api.get(`http://localhost:8080/planner/list/${this.planId}`).then(({ data }) => {
+  //   async created() {
+  //     await api.get(`http://localhost:8080/planner/list/${this.planId}`).then(({ data }) => {
+  //       if (data.status === 200) {
+  //         this.planInfo = data.result.planInfo;
+
+  //         Object.keys(data.result.dayInfo).forEach((key) => {
+  //           this.planDetailInfo.push(data.result.dayInfo[key]);
+  //         });
+  //       }
+  //     });
+
+  //     this.initKakaoMap();
+  //   },
+
+  async mounted() {
+    await this.fetchAttractions();
+    this.initKakaoMap();
+  },
+
+  methods: {
+    async fetchAttractions() {
+      const response = await api.get(`http://localhost:8080/planner/list/${this.planId}`);
+      const { data } = response;
+
       if (data.status === 200) {
         this.planInfo = data.result.planInfo;
 
         Object.keys(data.result.dayInfo).forEach((key) => {
           this.planDetailInfo.push(data.result.dayInfo[key]);
         });
+
+        this.attractions = this.planDetailInfo;
       }
-    });
+    },
 
-    this.initKakaoMap();
-  },
+    updatePlan(updateAttraction) {
+      //   this.planDetailInfo = updateAttraction;
 
-  async mounted() {},
+      // updateplan 후 redirect 해도 될거같은데
+      // 1. planId, token, planDetatilInfo를 던진다
+      try {
+        console.log(updateAttraction);
+        const response = api.put(`/planner/update/${this.planId}`, {
+          data: updateAttraction,
+        });
+        console.log('update 성공', response.status);
+      } catch (error) {
+        console.log('update 실패', error);
+      }
 
-  methods: {
+      // 2. 서버가 캐치 업데이트 칠건데... 그전에 order를 서버가 처리한다
+
+      console.log(this.planDetailInfo);
+    },
+
+    toggleEditMode() {
+      this.editMode = !this.editMode;
+    },
+
     decreaseSelectedDay() {
       if (this.selectedDay > 1) {
         this.selectedDay--;
@@ -135,11 +176,10 @@ export default {
       if (window.kakao && window.kakao.maps) {
         this.renderMap();
       } else {
-        const script = document.createElement("script");
+        const script = document.createElement('script');
         /* global kakao */
         script.onload = () => kakao.maps.load(this.renderMap);
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f";
+        script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f';
         document.head.appendChild(script);
       }
     },
@@ -152,7 +192,7 @@ export default {
       const firstDay = this.planDetailInfo[this.selectedDay - 1];
 
       this.handleAttractionClick(firstDay[0]);
-      const container = document.getElementById("map");
+      const container = document.getElementById('map');
       const options = {
         center: new kakao.maps.LatLng(firstDay[0].lat, firstDay[0].lng),
         level: 5,
@@ -160,13 +200,10 @@ export default {
 
       this.map = new kakao.maps.Map(container, options);
 
-      let imageSrc = "";
-      const imageFood =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png";
-      const imageAcom =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      const imageLoca =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png";
+      let imageSrc = '';
+      const imageFood = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png';
+      const imageAcom = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png';
+      const imageLoca = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png';
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
@@ -207,7 +244,7 @@ export default {
 
 a {
   text-decoration: none;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
   font-size: 1.2rem;
   margin-top: -5px;
@@ -231,7 +268,7 @@ a {
 }
 
 .user {
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #696969;
   font-size: 0.9rem;
 }
@@ -242,7 +279,7 @@ a {
 }
 
 .location {
-  font-family: "CookieRun-Black";
+  font-family: 'CookieRun-Black';
   font-size: 2.5rem;
   color: #696969;
 }
@@ -254,7 +291,7 @@ a {
 .date {
   margin-left: 10px;
   margin-top: 30px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #696969;
   font-size: 0.9rem;
 }
@@ -323,7 +360,7 @@ a {
 }
 
 .day-container > span {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #525252;
   font-size: 1.7rem;
   padding-right: 10px;
@@ -357,8 +394,35 @@ a {
 }
 
 .for-scroll {
-  height: 540px;
+  height: 420px;
   overflow: scroll;
   border-radius: 30px;
+}
+
+.bottom-container {
+  width: 530px;
+}
+.add-list-item {
+  background-color: #d6efff;
+  justify-content: center;
+  display: flex;
+  width: 500px;
+  height: 70px;
+  border: 3px dotted #69beee;
+  border-radius: 17px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s;
+}
+.add-list-item:hover {
+  background-color: #3d90cc;
+  cursor: pointer;
+}
+.add-list-item span {
+  color: #6e6e6e;
+  font-family: 'CookieRun-Bold';
+  font-size: 20px;
+  text-align: center;
+  line-height: 70px;
 }
 </style>

@@ -1,283 +1,197 @@
 <template>
-  <div class="container">
-    <div class="title-container">
-      <div class="user">{{ userId }} 님의</div>
-      <div class="location-date">
-        <div class="location">
-          <span>{{ locationName }}</span>여행
-        </div>
-        <div class="date">2023.05.04~2023.05.06</div>
-        <div class="save-button">
-          <router-link to="/planner">
-            <span>완료</span>
-          </router-link>
-        </div>
-      </div>
-    </div>
-    <div class="inner-container">
-      <div class="left-container">
-        <div id="map" class="map"></div>
-        <div class="detail-view">
-          <plannerAttractionDetail></plannerAttractionDetail>
-        </div>
-      </div>
-      <div class="right-container">
-        <div class="day-container">
-          <img src="../../assets/img/icon/arrow_left.png" alt="<" />
-          <span>1일</span>
-          <img src="../../assets/img/icon/arrow_right.png" alt=">" />
-        </div>
-        <div class="for-scroll">
-          <PlannerAttractionList></PlannerAttractionList>
-        </div>
+  <div>
+    <div class="outer-container">
+      <div class="attraction-list-container">
+        <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
+          <div v-for="(attraction, index) in localAttractions" :key="index" class="attraction-list-item">
+            <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
+            <div class="attraction-order">{{ index + 1 }}</div>
+            <div class="attraction-img">
+              <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
+            </div>
+            <div class="attraction-container">
+              <div class="attraction-info">
+                <div class="attraction-name">
+                  {{ attraction.title }}
+                  <div class="like-rank-container">
+                    <div class="like-rank-inner">
+                      <span>
+                        <img src="@/assets/img/icon/heart_fill.png" alt="좋아요" />
+                        <span>{{ attraction.likeCount }}</span>
+                      </span>
+                      <span>
+                        <img src="@/assets/img/icon/star_fill.png" alt="별점" />
+                        <span>{{ attraction.rate }}</span>
+                        <span>({{ attraction.likeCount }})</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </draggable>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import plannerAttractionDetail from "../planner/plannerViewComponents/PlannerAttractionDetail.vue";
-import PlannerAttractionList from "../planner/plannerViewComponents/PlannerAttractionList.vue";
-
+import draggable from 'vuedraggable';
 
 export default {
-  name: "PlannerModify",
+  name: 'PlannerAttractionList',
   components: {
-    plannerAttractionDetail,
-    PlannerAttractionList,
+    draggable,
   },
   data() {
     return {
-      userId: "사용자1111",
-      locationName: "부산",
-      map: null,
-      attractions: "",
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
+      localAttractions: [],
     };
   },
-  created() { },
+  props: {
+    selectedDay: {
+      type: Number,
+      required: true,
+    },
+    attractions: {
+      type: Array,
+      required: true,
+    },
+  },
+  watch: {
+    selectedDay() {
+      this.initializeLocalAttractions();
+    },
+  },
 
-  async mounted() {
-    await axios.get("http://localhost:8080/locations").then(({ data }) => {
-      this.attractions = data.result;
-    });
-    this.initKakaoMap();
+  created() {
+    this.initializeLocalAttractions();
   },
 
   methods: {
-    initKakaoMap() {
-      if (window.kakao && window.kakao.maps) {
-        this.initMap();
-      } else {
-        const script = document.createElement("script");
-        /* global kakao */
-        script.onload = () => kakao.maps.load(this.initMap);
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=02399938b90e8b081af8d7b1d6e4873d";
-        document.head.appendChild(script);
-      }
+    initializeLocalAttractions() {
+      this.localAttractions = [...this.attractions[this.selectedDay - 1]];
     },
-    initMap() {
-      const container = document.getElementById("map");
 
-      const options = {
-        center: new kakao.maps.LatLng(
-          this.attractions[0].lat,
-          this.attractions[0].lng
-        ),
-        level: 5,
-      };
-
-      this.map = new kakao.maps.Map(container, options);
-
-      const imageSrc =
-        "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png";
-      for (var i = 0; i < this.attractions.length; i++) {
-        var imageSize = new kakao.maps.Size(30, 30);
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        var latlng = new kakao.maps.LatLng(
-          this.attractions[i].lat,
-          this.attractions[i].lng
-        );
-
-        new kakao.maps.Marker({
-          map: this.map,
-          position: latlng,
-          title: this.attractions[i].title,
-          image: markerImage,
-        });
-      }
+    handleAttractionClick(attraction) {
+      this.$emit('attractionClicked', attraction);
+    },
+    checkMove() {
+      return true;
+    },
+    updateAttractions() {
+      //   this.localAttractions = [...this.localAttractions];
+      this.$emit('attractionClicked', this.localAttractions);
+      console.log(this.localAttractions);
     },
   },
 };
 </script>
 
 <style scoped>
-
-.save-button {
-  width: 80px;
-  height: 35px;
-  background-color: #49C46F;
+.outer-container {
   display: flex;
   justify-content: center;
+}
+.attraction-order {
+  font-family: 'CookieRun-Black';
+  font-size: 1.1rem;
+  color: #fe646f;
   align-items: center;
-  margin-left: auto;
-  margin-top: 30px;
-  border-radius: 12px;
-}
-
-a {
-  text-decoration: none;
-  font-family: "CookieRun-Regular";
-  color: #ffffff;
-  font-size: 1.2rem;
-  margin-top: -5px;
-}
-
-.save-button:hover {
-  background-color: #77da96;
-  transform: scale(1.1);
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-.title-container {
-  margin-left: 100px;
-  padding-top: 50px;
-  margin-bottom: -60px;
-  cursor: default;
-}
-
-.user {
-  font-family: "CookieRun-Regular";
-  color: #696969;
-  font-size: 0.9rem;
-}
-
-.location-date {
-  display: flex;
-  width: 85%;
-}
-
-.location {
-  font-family: "CookieRun-Black";
-  font-size: 2.5rem;
-  color: #696969;
-}
-
-.location>span {
-  color: #69beee;
-}
-
-.date {
-  margin-left: 10px;
-  margin-top: 30px;
-  font-family: "CookieRun-Regular";
-  color: #696969;
-  font-size: 0.9rem;
-}
-
-.container {
-  width: 1200px;
-  height: 800px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 90px;
-  /*box-shadow: 0 2px 4px rgba(73, 73, 73, 0.2);  그림자 속성 설정 */
-}
-
-.title-container {
-  width: 1200px;
-  height: 130px;
-}
-
-.inner-container {
-  margin-top: 30px;
-  display: flex;
-  margin-left: 50px;
-}
-
-.map {
-  width: 540px;
-  height: 260px;
-  border-radius: 30px;
-}
-
-.detail-view {
-  margin-top: 20px;
-  width: 540px;
-  height: 320px;
-  border-radius: 30px;
-  background-color: #fffaeb;
-  border: 1px solid #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.right-container {
+  margin-top: 1.6em;
+  margin-right: 20px;
   margin-left: 20px;
-  width: 540px;
-  height: 600px;
-  border-radius: 30px;
-  background-color: #e3f5ff;
-  /* border: 2px solid #69beee; */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.day-container {
-  margin-top: 7px;
+.attraction-list {
+  /* background-color: rgb(255, 255, 255);
   display: flex;
-  justify-content: center;
+  width: 500px;
+  height: 80px;
+  border: 1px solid #69beee;
+  border-radius: 17px;
+  margin-top: 10px; */
+}
+.attraction-list-item {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  width: 500px;
+  height: 80px;
+  border: 1px solid #69beee;
+  border-radius: 17px;
+  margin-top: 10px;
 }
 
-.day-container img:hover {
+.attraction-list-item:hover {
+  background-color: #fff3f4;
+  border: 1px solid #fe646f;
+  transition: 0.2s;
   cursor: pointer;
-  transform: scale(1.2);
+}
+.attraction-list:hover .attraction-name {
+  color: #fe646f;
   transition: 0.2s;
 }
 
-.day-container>img {
-  margin-top: 10px;
-  width: 20px;
-  height: 20px;
+img {
+  width: 15px;
+  margin-top: 5px;
 }
 
-.day-container>span {
-  font-family: "CookieRun-Bold";
-  color: #525252;
-  font-size: 1.7rem;
-  padding-right: 10px;
-  padding-left: 10px;
+.attractionImg {
+  width: 100px;
+  height: 70px;
+  border-radius: 10px;
+}
+.attraction-list-container {
+  display: flex;
+}
+.attraction-container {
+  width: 330px;
+  height: 4.5rem;
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
-.for-scroll::-webkit-scrollbar {
-  width: 10px;
-  height: 0;
+.attraction-info {
+  display: flex;
+  overflow: hidden;
+}
+.attraction-name {
+  font-family: 'CookieRun-Bold';
+  font-size: 1.5rem;
+  color: #696969;
+  white-space: nowrap; /* 줄 바꿈 방지 */
+  overflow: hidden; /* 넘친 부분 감추기 */
+  text-overflow: ellipsis; /* 생략 부호 표시 */
 }
 
-.for-scroll::-webkit-scrollbar-thumb {
-  background-color: #69beee;
-  /* 스크롤바 색상 */
-  border-radius: 5px;
-  /* 스크롤바 모서리의 곡률 */
+.like-rank-container {
+  font-family: 'CookieRun-Bold';
+  font-size: 0.9rem;
+  color: #8a8a8a;
+  height: 30px;
+  position: relative;
 }
 
-.for-scroll::-webkit-scrollbar-thumb:active {
-  background-color: #2e88bd;
-  /* 스크롤바 색상 */
+.like-rank-inner {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
 }
 
-::-webkit-scrollbar-track {
-  background-color: #e3f5ff;
-  /* 트랙 배경색 */
-}
-
-::-webkit-scrollbar-thumb {
-
-  background-color: transparent;
-}
-
-.for-scroll {
-  height: 540px;
+.attraction-desc-container {
+  height: 50px;
   overflow: scroll;
-  border-radius: 30px;
+}
+.attraction-desc {
+  font-family: 'CookieRun-Regular';
+  font-size: 0.8rem;
+  color: #696969;
+}
+::-webkit-scrollbar {
+  width: 0;
 }
 </style>

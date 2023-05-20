@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-const memberStore = "memberStore";
+import { mapState, mapActions } from 'vuex';
+const memberStore = 'memberStore';
 
 export default {
-  name: "LoginForm",
+  name: 'LoginForm',
   components: {},
   data() {
     return {
@@ -34,21 +34,21 @@ export default {
     };
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+    ...mapState(memberStore, ['isLogin', 'isLoginError', 'userInfo']),
   },
   methods: {
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    ...mapActions(memberStore, ['userConfirm', 'getUserInfo']),
     async confirm() {
       console.log(this.user);
       await this.userConfirm(this.user);
-      let token = sessionStorage.getItem("access-token");
+      let token = sessionStorage.getItem('access-token');
       if (this.isLogin) {
         await this.getUserInfo(token);
-        this.$router.push({ name: "AppMain" });
+        this.$router.push({ name: 'AppMain' });
       }
     },
     movePage() {
-      this.$router.push({ name: "join" });
+      this.$router.push({ name: 'join' });
     },
   },
 };
@@ -67,7 +67,7 @@ export default {
 .button {
   text-align: center;
   background-color: #69beee;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
   font-size: 20px;
   width: 170px;
@@ -109,7 +109,7 @@ export default {
   border-radius: 8px;
   outline: none;
   font-size: 25px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
   text-indent: 20px;
   margin-right: 20px;
