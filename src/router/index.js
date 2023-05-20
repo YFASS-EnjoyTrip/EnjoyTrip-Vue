@@ -16,6 +16,9 @@ import PlannerCreate from "../components/planner/PlannerCreate.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
 import MyPage from "../components/member/MyPage.vue";
+import MyPlanner from "../components/member/mypageComponents/MyPlanner.vue"
+import MyLiked from "../components/member/mypageComponents/MyLiked.vue"
+import MyInfo from "../components/member/mypageComponents/MyInfo.vue"
 
 import store from "@/store";
 
@@ -130,6 +133,24 @@ const routes = [
         name: "mypage",
         component: MyPage,
         props: true,
+        redirect: "/member/mypage/myplanner",
+        children:[
+          {
+            path: "myplanner",
+            name: "myplanner",
+            component: MyPlanner,
+          },
+          {
+            path: "myliked",
+            name: "myliked",
+            component: MyLiked,
+          },
+          {
+            path: "myinfo",
+            name: "myinfo",
+            component: MyInfo,
+          },
+        ]
       },
     ],
   },

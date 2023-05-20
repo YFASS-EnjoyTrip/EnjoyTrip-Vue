@@ -4,7 +4,15 @@ import router from "./router";
 import store from "./store";
 import "./assets/css/common.css";
 
-Vue.config.productionTip = false;
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret, faBookmark,faPenToSquare} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faUserSecret, faBookmark,faPenToSquare)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+Vue.config.productionTip = false
 
 new Vue({
   router,

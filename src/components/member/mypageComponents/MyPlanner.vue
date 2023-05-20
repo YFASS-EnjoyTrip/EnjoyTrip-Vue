@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <div class="title-container">
-      <span>나의 여행계획</span>
-    </div>
-    <div class="calndar-area">
-      <button @click="setToday">TODAY</button>
-      <v-calendar is-expanded :attributes='attributes' :from-date="fromDate"> </v-calendar>
-    </div>
-    <div class="attraction-area">
-      <div class="planner-container">
-        <div v-for="(planner, index) in planners" :key="index" class="planner-list">
-          <div>
-            <img class="attractionImg" :src="planner.image || defaultImage" :alt="planner.title"
-              @click="goToAttractionDetail(attraction)" />
-          </div>
-          <div class="attraction-info">
-            <div class="planner-title">
-              <span>{{ planner.title }}</span>
+  <div class="right-container">
+    <div>
+      <div class="title-container">
+        <span>나의 여행계획</span>
+      </div>
+      <div class="calndar-area">
+        <button @click="setToday">TODAY</button>
+        <v-calendar is-expanded :attributes='attributes' :from-date="fromDate"> </v-calendar>
+      </div>
+      <div class="attraction-area">
+        <div class="planner-container">
+          <div v-for="(planner, index) in planners" :key="index" class="planner-list">
+            <div>
+              <img class="attractionImg" :src="planner.image || defaultImage" :alt="planner.title"
+                @click="goToAttractionDetail(attraction)" />
             </div>
-            <div class="planner-date">
-              <span>{{ planner.startDate }} - {{ planner.endDate }}</span>
+            <div class="attraction-info">
+              <div class="planner-title">
+                <span>{{ planner.title }}</span>
+              </div>
+              <div class="planner-date">
+                <span>{{ planner.startDate }} - {{ planner.endDate }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -30,6 +32,7 @@
 
 <script>
 import VCalendar from 'v-calendar/lib/components/calendar.umd'
+
 export default {
   components: {
     VCalendar,
@@ -72,6 +75,7 @@ export default {
       },
     ];
     return {
+      defaultImage: "https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png",
       incId: todos.length,
       todos,
       fromDate: new Date(), // 현재 날짜로 초기화된 fromDate
@@ -79,7 +83,7 @@ export default {
         {
           "planId": 18,
           "title": "서울여행",
-          "image": "http://tong.visitkorea.or.kr/cms/resource/50/2844950_image2_1.jpg",
+          "image": "",
           "startDate": "2023-05-01",
           "endDate": "2023-05-02",
           "viewCount": 0,
@@ -173,6 +177,13 @@ export default {
 </script>
 
 <style scoped>
+.right-container {
+  width: 600px;
+  height: 800px;
+  border-radius: 0px 90px 90px 0px;
+  background-color: #fff4d7;
+}
+
 .attractionImg {
   width: 200px;
   height: 140px;
@@ -180,6 +191,7 @@ export default {
   box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
   /* 그림자 스타일 및 값 설정 */
 }
+
 .attractionImg:hover {
   transform: scale(1.1);
   filter: brightness(60%);
@@ -190,11 +202,13 @@ export default {
   transform: scale(0.9);
   transition: 0.2s;
 }
-.planner-date{
+
+.planner-date {
   font-size: 15px;
   font-family: "CookieRun-Regular";
   color: #808080;
 }
+
 .planner-title span {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -203,12 +217,14 @@ export default {
   font-family: "CookieRun-Bold";
   color: #4d4d4d;
 }
+
 .planner-title {
   margin-top: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .planner-container {
   display: flex;
   flex-wrap: wrap;
