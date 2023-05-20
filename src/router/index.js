@@ -15,6 +15,7 @@ import plannerModify from "../components/planner/PlannerModify.vue";
 import PlannerCreate from "../components/planner/PlannerCreate.vue";
 import LoginForm from "../components/member/LoginForm.vue";
 import SignupForm from "../components/member/SignupForm.vue";
+import MyPage from "../components/member/MyPage.vue";
 
 import store from "@/store";
 
@@ -122,6 +123,12 @@ const routes = [
         path: "login",
         name: "login",
         component: LoginForm,
+        props: true,
+      },
+      {
+        path: "mypage",
+        name: "mypage",
+        component: MyPage,
         props: true,
       },
     ],
