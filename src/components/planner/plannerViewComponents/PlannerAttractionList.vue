@@ -164,9 +164,9 @@ export default {
   font-size: 1.1rem;
   color: #fe646f;
   align-items: center;
-  margin-top: 1.6em;
+  margin-top: 1.3em;
   margin-right: 20px;
-  margin-left: 20px;
+  margin-left: 2em;
 }
 
 .attraction-list {
@@ -182,7 +182,7 @@ export default {
   background-color: rgb(255, 255, 255);
   display: flex;
   width: 500px;
-  height: 80px;
+  height: 70px;
   border: 1px solid #69beee;
   border-radius: 17px;
   margin-top: 10px;
@@ -206,7 +206,7 @@ img {
 
 .attractionImg {
   width: 100px;
-  height: 70px;
+  height: 90%;
   border-radius: 10px;
 }
 .attraction-list-container {

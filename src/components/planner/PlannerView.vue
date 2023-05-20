@@ -49,6 +49,9 @@
             @updatePlan="updatePlan"
           ></planner-attraction-list>
         </div>
+        <div class="bottom-container">
+          <div class="add-list-item"><span>여행지 추가</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -391,8 +394,35 @@ a {
 }
 
 .for-scroll {
-  height: 540px;
+  height: 420px;
   overflow: scroll;
   border-radius: 30px;
+}
+
+.bottom-container {
+  width: 530px;
+}
+.add-list-item {
+  background-color: #d6efff;
+  justify-content: center;
+  display: flex;
+  width: 500px;
+  height: 70px;
+  border: 3px dotted #69beee;
+  border-radius: 17px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s;
+}
+.add-list-item:hover {
+  background-color: #3d90cc;
+  cursor: pointer;
+}
+.add-list-item span {
+  color: #6e6e6e;
+  font-family: 'CookieRun-Bold';
+  font-size: 20px;
+  text-align: center;
+  line-height: 70px;
 }
 </style>
