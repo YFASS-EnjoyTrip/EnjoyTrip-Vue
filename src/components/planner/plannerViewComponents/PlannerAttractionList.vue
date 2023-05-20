@@ -18,7 +18,7 @@
                     type="checkbox"
                     name="attractions"
                     id="check"
-                    :value="attraction.contentId"
+                    :value="index + 1"
                     v-model="selectedAttractions"
                   />
                 </div>
@@ -91,6 +91,19 @@
         </div>
       </div>
     </div>
+    <!-- 날짜이동 모달 -->
+    <div v-if="showChangeModal" class="change-modal">
+      <div class="change-modal-content">
+        <label for="daySelect">이동할 날짜를 선택해주세요.</label>
+        <select id="daySelect" v-model="targetDay">
+          <option disabled value="">날짜를 선택하세요</option>
+          <option v-for="day in localPlan.length" :key="day" :value="day">{{ day }}</option>
+        </select>
+        <button @click="changeItem">확인</button>
+        <button @click="showChangeModal = false">취소</button>
+      </div>
+    </div>
+    <!---->
   </div>
 </template>
 
@@ -110,6 +123,8 @@ export default {
       localPlan: [],
       localAttractions: [],
       selectedAttractions: [],
+      showChangeModal: false,
+      targetDay: '',
     };
   },
   props: {
@@ -182,6 +197,40 @@ export default {
 
     updatePlanner() {
       this.$emit('updatePlan', this.localPlan);
+    },
+
+    removeItem() {
+      console.log(this.selectedAttractions.length);
+      const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
+
+      sortedSelectedAttractions.forEach((index) => {
+        this.localAttractions.splice(index - 1, 1);
+      });
+      this.selectedAttractions = [];
+      this.updateAttractions();
+    },
+
+    openChangeModal() {
+      this.showChangeModal = true;
+    },
+
+    changeItem() {
+      if (this.targetDay === '') {
+        alert('유효하지 않은 날짜입니다. 다시 시도해주세요.');
+        return;
+      }
+
+      const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
+
+      sortedSelectedAttractions.forEach((index) => {
+        const itemToMove = this.localAttractions.splice(index - 1, 1)[0];
+        this.localPlan[this.targetDay - 1].push(itemToMove);
+      });
+
+      this.selectedAttractions = [];
+      this.updateAttractions();
+      this.showChangeModal = false;
+      this.targetDay = '';
     },
   },
 };

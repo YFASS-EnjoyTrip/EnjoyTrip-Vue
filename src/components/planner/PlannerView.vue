@@ -42,6 +42,7 @@
         </div>
         <div class="for-scroll">
           <planner-attraction-list
+            ref="plannerAttractionList"
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
             :editMode="editMode"
@@ -58,8 +59,8 @@
               <span>여행지 추가</span>
             </div>
             <div class="modify-list-item">
-              <div class="remove-button">삭제</div>
-              <div class="change-button">날짜이동</div>
+              <div class="remove-button" @click="removeItem">삭제</div>
+              <div class="change-button" @click="openChangeModal">날짜이동</div>
             </div>
           </div>
           <div v-else @click="toggleAddItemMode"><span>돌아가기</span></div>
@@ -114,20 +115,6 @@ export default {
     };
   },
 
-  //   async created() {
-  //     await api.get(`http://localhost:8080/planner/list/${this.planId}`).then(({ data }) => {
-  //       if (data.status === 200) {
-  //         this.planInfo = data.result.planInfo;
-
-  //         Object.keys(data.result.dayInfo).forEach((key) => {
-  //           this.planDetailInfo.push(data.result.dayInfo[key]);
-  //         });
-  //       }
-  //     });
-
-  //     this.initKakaoMap();
-  //   },
-
   async mounted() {
     await this.fetchAttractions();
     this.initKakaoMap();
@@ -149,6 +136,14 @@ export default {
       }
     },
 
+    removeItem() {
+      // ref를 통해 자식 컴포넌트의 메소드를 호출합니다.
+      this.$refs.plannerAttractionList.removeItem();
+    },
+
+    openChangeModal() {
+      this.$refs.plannerAttractionList.openChangeModal();
+    },
     updatePlan(updateAttraction) {
       //   this.planDetailInfo = updateAttraction;
 
