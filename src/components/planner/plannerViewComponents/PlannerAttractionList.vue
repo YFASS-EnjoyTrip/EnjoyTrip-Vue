@@ -3,46 +3,66 @@
     <div class="outer-container">
       <div class="attraction-list-container">
         <div v-if="editMode">
-          <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
-            <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
-            <div v-for="(attraction, index) in localAttractions" :key="index" class="attraction-list-item"
-              @click="handleAttractionClick(attraction)">
-              <div class="checkbox-container">
-                <input class="checkbox" type="checkbox" name="attractions" id="check" :value="attraction.contentId"
-                  v-model="selectedAttractions" />
-              </div>
-              <div class="attraction-order">{{ index + 1 }}</div>
-              <div class="attraction-img">
-                <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
-              </div>
-              <div class="attraction-container">
-                <div class="attraction-info">
-                  <div class="attraction-name">
-                    {{ attraction.title }}
-                    <div class="like-rank-container">
-                      <div class="like-rank-inner">
-                        <span>
-                          <img src="@/assets/img/icon/heart_fill.png" alt="좋아요" />
-                          <span>{{ attraction.likeCount }}</span>
-                        </span>
-                        <span>
-                          <img src="@/assets/img/icon/star_fill.png" alt="별점" />
-                          <span>{{ attraction.rate }}</span>
-                          <span>({{ attraction.likeCount }})</span>
-                        </span>
+          <div v-if="!addItemMode">
+            <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
+              <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
+              <div
+                v-for="(attraction, index) in localAttractions"
+                :key="index"
+                class="attraction-list-item"
+                @click="handleAttractionClick(attraction)"
+              >
+                <div class="checkbox-container">
+                  <input
+                    class="checkbox"
+                    type="checkbox"
+                    name="attractions"
+                    id="check"
+                    :value="index + 1"
+                    v-model="selectedAttractions"
+                  />
+                </div>
+                <div class="attraction-order">{{ index + 1 }}</div>
+                <div class="attraction-img">
+                  <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
+                </div>
+                <div class="attraction-container">
+                  <div class="attraction-info">
+                    <div class="attraction-name">
+                      {{ attraction.title }}
+                      <div class="like-rank-container">
+                        <div class="like-rank-inner">
+                          <span>
+                            <img src="@/assets/img/icon/heart_fill.png" alt="좋아요" />
+                            <span>{{ attraction.likeCount }}</span>
+                          </span>
+                          <span>
+                            <img src="@/assets/img/icon/star_fill.png" alt="별점" />
+                            <span>{{ attraction.rate }}</span>
+                            <span>({{ attraction.likeCount }})</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </draggable>
+            </draggable>
+          </div>
+          <div v-else>
+            <planner-attraction-add
+              :sidoCode="sidoCode"
+              @attractionClicked2="handleAttractionClick2"
+            ></planner-attraction-add>
+          </div>
         </div>
         <div v-else>
-          <div v-for="(attraction, index) in localAttractions" :key="index" class="attraction-list-item"
-            @click="handleAttractionClick(attraction)">
-            <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
-
+          <div
+            v-for="(attraction, index) in localAttractions"
+            :key="index"
+            class="attraction-list-item"
+            @click="handleAttractionClick(attraction)"
+          >
             <div class="attraction-order">{{ index + 1 }}</div>
             <div class="attraction-img">
               <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
@@ -71,16 +91,31 @@
         </div>
       </div>
     </div>
+    <!-- 날짜이동 모달 -->
+    <div v-if="showChangeModal" class="change-modal">
+      <div class="change-modal-content">
+        <label for="daySelect">이동할 날짜를 선택해주세요.</label>
+        <select id="daySelect" v-model="targetDay">
+          <option disabled value="">날짜를 선택하세요</option>
+          <option v-for="day in localPlan.length" :key="day" :value="day">{{ day }}</option>
+        </select>
+        <button @click="changeItem">확인</button>
+        <button @click="showChangeModal = false">취소</button>
+      </div>
+    </div>
+    <!---->
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
+import PlannerAttractionAdd from './PlannerAttractionAdd.vue';
 
 export default {
   name: 'PlannerAttractionList',
   components: {
     draggable,
+    PlannerAttractionAdd,
   },
   data() {
     return {
@@ -88,6 +123,8 @@ export default {
       localPlan: [],
       localAttractions: [],
       selectedAttractions: [],
+      showChangeModal: false,
+      targetDay: '',
     };
   },
   props: {
@@ -101,6 +138,14 @@ export default {
     },
     editMode: {
       type: Boolean,
+      required: true,
+    },
+    addItemMode: {
+      type: Boolean,
+      required: true,
+    },
+    sidoCode: {
+      type: Number,
       required: true,
     },
   },
@@ -125,7 +170,7 @@ export default {
     },
   },
 
-  mounted() { },
+  mounted() {},
 
   methods: {
     initializeLocalAttractions() {
@@ -134,6 +179,12 @@ export default {
 
     handleAttractionClick(attraction) {
       this.$emit('attractionClicked', attraction);
+    },
+
+    handleAttractionClick2(attraction) {
+      this.localAttractions = [...this.localAttractions, attraction];
+      this.updateAttractions();
+      this.$emit('addAttraction');
     },
 
     checkMove() {
@@ -145,8 +196,41 @@ export default {
     },
 
     updatePlanner() {
-      console.log(this.localPlan);
       this.$emit('updatePlan', this.localPlan);
+    },
+
+    removeItem() {
+      console.log(this.selectedAttractions.length);
+      const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
+
+      sortedSelectedAttractions.forEach((index) => {
+        this.localAttractions.splice(index - 1, 1);
+      });
+      this.selectedAttractions = [];
+      this.updateAttractions();
+    },
+
+    openChangeModal() {
+      this.showChangeModal = true;
+    },
+
+    changeItem() {
+      if (this.targetDay === '') {
+        alert('유효하지 않은 날짜입니다. 다시 시도해주세요.');
+        return;
+      }
+
+      const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
+
+      sortedSelectedAttractions.forEach((index) => {
+        const itemToMove = this.localAttractions.splice(index - 1, 1)[0];
+        this.localPlan[this.targetDay - 1].push(itemToMove);
+      });
+
+      this.selectedAttractions = [];
+      this.updateAttractions();
+      this.showChangeModal = false;
+      this.targetDay = '';
     },
   },
 };

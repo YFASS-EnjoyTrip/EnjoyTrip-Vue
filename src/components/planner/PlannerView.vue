@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="right-container">
-        <div class="day-container">
+        <div v-if="!addItemMode" class="day-container">
           <img
             src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/arrow_left.png"
             alt="<"
@@ -42,15 +42,28 @@
         </div>
         <div class="for-scroll">
           <planner-attraction-list
+            ref="plannerAttractionList"
             :attractions="planDetailInfo"
             :selectedDay="selectedDay"
             :editMode="editMode"
+            :addItemMode="addItemMode"
+            :sidoCode="planInfo.sidoCode"
             @attractionClicked="handleAttractionClick"
+            @addAttraction="addAttraction"
             @updatePlan="updatePlan"
           ></planner-attraction-list>
         </div>
-        <div class="bottom-container">
-          <div class="add-list-item"><span>여행지 추가</span></div>
+        <div v-if="editMode" class="bottom-container">
+          <div v-if="!addItemMode">
+            <div class="add-list-item" @click="toggleAddItemMode">
+              <span>여행지 추가</span>
+            </div>
+            <div class="modify-list-item">
+              <div class="remove-button" @click="removeItem">삭제</div>
+              <div class="change-button" @click="openChangeModal">날짜이동</div>
+            </div>
+          </div>
+          <div v-else @click="toggleAddItemMode"><span>돌아가기</span></div>
         </div>
       </div>
     </div>
@@ -98,22 +111,9 @@ export default {
       planInfo: {},
       planDetailInfo: [],
       editMode: false,
+      addItemMode: false,
     };
   },
-
-  //   async created() {
-  //     await api.get(`http://localhost:8080/planner/list/${this.planId}`).then(({ data }) => {
-  //       if (data.status === 200) {
-  //         this.planInfo = data.result.planInfo;
-
-  //         Object.keys(data.result.dayInfo).forEach((key) => {
-  //           this.planDetailInfo.push(data.result.dayInfo[key]);
-  //         });
-  //       }
-  //     });
-
-  //     this.initKakaoMap();
-  //   },
 
   async mounted() {
     await this.fetchAttractions();
@@ -136,13 +136,20 @@ export default {
       }
     },
 
+    removeItem() {
+      // ref를 통해 자식 컴포넌트의 메소드를 호출합니다.
+      this.$refs.plannerAttractionList.removeItem();
+    },
+
+    openChangeModal() {
+      this.$refs.plannerAttractionList.openChangeModal();
+    },
     updatePlan(updateAttraction) {
       //   this.planDetailInfo = updateAttraction;
 
       // updateplan 후 redirect 해도 될거같은데
       // 1. planId, token, planDetatilInfo를 던진다
       try {
-        console.log(updateAttraction);
         const response = api.put(`/planner/update/${this.planId}`, {
           data: updateAttraction,
         });
@@ -152,14 +159,19 @@ export default {
       }
 
       // 2. 서버가 캐치 업데이트 칠건데... 그전에 order를 서버가 처리한다
+    },
 
-      console.log(this.planDetailInfo);
+    addAttraction() {
+      this.toggleAddItemMode();
     },
 
     toggleEditMode() {
       this.editMode = !this.editMode;
     },
 
+    toggleAddItemMode() {
+      this.addItemMode = !this.addItemMode;
+    },
     decreaseSelectedDay() {
       if (this.selectedDay > 1) {
         this.selectedDay--;
@@ -407,7 +419,7 @@ a {
   justify-content: center;
   display: flex;
   width: 500px;
-  height: 70px;
+  height: 60px;
   border: 3px dotted #69beee;
   border-radius: 17px;
   margin-left: auto;
@@ -416,6 +428,7 @@ a {
 }
 .add-list-item:hover {
   background-color: #3d90cc;
+  color: white;
   cursor: pointer;
 }
 .add-list-item span {
@@ -423,6 +436,28 @@ a {
   font-family: 'CookieRun-Bold';
   font-size: 20px;
   text-align: center;
-  line-height: 70px;
+  line-height: 60px;
+}
+
+.modify-list-item {
+  display: flex;
+  width: 530px;
+  height: 50px;
+  align-items: center; /* 버튼들을 세로 중앙에 배치 */
+}
+
+.remove-button,
+.change-button {
+  width: 30%;
+  cursor: pointer; /* 버튼 위로 마우스가 이동하면 포인터로 변경 */
+  padding: 10px 20px; /* 버튼 내부에 패딩 추가 */
+  background-color: #69beee; /* 버튼 배경색 */
+  color: #ffffff; /* 버튼 텍스트 색 */
+
+  margin-left: auto;
+  margin-right: auto;
+  border: none; /* 버튼 테두리 없음 */
+  border-radius: 10px; /* 버튼 모서리 둥글게 */
+  text-align: center; /* 텍스트 중앙정렬 */
 }
 </style>
