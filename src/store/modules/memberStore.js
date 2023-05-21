@@ -77,10 +77,11 @@ const memberStore = {
       let decodeToken = jwtDecode(token);
       // console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       await findById(
-        decodeToken.email,
+        decodeToken.memberId,
         ({ data }) => {
-          if (data.message === 'success') {
-            commit('SET_USER_INFO', data.userInfo);
+          if (data.result.message === 'success') {
+            console.log(data.result);
+            commit('SET_USER_INFO', data.result.memberInfo);
             // console.log("3. getUserInfo data >> ", data);
           } else {
             console.log('유저 정보 없음!!!!');
