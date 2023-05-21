@@ -4,7 +4,12 @@
       <div class="attraction-list-container">
         <div v-if="editMode">
           <div v-if="!addItemMode">
-            <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
+            <draggable
+              v-model="localAttractions"
+              class="attraction-list"
+              :move="checkMove"
+              @end="updateAttractions"
+            >
               <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
               <div
                 v-for="(attraction, index) in localAttractions"
@@ -22,6 +27,7 @@
                     v-model="selectedAttractions"
                   />
                 </div>
+                <label for="check"></label>
                 <div class="attraction-order">{{ index + 1 }}</div>
                 <div class="attraction-img">
                   <img class="attractionImg" :src="attraction.image || defaultImage" alt="사진" />
@@ -95,12 +101,14 @@
     <div v-if="showChangeModal" class="change-modal">
       <div class="change-modal-content">
         <label for="daySelect">이동할 날짜를 선택해주세요.</label>
-        <select id="daySelect" v-model="targetDay">
-          <option disabled value="">날짜를 선택하세요</option>
+        <select class="daySelect" id="daySelect" v-model="targetDay">
+          <option disabled value>일차</option>
           <option v-for="day in localPlan.length" :key="day" :value="day">{{ day }}</option>
         </select>
-        <button @click="changeItem">확인</button>
-        <button @click="showChangeModal = false">취소</button>
+        <div class="modal-container">
+          <div class="modal-cancel-button" @click="showChangeModal = false">취소</div>
+          <div class="modal-confirm-button" @click="changeItem">확인</div>
+        </div>
       </div>
     </div>
     <!---->
@@ -203,7 +211,7 @@ export default {
       console.log(this.selectedAttractions.length);
       const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
 
-      sortedSelectedAttractions.forEach((index) => {
+      sortedSelectedAttractions.forEach(index => {
         this.localAttractions.splice(index - 1, 1);
       });
       this.selectedAttractions = [];
@@ -222,7 +230,7 @@ export default {
 
       const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
 
-      sortedSelectedAttractions.forEach((index) => {
+      sortedSelectedAttractions.forEach(index => {
         const itemToMove = this.localAttractions.splice(index - 1, 1)[0];
         this.localPlan[this.targetDay - 1].push(itemToMove);
       });
@@ -237,6 +245,72 @@ export default {
 </script>
 
 <style scoped>
+.modal-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.modal-container div {
+  margin: 10px;
+  font-family: 'CookieRun-Regular';
+  font-size: 20px;
+  width: 70px;
+  height: 30px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.modal-container div:hover {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.modal-container div:active {
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+.modal-confirm-button {
+  background-color: #49c46f;
+  color: #ffffff;
+}
+.modal-cancel-button {
+  background-color: #fe646f;
+  color: #fff3f4;
+}
+.daySelect {
+  margin-top: 15px;
+  border: 2px solid #c4c4c4;
+  border-radius: 8px;
+  outline: none;
+  font-size: 20px;
+  text-indent: 10px;
+  font-family: 'CookieRun-Regular';
+  color: #aaaaaa;
+  text-align: center;
+  margin-right: 10px;
+  width: 100px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.change-modal {
+  display: flex;
+  position: absolute;
+  margin-top: -200px;
+  margin-left: 70px;
+  width: 400px;
+  height: 100px;
+  background-color: #555555dc;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  border-radius: 20px;
+
+  font-family: 'CookieRun-Regular';
+  font-size: 25px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.checkbox {
+  width: 20px;
+}
 .checkbox-container {
   display: flex;
   justify-content: center;
@@ -245,6 +319,7 @@ export default {
 }
 
 .outer-container {
+  height: 480px;
   display: flex;
   justify-content: center;
 }

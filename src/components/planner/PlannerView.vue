@@ -8,9 +8,7 @@
           여행
         </div>
         <div class="date">{{ planInfo.startDate }} ~ {{ planInfo.endDate }}</div>
-        <div class="modify-button" @click="toggleEditMode">
-          {{ editMode ? '완료' : '편집' }}
-        </div>
+        <div :class="buttonClass" @click="toggleEditMode">{{ editMode ? '완료' : '편집' }}</div>
       </div>
     </div>
     <div class="inner-container">
@@ -55,15 +53,15 @@
         </div>
         <div v-if="editMode" class="bottom-container">
           <div v-if="!addItemMode">
-            <div class="add-list-item" @click="toggleAddItemMode">
-              <span>여행지 추가</span>
-            </div>
             <div class="modify-list-item">
               <div class="remove-button" @click="removeItem">삭제</div>
               <div class="change-button" @click="openChangeModal">날짜이동</div>
+              <div class="add-button" @click="toggleAddItemMode">여행지 추가</div>
             </div>
           </div>
-          <div v-else @click="toggleAddItemMode"><span>돌아가기</span></div>
+          <div class="back-button" v-else @click="toggleAddItemMode">
+            <span>돌아가기</span>
+          </div>
         </div>
       </div>
     </div>
@@ -100,6 +98,12 @@ export default {
     selectedDayInfo() {
       return this.planDetailInfo[this.selectedDay - 1];
     },
+    buttonClass() {
+      return {
+        'modify-button done-button': this.editMode,
+        'modify-button edit-button': !this.editMode,
+      };
+    },
   },
   props: ['planId'],
 
@@ -110,7 +114,7 @@ export default {
       attractions: [],
       planInfo: {},
       planDetailInfo: [],
-      editMode: false,
+      editMode: true, //---------------------------------------------------------------------------------------------------
       addItemMode: false,
     };
   },
@@ -128,7 +132,7 @@ export default {
       if (data.status === 200) {
         this.planInfo = data.result.planInfo;
 
-        Object.keys(data.result.dayInfo).forEach((key) => {
+        Object.keys(data.result.dayInfo).forEach(key => {
           this.planDetailInfo.push(data.result.dayInfo[key]);
         });
 
@@ -241,17 +245,25 @@ export default {
 </script>
 
 <style scoped>
-.modify-button {
-  width: 80px;
-  height: 35px;
+.done-button {
+  background-color: #49c46f;
+}
+.edit-button {
   background-color: #f24849;
+}
+.modify-button {
+  width: 90px;
+  height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: auto;
-  margin-top: 30px;
+  margin-top: 15px;
   border-radius: 12px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-family: 'CookieRun-Regular';
+  color: #ffffff;
+  font-size: 25px;
 }
 
 a {
@@ -262,12 +274,21 @@ a {
   margin-top: -5px;
 }
 
-.modify-button:hover {
+.done-button:hover {
+  background-color: #1cad4a;
+  cursor: pointer;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.done-button:active {
+  background-color: #a7e7bc;
+  color: #525252;
+}
+.edit-button:hover {
   background-color: #d43333;
   cursor: pointer;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-.modify-button:active {
+.edit-button:active {
   background-color: #f8a9a9;
   color: #525252;
 }
@@ -406,14 +427,11 @@ a {
 }
 
 .for-scroll {
-  height: 420px;
+  /* max-height: 550px; */
   overflow: scroll;
   border-radius: 30px;
 }
 
-.bottom-container {
-  width: 530px;
-}
 .add-list-item {
   background-color: #d6efff;
   justify-content: center;
@@ -440,24 +458,76 @@ a {
 }
 
 .modify-list-item {
+  padding-top: 15px;
   display: flex;
-  width: 530px;
-  height: 50px;
+  width: 500px;
   align-items: center; /* 버튼들을 세로 중앙에 배치 */
+  margin: auto;
+}
+.modify-list-item div {
+  width: 130px;
+  height: 40px;
+  text-align: center;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'CookieRun-Regular';
+  font-size: 20px;
+  color: #ffffff;
+  padding-top: 10px;
+  cursor: pointer;
+}
+.modify-list-item div:active{
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+.remove-button {
+  background-color: #f24849;
+}
+.remove-button:hover {
+  background-color: #c42828;
+}
+.change-button {
+  background-color: #69beee;
+}
+.change-button:hover,
+.add-button:hover {
+  background-color: #4294c4;
+}
+.add-button {
+  background-color: #69beee;
 }
 
-.remove-button,
-.change-button {
-  width: 30%;
-  cursor: pointer; /* 버튼 위로 마우스가 이동하면 포인터로 변경 */
-  padding: 10px 20px; /* 버튼 내부에 패딩 추가 */
-  background-color: #69beee; /* 버튼 배경색 */
-  color: #ffffff; /* 버튼 텍스트 색 */
-
-  margin-left: auto;
-  margin-right: auto;
-  border: none; /* 버튼 테두리 없음 */
-  border-radius: 10px; /* 버튼 모서리 둥글게 */
-  text-align: center; /* 텍스트 중앙정렬 */
+.back-button{
+  margin-top: 30px !important;
+  width: 500px;
+  height: 50px;
+  text-align: center;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'CookieRun-Regular';
+  font-size: 25px;
+  color: #ffffff;
+  padding-top: 10px;
+  cursor: pointer;
+  background-color: #69beee;
+}
+.back-button:hover{
+  box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #318ec4;
+}
+.back-button:hover span{
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+.back-button:active{
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+.back-button span{
+  display: flex;
+  justify-content: center;
 }
 </style>

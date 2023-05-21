@@ -1,36 +1,41 @@
 <template>
-  <div class="add-item-container">
-    <div
-      class="attraction-container"
-      v-for="(attraction, index) in attractions"
-      :key="index"
-      @click="handleAttractionClick2(attraction)"
-    >
-      <div class="img-heart">
-        <img class="attractionImg" draggable="false" :src="attraction.image || defaultImage" :alt="attraction.title" />
-      </div>
-      <div class="attraction-info">
-        <div class="attraction-title">
-          <span>{{ attraction.title }}</span>
-        </div>
-        <div class="like-heart">
+    <div class="add-item-container">
+      <div
+        class="attraction-container"
+        v-for="(attraction, index) in attractions"
+        :key="index"
+        @click="handleAttractionClick2(attraction)"
+      >
+        <div class="img-heart">
           <img
-            class="icon"
-            :src="
+            class="attractionImg"
+            draggable="false"
+            :src="attraction.image || defaultImage"
+            :alt="attraction.title"
+          />
+        </div>
+        <div class="attraction-info">
+          <div class="attraction-title">
+            <span>{{ attraction.title }}</span>
+          </div>
+          <div class="like-heart">
+            <img
+              class="icon"
+              :src="
               attraction.isLike
                 ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
                 : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
             "
-            alt="하트"
-          />
-          <span>({{ attraction.likeCount }})</span>
-          <img class="icon" src="@/assets/img/icon/star_fill.png" alt="별" />
-          <span>{{ attraction.rank }}</span>
-          <span>({{ attraction.rankCnt }})</span>
+              alt="하트"
+            />
+            <span>({{ attraction.likeCount }})</span>
+            <img class="icon" src="@/assets/img/icon/star_fill.png" alt="별" />
+            <span>{{ attraction.rank }}</span>
+            <span>({{ attraction.rankCnt }})</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -82,7 +87,6 @@ export default {
   justify-content: space-between;
   align-content: flex-start;
   margin-top: 10px;
-  height: 600px;
   width: 500px;
 }
 .attraction-container {
