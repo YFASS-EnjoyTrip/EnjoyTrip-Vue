@@ -13,7 +13,7 @@
     </div>
     <div class="review-container">
       <div class="comment-container">
-        <AttractionReview :contentId="this.attractionInfo.contentId"></AttractionReview>
+        <AttractionReview :attraction="this.attractionInfo"></AttractionReview>
       </div>
       <div class="blog-container">
         <BlogReview :contentTitle="this.attractionInfo.title"></BlogReview>

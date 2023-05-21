@@ -57,12 +57,9 @@
           <div class="like-heart">
             <img
               class="icon"
-              :src="
-                attraction.isLike
-                  ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
-                  : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
-              "
+              src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png"
               alt="하트"
+              @click="clickedLike(attraction, index)"
             />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
@@ -84,6 +81,10 @@
 
 <script>
 import axios from 'axios';
+import { apiAuthInstance } from '@/api';
+
+const api = apiAuthInstance();
+
 export default {
   name: 'AttractionSearch',
   components: {},
@@ -186,6 +187,20 @@ export default {
       );
       this.attractions = response.data.result;
       this.$emit('attractions-updated', this.attractions);
+    },
+
+    // 좋아요 클릭 이벤트
+    async clickedLike(attraction, index) {
+      try {
+        const response = await api.post(`/locations/${attraction.contentId}/like`);
+        if (response.status === 200) {
+          this.attractions[index].likeCount = response.data.result;
+        } else {
+          console.log('좋아요 요청 실패!');
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     // 스크롤 이벤트 핸들러
