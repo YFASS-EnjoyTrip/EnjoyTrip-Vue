@@ -4,27 +4,17 @@
       <div class="like-rank">
         <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
         <div class="cnt">{{ attraction.likeCount }}</div>
-        <img
-          src="../../../assets/img/icon/star_fill.png"
-          alt="별점"
-          class="rank"
-        />
+        <img src="@/assets/img/icon/star_fill.png" alt="별점" class="rank" />
         <div class="cnt">{{ attraction.rate }}</div>
       </div>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="comment-content-container"
-          >
+          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
-              <span class="comment-date">{{
-                formatDate(comment.createdAt)
-              }}</span>
+              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
             </div>
             <div class="comment-content">
               {{ comment.content }}
@@ -37,11 +27,11 @@
 </template>
 
 <script>
-import axios from "axios";
-import moment from "moment";
+import axios from 'axios';
+import moment from 'moment';
 
 export default {
-  name: "AttractionComment",
+  name: 'AttractionComment',
   components: {},
   props: {
     attraction: {
@@ -69,18 +59,16 @@ export default {
 
   methods: {
     formatDate(date) {
-      return moment(date).format("YY-MM-DD");
+      return moment(date).format('YY-MM-DD');
     },
 
     async fetchComments() {
       const contentId = this.attraction.contentId;
       try {
-        const { data } = await axios.get(
-          `http://localhost:8080/locations/detail/${contentId}/reviews`
-        );
+        const { data } = await axios.get(`http://localhost:8080/locations/detail/${contentId}/reviews`);
         this.comments = data.result;
       } catch (error) {
-        console.error("Failed to fetch comment:", error);
+        console.error('Failed to fetch comment:', error);
       }
     },
   },
@@ -113,7 +101,7 @@ img {
   width: 15px;
 }
 .cnt {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #5f5f5f;
   font-size: 0.7rem;
 }
@@ -127,7 +115,7 @@ img {
 .comment-nickname {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #aaaaaa;
   font-size: 0.8rem;
 }
@@ -138,7 +126,7 @@ img {
 .comment-content {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
   font-size: 0.8rem;
 }

@@ -92,26 +92,9 @@ export default {
 
     async updateAttractions(attractions) {
       this.attractions = attractions;
-      console.log(this.attractions);
       this.loadKakaoMap();
-      // this.updateExistingMarkers();
       this.addNewMarkers();
     },
-
-    // updateExistingMarkers() {
-    //   const length = Math.min(this.attractions.length, this.markers.length);
-
-    //   for (let i = 0; i < length; i++) {
-    //     const attraction = this.attractions[i];
-    //     // attraction이 유효하고 lat, lng 속성을 가지고 있는지 확인
-    //     if (attraction && attraction.lat && attraction.lng) {
-    //       const latlng = new kakao.maps.LatLng(attraction.lat, attraction.lng);
-    //       this.markers[i].setPosition(latlng);
-    //     } else {
-    //       console.warn(`Attraction at index ${i} is missing lat/lng properties.`);
-    //     }
-    //   }
-    // },
 
     addNewMarkers() {
       const imageSrc = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png';

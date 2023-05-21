@@ -3,22 +3,27 @@
     <div class="comment-in-container">
       <div class="like-rank">
         <div class="cnt main-title">한줄리뷰</div>
-        <img
-          class="icon-img"
-          src="../../assets/img/icon/heart_fill.png"
-          alt="좋아요"
-        />
-        <div class="cnt">301</div>
-        <img
-          src="../../assets/img/icon/star_fill.png"
-          alt="별점"
-          class="icon-img"
-        />
-        <div class="cnt">3.6</div>
-        <div class="cnt">300</div>
+        <img class="icon-img" src="../../assets/img/icon/heart_fill.png" alt="좋아요" />
+        <div class="cnt">{{ attraction.likeCount }}</div>
+        <img src="../../assets/img/icon/star_fill.png" alt="별점" class="icon-img" />
+        <div class="cnt">{{ calculateRate }}</div>
+        <div class="cnt">({{ attraction.totalCount }})</div>
       </div>
     </div>
-    <div class="nickname">댓글 작성하기</div>
+    <div class="nickname">
+      댓글 작성하기
+      <div class="rating">
+        <span v-for="index in 5" :key="index" @click="setRating(index)">
+          <img
+            :src="
+              index <= rating ? require('@/assets/img/icon/star_fill.png') : require('@/assets/img/icon/star_empty.png')
+            "
+            class="icon"
+            alt="star"
+          />
+        </span>
+      </div>
+    </div>
     <div class="write-container">
       <textarea
         class="write-input"
@@ -27,6 +32,7 @@
         cols="30"
         rows="5"
         v-model="writeContext"
+        :disabled="hasWrittenComment"
       ></textarea>
     </div>
     <div class="write-button">
@@ -36,11 +42,7 @@
       <div class="comment-in-container">
         <div>
           <div class="write-comment"></div>
-          <div
-            v-for="(comment, index) in comments"
-            :key="index"
-            class="comment-content-container"
-          >
+          <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
               <span class="comment-date">
@@ -56,44 +58,83 @@
 </template>
 
 <script>
-import axios from "axios";
-import moment from "moment";
+import { apiInstance } from '@/api';
+import moment from 'moment';
+
+const api = apiInstance();
 
 export default {
-  name: "AttractionReview",
+  name: 'AttractionReview',
   components: {},
   data() {
     return {
+      rating: 3,
       comments: [],
-      contentId: "",
-      writeContext: "",
+      contentId: '',
+      writeContext: '',
     };
   },
+
+  props: {
+    attraction: {
+      type: Object,
+      require: true,
+    },
+  },
+
+  computed: {
+    calculateRate() {
+      if (this.attraction.rate && this.attraction.totalCount && this.attraction.totalCount != 0) {
+        return this.attraction.rate / this.attraction.totalCount;
+      } else {
+        return 0;
+      }
+    },
+
+    hasWrittenComment() {
+      return this.comments.some((comment) => comment.userId === this.userId);
+    },
+  },
+
   created() {
-    this.contentId = sessionStorage.getItem("contentId");
+    this.contentId = sessionStorage.getItem('contentId');
     this.loadData();
   },
 
   methods: {
     async loadData() {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/locations/detail/${this.contentId}/reviews`
-        );
+        const response = await api.get(`http://localhost:8080/locations/detail/${this.contentId}/reviews`);
 
         this.comments = response.data.result;
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     },
     formatDate(date) {
-      return moment(date).format("YY-MM-DD");
+      return moment(date).format('YY-MM-DD');
+    },
+
+    setRating(rating) {
+      this.rating = rating;
     },
   },
 };
 </script>
 
 <style scoped>
+.rating {
+  display: flex;
+  margin-top: 3px;
+  margin-left: 20px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 0;
@@ -116,9 +157,10 @@ export default {
   /* 트랙 배경색 */
 }
 .nickname {
+  display: flex;
   margin-top: 20px;
   margin-left: 40px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffbb00;
   font-size: 20px;
 }
@@ -134,7 +176,7 @@ export default {
   cursor: pointer;
 }
 .write-button span {
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #404040;
   font-size: 20px;
 }
@@ -151,7 +193,7 @@ export default {
   margin-left: 3px;
   margin-top: 3px;
   padding-left: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #6b6b6b;
   font-size: 20px;
   height: 100px;
@@ -196,7 +238,7 @@ img {
   width: 15px;
 }
 .cnt {
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #5f5f5f;
   font-size: 20px;
   margin-right: 10px;
@@ -216,7 +258,7 @@ img {
 .comment-nickname {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #aaaaaa;
   font-size: 15px;
   margin-top: 10px;
@@ -228,7 +270,7 @@ img {
 .comment-content {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: "CookieRun-Bold";
+  font-family: 'CookieRun-Bold';
   color: #757575;
   font-size: 20px;
   margin-bottom: 10px;

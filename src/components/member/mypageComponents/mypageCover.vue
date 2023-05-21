@@ -1,39 +1,55 @@
 <template>
   <div class="cover-container">
-    <img class="main-logo" src="../../../assets/img/main_logo.png" alt="">
+    <img class="main-logo" src="../../../assets/img/main_logo.png" alt="" />
     <div class="profile-img">
-      <img src="../../../assets/img/icon/profile_default.png" alt="">
+      <img :src="this.user.profileImg || this.defaultImg" alt="" draggable="false" />
     </div>
-    <div class="nickname">{{ nickname }}</div>
+    <div class="nickname">{{ this.user.nickname }}</div>
     <div class="bio">
-      <span>{{ bio }}</span>
+      <span>{{ this.user.bio }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+const memberStore = 'memberStore';
+
 export default {
   data() {
     return {
-      nickname: "asdfasdf",
-      bio: "한줄소개입니다~~~~~~~~한줄소개입니다~~~~~~~~"
-    }
+      defaultImg: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png',
+    };
+  },
 
-  }
-}
+  computed: {
+    ...mapGetters(memberStore, ['checkUserInfo']),
+    user() {
+      return (
+        this.checkUserInfo || {
+          nickname: '',
+          profileImg: '',
+          bio: '',
+        }
+      );
+    },
+  },
+};
 </script>
 
 <style scoped>
 .bio span {
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   font-size: 20px;
   color: #707070;
+  margin: auto;
 }
 
 .bio {
   overflow: hidden;
   display: flex;
   align-items: center;
+  text-align: center;
   width: 400px;
   height: 120px;
   background-color: #ffffff;
@@ -41,11 +57,10 @@ export default {
   border-radius: 18px;
   margin-top: 30px;
   box-shadow: 4px 4px 4px rgba(255, 162, 162, 0.5);
-  text-align: center;
 }
 
 .nickname {
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   font-size: 30px;
   color: #707070;
   text-align: center;
@@ -59,7 +74,7 @@ export default {
   overflow: hidden;
   margin: auto;
   margin-top: 30px;
-  border: 5px solid #FE646F;
+  border: 5px solid #fe646f;
   box-shadow: 4px 4px 4px rgba(255, 162, 162, 0.5);
 }
 
