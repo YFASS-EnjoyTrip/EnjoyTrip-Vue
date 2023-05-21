@@ -9,7 +9,10 @@
         <div class="ticket-top">
           <div v-if="loading" class="modal">
             <div class="modal-content">
-              <img src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+              <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+              <div class="modal-text">
+                <span>{{ this.user.nickname }}</span>님 만을 위한 <br> <span>{{getSelectedText(location)}}</span>여행 계획이 <br> 만들어지고 있어요!
+              </div>
             </div>
           </div>
           <div class="nickname">
@@ -23,13 +26,12 @@
           <div class="location-input">
             <span>지역</span>
             <select class="sido-dropdown" name="sido" id="location" v-model="location">
-              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
-                {{ sido.text }}
-              </option>
+              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
             </select>
           </div>
           <div class="date-input">
             <span>일정</span>
+            <!-- <date-picker v-model='selectedDate' is-range/> -->
             <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
             <span>~</span>
             <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
@@ -76,13 +78,16 @@
 <script>
 import { mapGetters } from 'vuex';
 import { apiAuthInstance } from '@/api/index.js';
+// import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 const memberStore = 'memberStore';
 const api = apiAuthInstance();
 
 export default {
   name: 'PlannerCreate',
-  components: {},
+  components: { 
+    // DatePicker
+ },
   computed: {
     ...mapGetters(memberStore, ['checkUserInfo']),
     user() {
@@ -97,6 +102,10 @@ export default {
   },
   data() {
     return {
+      selectedDate: {
+        start: new Date(2023, 4, 1),
+        end: new Date(2023, 4, 5),
+      },
       loading: false,
       location: '',
       locName: '',
@@ -129,7 +138,7 @@ export default {
   },
   methods: {
     getSelectedText(value) {
-      const selectedSido = this.sidos.find((sido) => sido.value === value);
+      const selectedSido = this.sidos.find(sido => sido.value === value);
       this.locName = selectedSido ? selectedSido.text : '';
       return this.locName;
     },
@@ -157,7 +166,7 @@ export default {
               name: 'plannerView',
               params: { planId: response.data.result },
             });
-          }, 3000); // 2초 후에 실행
+          }, 4000); // 4초 후에 실행
         }
       } catch (error) {
         console.error(error);
@@ -404,12 +413,35 @@ export default {
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
-
+.gif{
+  width: 500px;
+  height: fit-content;
+  margin-top: 100px;
+  margin-left: 20px;
+}
+.modal-text{
+  font-family: "CookieRun-Regular";
+  color: #383838;
+  font-size: 50px;
+  text-align: center;
+  margin-top: 250px;
+  margin: auto;
+}
+.modal-text span{
+  color: #30b2fd;
+}
 .modal-content {
+  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  background-color: #ffffff;
+  width: 1000px;
+  height: 600px;
+  border-radius: 60px;
+  padding-right: 50px;
+  border: 10px solid #FE646F;
 }
 </style>
