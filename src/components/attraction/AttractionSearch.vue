@@ -61,10 +61,10 @@
               alt="하트"
               @click="clickedLike(attraction, index)"
             />
-            <span>{{ attraction.likeCount }}</span>
+            <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="../../assets/img/icon/star_fill.png" alt="별" />
-            <span>{{ calculateRate(attraction) }}</span>
-            <span>({{ attraction.totalCount }})</span>
+            <span>{{ attraction.rank }}</span>
+            <span>({{ attraction.rankCnt }})</span>
           </div>
         </div>
       </div>
@@ -149,9 +149,11 @@ export default {
   },
   computed: {
     allSelected: {
+      //getter
       get: function () {
         return this.allTypes.length === this.selectedTypes.length;
       },
+      //setter allSelected 속성이 변경되었을 때 호출되며, 인자 e는 새로운 allSelected 값
       set: function (e) {
         this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
       },
@@ -174,14 +176,6 @@ export default {
       this.$emit('attractions-updated', this.attractions);
     },
 
-    calculateRate(attraction) {
-      if (attraction.rate && attraction.totalCount && attraction.totalCount != 0) {
-        let rate = attraction.rate / attraction.totalCount;
-        return parseFloat(rate.toFixed(1));
-      } else {
-        return 0;
-      }
-    },
     async selectAllAttractions() {
       const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
 
