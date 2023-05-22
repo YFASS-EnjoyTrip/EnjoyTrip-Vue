@@ -11,6 +11,9 @@ const memberStore = {
     isValidToken: false,
   },
   getters: {
+    checkIsLogin: function (state) {
+      return state.isLogin;
+    },
     checkUserInfo: function (state) {
       return state.userInfo;
     },
