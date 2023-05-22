@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="blog">
-          <AttractionBlogReview></AttractionBlogReview>
+          <AttractionBlogReview :attraction="attraction"></AttractionBlogReview>
         </div>
       </div>
     </div>

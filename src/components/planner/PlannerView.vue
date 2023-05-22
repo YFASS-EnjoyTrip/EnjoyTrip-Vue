@@ -38,6 +38,20 @@
             "
           />
         </div>
+        <div v-if="loading" class="modal">
+          <div class="modal-content">
+            <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+            <div class="modal-text">
+              <span>{{ planInfo.nickName }}</span>
+              님 만을 위한
+              <br />
+              <span>{{ planInfo.title }}</span>
+              여행 계획이
+              <br />
+              만들어지고 있어요!
+            </div>
+          </div>
+        </div>
         <div class="for-scroll">
           <planner-attraction-list
             ref="plannerAttractionList"
@@ -51,9 +65,9 @@
             @updatePlan="updatePlan"
           ></planner-attraction-list>
         </div>
-        <div class="reroll-button" v-show="!editMode">
+        <div class="reroll-button" v-show="!editMode" @click="reRollPlanner">
           다시 시도하기
-          <span>(남은 횟수 {{ rerollCnt }}회)</span>
+          <span>(남은 횟수 {{ rerollCnt - this.planInfo.rerollCount }}회)</span>
         </div>
         <div v-if="editMode" class="bottom-container">
           <div v-if="!addItemMode">
@@ -121,6 +135,7 @@ export default {
       editMode: false,
       addItemMode: false,
       rerollCnt: 5,
+      loading: false,
     };
   },
 
@@ -131,17 +146,46 @@ export default {
 
   methods: {
     async fetchAttractions() {
-      const response = await api.get(`http://localhost:8080/planner/list/${this.planId}`);
+      const response = await api.get(`/planner/list/${this.planId}`);
       const { data } = response;
 
       if (data.status === 200) {
         this.planInfo = data.result.planInfo;
-
+        console.log(this.planInfo);
         Object.keys(data.result.dayInfo).forEach((key) => {
           this.planDetailInfo.push(data.result.dayInfo[key]);
         });
 
         this.attractions = this.planDetailInfo;
+      }
+    },
+
+    async reRollPlanner() {
+      if (this.rerollCnt - this.planInfo.rerollCount === 0) {
+        alert('기회를 모두 사용하셨습니다!');
+      } else {
+        const param = {
+          planId: this.planInfo.planId,
+          sidoCode: this.planInfo.sidoCode,
+          startDate: this.planInfo.startDate,
+          endDate: this.planInfo.endDate,
+        };
+
+        try {
+          const response = await api.post(`/planner/reroll`, param);
+
+          if (response.status === 201) {
+            this.loading = true;
+            setTimeout(() => {
+              this.loading = false;
+              window.location.reload();
+            }, 4000); // 4초 후에 실행
+          } else {
+            console.log('서버에 문제가 발생');
+          }
+        } catch (error) {
+          console.log('error');
+        }
       }
     },
 
@@ -152,6 +196,7 @@ export default {
     openChangeModal() {
       this.$refs.plannerAttractionList.openChangeModal();
     },
+
     updatePlan(updateAttraction) {
       //   this.planDetailInfo = updateAttraction;
 
@@ -572,5 +617,49 @@ a {
 .back-button span {
   display: flex;
   justify-content: center;
+}
+
+.modal {
+  /* 모달의 위치를 고정하고 전체 페이지를 덮게 하려면 다음을 사용하세요 */
+  position: fixed;
+  z-index: 9999; /* 다른 콘텐츠 위에 표시 */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+.gif {
+  width: 500px;
+  height: fit-content;
+  margin-top: 100px;
+  margin-left: 20px;
+}
+.modal-text {
+  font-family: 'CookieRun-Regular';
+  color: #383838;
+  font-size: 50px;
+  text-align: center;
+  margin-top: 250px;
+  margin: auto;
+}
+.modal-text span {
+  color: #30b2fd;
+}
+.modal-content {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: #ffffff;
+  width: 1000px;
+  height: 600px;
+  border-radius: 60px;
+  padding-right: 50px;
+  border: 10px solid #fe646f;
 }
 </style>

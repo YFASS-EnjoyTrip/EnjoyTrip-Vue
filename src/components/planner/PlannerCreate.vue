@@ -11,7 +11,13 @@
             <div class="modal-content">
               <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
               <div class="modal-text">
-                <span>{{ this.user.nickname }}</span>님 만을 위한 <br> <span>{{getSelectedText(location)}}</span>여행 계획이 <br> 만들어지고 있어요!
+                <span>{{ this.user.nickname }}</span>
+                님 만을 위한
+                <br />
+                <span>{{ getSelectedText(location) }}</span>
+                여행 계획이
+                <br />
+                만들어지고 있어요!
               </div>
             </div>
           </div>
@@ -85,9 +91,9 @@ const api = apiAuthInstance();
 
 export default {
   name: 'PlannerCreate',
-  components: { 
+  components: {
     // DatePicker
- },
+  },
   computed: {
     ...mapGetters(memberStore, ['checkUserInfo']),
     user() {
@@ -138,7 +144,7 @@ export default {
   },
   methods: {
     getSelectedText(value) {
-      const selectedSido = this.sidos.find(sido => sido.value === value);
+      const selectedSido = this.sidos.find((sido) => sido.value === value);
       this.locName = selectedSido ? selectedSido.text : '';
       return this.locName;
     },
@@ -154,8 +160,6 @@ export default {
 
         // 플랜 생성 성공 시
         if (response.status === 201) {
-          console.log(response.data.result);
-
           // 로딩 gif 표시를 위한 데이터 프로퍼티
           this.loading = true;
 
@@ -413,21 +417,21 @@ export default {
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
-.gif{
+.gif {
   width: 500px;
   height: fit-content;
   margin-top: 100px;
   margin-left: 20px;
 }
-.modal-text{
-  font-family: "CookieRun-Regular";
+.modal-text {
+  font-family: 'CookieRun-Regular';
   color: #383838;
   font-size: 50px;
   text-align: center;
   margin-top: 250px;
   margin: auto;
 }
-.modal-text span{
+.modal-text span {
   color: #30b2fd;
 }
 .modal-content {
@@ -442,6 +446,6 @@ export default {
   height: 600px;
   border-radius: 60px;
   padding-right: 50px;
-  border: 10px solid #FE646F;
+  border: 10px solid #fe646f;
 }
 </style>
