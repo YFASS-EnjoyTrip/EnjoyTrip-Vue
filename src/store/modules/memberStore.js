@@ -11,6 +11,10 @@ const memberStore = {
     isValidToken: false,
   },
   getters: {
+    checkIsLogin: function (state) {
+      return state.isLogin;
+    },
+
     checkUserInfo: function (state) {
       return state.userInfo;
     },
@@ -53,18 +57,14 @@ const memberStore = {
         ({ data, headers }) => {
           // headers 추가
           if (data.status === 200) {
-            let accessToken = headers['authorization'];
-            let refreshToken = data.result;
-            console.log(
-              'login success token created!!!! >> ',
-              accessToken,
-              refreshToken,
-            );
+            let accessToken = headers['authorization']; // headers에서 Authorization 값을 가져옵니다.
+            let refreshToken = data.result; // 쿠키에 저장해야 하는데...
+
             commit('SET_IS_LOGIN', true);
             commit('SET_IS_LOGIN_ERROR', false);
             commit('SET_IS_VALID_TOKEN', true);
             sessionStorage.setItem('access-token', accessToken);
-            sessionStorage.setItem('refresh-token', refreshToken);
+            sessionStorage.setItem('refresh-token', refreshToken); // 쿠키에 저장 해야하는데 ...
           } else {
             commit('SET_IS_LOGIN', false);
             commit('SET_IS_LOGIN_ERROR', true);
@@ -82,8 +82,8 @@ const memberStore = {
       await findById(
         decodeToken.memberId,
         ({ data }) => {
-          if (data.result.message === 'success') {
-            console.log(data.result);
+          if (data.status === 202) {
+            // console.log(data.result);
             commit('SET_USER_INFO', data.result.memberInfo);
             // console.log("3. getUserInfo data >> ", data);
           } else {
