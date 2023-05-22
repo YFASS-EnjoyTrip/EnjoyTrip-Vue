@@ -39,8 +39,8 @@
                           </span>
                           <span>
                             <img src="@/assets/img/icon/star_fill.png" alt="별점" />
-                            <span>{{ attraction.rate }}</span>
-                            <span>({{ attraction.likeCount }})</span>
+                            <span>{{ calculateRate(attraction) }}</span>
+                            <span>({{ attraction.totalCount }})</span>
                           </span>
                         </div>
                       </div>
@@ -80,8 +80,8 @@
                       </span>
                       <span>
                         <img src="@/assets/img/icon/star_fill.png" alt="별점" />
-                        <span>{{ attraction.rate }}</span>
-                        <span>({{ attraction.likeCount }})</span>
+                        <span>{{ calculateRate(attraction) }}</span>
+                        <span>({{ attraction.totalCount }})</span>
                       </span>
                     </div>
                   </div>
@@ -176,6 +176,14 @@ export default {
   mounted() {},
 
   methods: {
+    calculateRate(attraction) {
+      if (attraction.rate && attraction.totalCount && attraction.totalCount != 0) {
+        let rate = attraction.rate / attraction.totalCount;
+        return parseFloat(rate.toFixed(1));
+      } else {
+        return 0;
+      }
+    },
     initializeLocalAttractions() {
       this.localAttractions = this.localPlan[this.selectedDay - 1];
     },

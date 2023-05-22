@@ -146,7 +146,6 @@ export default {
     },
 
     removeItem() {
-      // ref를 통해 자식 컴포넌트의 메소드를 호출합니다.
       this.$refs.plannerAttractionList.removeItem();
     },
 

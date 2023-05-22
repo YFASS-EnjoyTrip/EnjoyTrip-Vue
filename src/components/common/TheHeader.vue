@@ -89,12 +89,7 @@ export default {
     },
   },
 
-  created() {
-    if (this.checkUserInfo) {
-      this.nickname = this.checkUserInfo.nickname;
-      this.profile = this.checkUserInfo.profile;
-    }
-  },
+  created() {},
   methods: {},
 };
 </script>
