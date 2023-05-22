@@ -27,7 +27,7 @@
       <div class="nav-member">
         <li v-if="isLogin" class="mypage">
           <span class="profile-container">
-            <img class="mypage-img" src="../../assets/img/Attraction_default.png" alt="이미지" />
+            <img class="mypage-img" :src="profile" alt="이미지" />
           </span>
           <span class="nav-item-title nickname">{{ nickname }} 님</span>
         </li>
@@ -85,7 +85,11 @@ export default {
       return this.checkUserInfo ? this.checkUserInfo.nickname : '';
     },
     profile() {
-      return this.checkUserInfo ? this.checkUserInfo.profile : '';
+      if(this.checkUserInfo.profile == 'undefined'){
+        return this.checkUserInfo.profile;
+      }else{
+        return 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
+      }
     },
   },
 

@@ -44,9 +44,7 @@
           <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
-              <span class="comment-date">
-                {{ formatDate(comment.createdAt) }}
-              </span>
+              <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
               <img
                 v-for="index in parseInt(comment.rate)"
                 :key="index"
@@ -54,11 +52,13 @@
                 class="icon2"
                 alt="star"
               />
+              <div
+                class="delete-button"
+                v-if="comment.memberId == memberId"
+                @click="deleteComment(comment)"
+              >삭제</div>
             </div>
-            <div class="comment-content">
-              {{ comment.content }}
-            </div>
-            <div v-if="comment.memberId == memberId" @click="deleteComment(comment)">삭제</div>
+            <div class="comment-content">{{ comment.content }}</div>
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default {
     },
 
     hasWrittenComment() {
-      return this.comments.some((comment) => comment.memberId == this.memberId);
+      return this.comments.some(comment => comment.memberId == this.memberId);
     },
   },
 
@@ -147,7 +147,7 @@ export default {
 
       apiAuth
         .post('/locations/detail/reviews', commentData)
-        .then((response) => {
+        .then(response => {
           if (response.status === 201) {
             this.localAttraction.rate += this.rating;
             this.localAttraction.totalCount += 1;
@@ -160,32 +160,40 @@ export default {
             console.log('댓글 작성 실패');
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
     },
 
     deleteComment(comment) {
-      apiAuth
-        .delete(
-          `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            this.loadData();
-          } else {
-            console.log('댓글 삭제 실패');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      if (window.confirm('댓글을 삭제하시겠습니까?')) {
+        apiAuth
+          .delete(
+            `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
+          )
+          .then(response => {
+            if (response.status === 200) {
+              this.loadData();
+            } else {
+              console.log('댓글 삭제 실패');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+.delete-button {
+  margin-left: auto;
+  margin-right: 20px;
+  cursor: pointer;
+  color: #e76666;
+}
 .rating {
   display: flex;
   margin-top: 3px;
@@ -325,6 +333,7 @@ img {
   transition: 0.2s;
 }
 .comment-nickname {
+  display: flex;
   margin-left: 10px;
   margin-top: 3px;
   font-family: 'CookieRun-Regular';
@@ -334,7 +343,7 @@ img {
 }
 
 .comment-date {
-  margin-left: auto;
+  margin-left: 20px;
   margin-right: 10px;
 }
 .comment-content {

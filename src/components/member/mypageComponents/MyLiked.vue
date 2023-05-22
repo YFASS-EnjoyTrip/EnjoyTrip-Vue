@@ -282,14 +282,13 @@ export default {
 
 .attraction-outer-container {
   width: 540px;
-  height: 630px;
   margin: auto;
   margin-top: 20px;
   border-radius: 18px;
   overflow: scroll;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  margin-left: 60px;
 }
 
 .attraction-outer-container::-webkit-scrollbar {
