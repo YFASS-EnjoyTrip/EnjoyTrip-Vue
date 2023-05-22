@@ -331,7 +331,7 @@ a {
   white-space: nowrap;
   font-size: 18px;
   /* 폰트 크기 설정 */
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #4d4d4d;
 }
 
@@ -492,7 +492,7 @@ input[type='checkbox']:checked + label:before {
   height: 30px;
   border-radius: 5px;
   background-color: #f24849;
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   font-size: 16px;
   color: #ffffff;
   cursor: pointer;

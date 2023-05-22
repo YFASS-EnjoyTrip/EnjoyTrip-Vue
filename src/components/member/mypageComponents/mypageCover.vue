@@ -95,8 +95,11 @@ export default {
   margin-top: 50px;
   width: 500px;
   height: 700px;
-  background-color: #fce0e0;
+  background-color: #e2e2e2;
   border-radius: 60px;
-  box-shadow: 4px 4px 4px rgba(201, 106, 106, 0.466);
+  box-shadow: 4px 4px 4px rgba(138, 138, 138, 0.466);
+  caret-color: transparent;
+  user-select: none;
+  pointer-events: none;
 }
 </style>

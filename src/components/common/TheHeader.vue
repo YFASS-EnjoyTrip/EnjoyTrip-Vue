@@ -4,84 +4,62 @@
       <div class="nav-menu">
         <router-link to="/">
           <li class="nav-item logo">
-            <img
-              src="../../assets/img/navLogo.png"
-              alt="logo"
-              class="nav-logo"
-            />
+            <img src="../../assets/img/navLogo.png" alt="logo" class="nav-logo" />
           </li>
         </router-link>
-        <li class="nav-item hotplace">
-          <router-link to="/hotplace">
-            <div class="hover-effect">
-              <span class="nav-item-title">핫플레이스</span>
-              <img
-                class="nav-item-img"
-                src="../../assets/img/icon/capsule_G.png"
-                alt="이미지"
-              />
-            </div>
-          </router-link>
-        </li>
         <li class="nav-item attraction-search">
           <router-link to="/attraction">
             <div class="hover-effect">
               <span class="nav-item-title">여행지검색</span>
-              <img
-                class="nav-item-img"
-                src="../../assets/img/icon/capsule_R.png"
-                alt="이미지"
-              />
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_R.png" alt="이미지" />
             </div>
           </router-link>
         </li>
-        <li class="nav-item planner">
-          <router-link to="/planner">
+        <li class="nav-item attraction-search">
+          <router-link to="/planner/create">
             <div class="hover-effect">
-              <span class="nav-item-title">플래너조회</span>
-              <img
-                class="nav-item-img"
-                src="../../assets/img/icon/capsule_Y.png"
-                alt="이미지"
-              />
-            </div>
-          </router-link>
-        </li>
-        <li class="nav-item planner">
-          <router-link to="/member/mypage">
-            <div class="hover-effect">
-              <span class="nav-item-title">마이페이지</span>
-              <img
-                class="nav-item-img"
-                src="../../assets/img/icon/capsule_Y.png"
-                alt="이미지"
-              />
+              <span class="nav-item-title">플래너생성</span>
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_B.png" alt="이미지" />
             </div>
           </router-link>
         </li>
       </div>
       <div class="nav-member">
-        <li class="login">
+        <li v-if="isLogin" class="mypage">
+          <span class="profile-container">
+            <img class="mypage-img" src="../../assets/img/Attraction_default.png" alt="이미지" />
+          </span>
+          <span class="nav-item-title nickname">{{ nickname }} 님</span>
+        </li>
+        <li v-if="!isLogin" class="login">
           <router-link to="/member/login">
             <div class="hover-effect">
               <span class="nav-item-title">로그인</span>
-              <img
-                class="nav-item-img member"
-                src="../../assets/img/icon/coin.png"
-                alt="이미지"
-              />
+              <img class="nav-item-img member" src="../../assets/img/icon/coin.png" alt="이미지" />
             </div>
           </router-link>
         </li>
-        <li class="signup">
+        <li v-if="isLogin" class="nav-item planner">
+          <router-link to="/member/mypage">
+            <div class="hover-effect">
+              <span class="nav-item-title" style="margin-top: 5px">마이페이지</span>
+              <img class="nav-item-img" src="../../assets/img/icon/capsule_G.png" alt="이미지" />
+            </div>
+          </router-link>
+        </li>
+        <li v-if="!isLogin" class="signup">
           <router-link to="/member/signup">
             <div class="hover-effect">
               <span class="nav-item-title">회원가입</span>
-              <img
-                class="nav-item-img member"
-                src="../../assets/img/icon/heart_fill.png"
-                alt="이미지"
-              />
+              <img class="nav-item-img member" src="../../assets/img/icon/heart_fill.png" alt="이미지" />
+            </div>
+          </router-link>
+        </li>
+        <li v-if="isLogin" class="signup">
+          <router-link to="/member/signup">
+            <div class="hover-effect" style="margin-top: 10px">
+              <span class="nav-item-title">로그아웃</span>
+              <img class="nav-item-img member" src="../../assets/img/icon/heart_fill.png" alt="이미지" />
             </div>
           </router-link>
         </li>
@@ -91,20 +69,39 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
-  name: "TheHeader",
+  name: 'TheHeader',
   components: {},
   data() {
     return {
-      message: "",
+      isLogin: null,
+      nickname: '',
+      profile: '',
     };
   },
-  created() {},
+  computed: {
+    ...mapGetters('memberStore', ['checkUserInfo', 'checkIsLogin']),
+  },
+  created() {
+    this.isLogin = this.checkIsLogin;
+    this.nickname = this.checkUserInfo.nickname;
+    this.profile = this.checkUserInfo.profile;
+    console.log(typeof this.isLogin);
+  },
   methods: {},
 };
 </script>
 
 <style scoped>
+.nickname {
+  margin-left: 10px;
+  color: #464646;
+}
+.mypage {
+  display: flex;
+  align-items: center;
+}
 .hover-effect {
   position: relative;
   display: inline-flex;
@@ -161,8 +158,20 @@ export default {
   width: 1200px;
   /* background-color: antiquewhite; */
 }
-
+.profile-container {
+  padding-top: 10px;
+  justify-content: flex;
+}
+.mypage-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid #69beee;
+}
 .nav-member {
+  display: flex;
+  align-items: center;
   text-align: right;
 }
 

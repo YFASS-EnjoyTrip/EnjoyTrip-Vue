@@ -292,6 +292,23 @@ export default {
   justify-content: space-between;
 }
 
+.attraction-outer-container::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.attraction-outer-container::-webkit-scrollbar-thumb {
+  background-color: #ffb9b9;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+.attraction-outer-container::-webkit-scrollbar-thumb:active {
+  background-color: #fc6d6d;
+  /* 스크롤바 색상 */
+}
+
 .right-container {
   width: 600px;
   height: 800px;

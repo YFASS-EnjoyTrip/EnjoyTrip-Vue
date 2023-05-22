@@ -51,6 +51,10 @@
             @updatePlan="updatePlan"
           ></planner-attraction-list>
         </div>
+        <div class="reroll-button" v-show="!editMode">
+          다시 시도하기
+          <span>(남은 횟수 {{ rerollCnt }}회)</span>
+        </div>
         <div v-if="editMode" class="bottom-container">
           <div v-if="!addItemMode">
             <div class="modify-list-item">
@@ -114,8 +118,9 @@ export default {
       attractions: [],
       planInfo: {},
       planDetailInfo: [],
-      editMode: true, //---------------------------------------------------------------------------------------------------
+      editMode: false,
       addItemMode: false,
+      rerollCnt: 5,
     };
   },
 
@@ -132,7 +137,7 @@ export default {
       if (data.status === 200) {
         this.planInfo = data.result.planInfo;
 
-        Object.keys(data.result.dayInfo).forEach(key => {
+        Object.keys(data.result.dayInfo).forEach((key) => {
           this.planDetailInfo.push(data.result.dayInfo[key]);
         });
 
@@ -264,6 +269,8 @@ export default {
   font-family: 'CookieRun-Regular';
   color: #ffffff;
   font-size: 25px;
+  caret-color: transparent;
+  user-select: none;
 }
 
 a {
@@ -282,6 +289,8 @@ a {
 .done-button:active {
   background-color: #a7e7bc;
   color: #525252;
+  transform: scale(0.9);
+  transition: 0.2s;
 }
 .edit-button:hover {
   background-color: #d43333;
@@ -291,6 +300,8 @@ a {
 .edit-button:active {
   background-color: #f8a9a9;
   color: #525252;
+  transform: scale(0.9);
+  transition: 0.2s;
 }
 
 .title-container {
@@ -399,7 +410,40 @@ a {
   padding-right: 10px;
   padding-left: 10px;
 }
-
+.reroll-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 480px;
+  height: 55px;
+  background-color: #69beee;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-family: 'CookieRun-Regular';
+  color: #ffffff;
+  font-size: 25px;
+  cursor: pointer;
+  caret-color: transparent;
+  user-select: none;
+  box-shadow: 3px 3px 5px 2px rgba(68, 89, 112, 0.315);
+}
+.reroll-button span {
+  margin-left: 10px;
+  font-size: 15px;
+  color: #ff5757;
+}
+.reroll-button:hover {
+  box-shadow: inset 3px 3px 5px 2px rgba(68, 89, 112, 0.315);
+  transition: 0.2s;
+  color: #474747;
+  background-color: #ffd446;
+}
+.reroll-button:active {
+  transform: scale(0.9);
+  transition: 0.2s;
+}
 .for-scroll::-webkit-scrollbar {
   width: 10px;
   height: 0;
@@ -477,7 +521,7 @@ a {
   padding-top: 10px;
   cursor: pointer;
 }
-.modify-list-item div:active{
+.modify-list-item div:active {
   transform: scale(0.9);
   transition: 0.2s;
 }
@@ -498,7 +542,7 @@ a {
   background-color: #69beee;
 }
 
-.back-button{
+.back-button {
   margin-top: 30px !important;
   width: 500px;
   height: 50px;
@@ -514,19 +558,19 @@ a {
   cursor: pointer;
   background-color: #69beee;
 }
-.back-button:hover{
-  box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.2);
+.back-button:hover {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   background-color: #318ec4;
 }
-.back-button:hover span{
+.back-button:hover span {
   transform: scale(1.1);
   transition: 0.2s;
 }
-.back-button:active{
+.back-button:active {
   transform: scale(0.9);
   transition: 0.2s;
 }
-.back-button span{
+.back-button span {
   display: flex;
   justify-content: center;
 }

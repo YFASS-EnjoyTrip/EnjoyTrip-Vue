@@ -4,12 +4,7 @@
       <div class="attraction-list-container">
         <div v-if="editMode">
           <div v-if="!addItemMode">
-            <draggable
-              v-model="localAttractions"
-              class="attraction-list"
-              :move="checkMove"
-              @end="updateAttractions"
-            >
+            <draggable v-model="localAttractions" class="attraction-list" :move="checkMove" @end="updateAttractions">
               <!-- 드래그 앤 드롭 기능을 적용할 요소들의 내용 -->
               <div
                 v-for="(attraction, index) in localAttractions"
@@ -211,7 +206,7 @@ export default {
       console.log(this.selectedAttractions.length);
       const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
 
-      sortedSelectedAttractions.forEach(index => {
+      sortedSelectedAttractions.forEach((index) => {
         this.localAttractions.splice(index - 1, 1);
       });
       this.selectedAttractions = [];
@@ -230,7 +225,7 @@ export default {
 
       const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
 
-      sortedSelectedAttractions.forEach(index => {
+      sortedSelectedAttractions.forEach((index) => {
         const itemToMove = this.localAttractions.splice(index - 1, 1)[0];
         this.localPlan[this.targetDay - 1].push(itemToMove);
       });

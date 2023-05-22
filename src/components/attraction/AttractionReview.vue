@@ -270,9 +270,9 @@ img {
 .comment-content {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #757575;
-  font-size: 20px;
+  font-size: 17px;
   margin-bottom: 10px;
 }
 </style>

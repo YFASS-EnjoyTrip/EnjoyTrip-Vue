@@ -94,12 +94,14 @@ export default {
 <style scoped>
 .blog-container {
   width: 630px;
-  background-color: rgba(127, 255, 212, 0.452);
+  background-color: #fff8e5;
+  border-radius: 18px;
 }
 .comment-container {
   width: 450px;
   margin-right: 20px;
-  background-color: rgb(192, 225, 255);
+  background-color: #fff8e5;
+  border-radius: 18px;
 }
 .review-container {
   display: flex;
@@ -113,6 +115,29 @@ export default {
   font-size: 16px;
   font-family: 'CookieRun-Regular';
   color: #383838;
+  line-height: 30px;
+  word-break: keep-all;
+}
+.overview::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.overview::-webkit-scrollbar-thumb {
+  background-color: #a8d3ec;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+.overview::-webkit-scrollbar-thumb:active {
+  background-color: #69beee;
+  /* 스크롤바 색상 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  /* 트랙 배경색 */
 }
 .attractionImg {
   width: 540px;

@@ -17,6 +17,9 @@ const memberStore = {
     checkToken: function (state) {
       return state.isValidToken;
     },
+    checkIsLogin: function (state) {
+      return state.isLogin;
+    },
   },
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {

@@ -19,7 +19,7 @@
                 @click="goToPlannerDetail(planner)"
               />
               <button class="delete-button" v-if="showDeleteButtons[index]" @click="deletePlan(planner)">
-                플랜삭제
+                <font-awesome-icon icon="fa-solid fa-trash" size="xl" />
               </button>
             </div>
             <div class="attraction-info">
@@ -144,25 +144,6 @@ export default {
   background-color: #fff4d7;
 }
 
-.attractionImg {
-  width: 200px;
-  height: 140px;
-  border-radius: 10px;
-  box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
-  /* 그림자 스타일 및 값 설정 */
-}
-
-.attractionImg:hover {
-  transform: scale(1.1);
-  filter: brightness(60%);
-  transition: 0.2s;
-}
-
-.attractionImg:active {
-  transform: scale(0.9);
-  transition: 0.2s;
-}
-
 .planner-date {
   font-size: 15px;
   font-family: 'CookieRun-Regular';
@@ -193,6 +174,28 @@ export default {
   width: 540px;
   overflow: scroll;
   justify-content: center;
+}
+
+.planner-container::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.planner-container::-webkit-scrollbar-thumb {
+  background-color: #ffb9b9;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
+}
+
+.planner-container::-webkit-scrollbar-thumb:active {
+  background-color: #fc6d6d;
+  /* 스크롤바 색상 */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff4d7;
+  /* 트랙 배경색 */
 }
 
 .planner-list {
@@ -259,21 +262,53 @@ button:active {
   width: 540px;
   margin-left: 30px;
   margin-top: 30px;
+  caret-color: transparent;
+  user-select: none;
 }
-
+.vc-day-content {
+  width: 50px !important;
+}
 .image-container {
   position: relative;
   width: 200px;
-  height: 140px;
+  padding-top: 70%;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
 }
+.image-container > img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease;
+}
+.image-container:hover > img {
+  width: 110%;
+  height: 110%;
+}
+
+/* .attractionImg:active {
+  transform: scale(0.9);
+  transition: 0.2s;
+} */
 
 .delete-button {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: rgb(245, 161, 161);
-  color: white;
+  height: 30px;
+  width: 30px;
+  background-color: transparent;
+  color: rgb(255, 255, 255);
   border: none;
   cursor: pointer;
+  box-shadow: none;
+}
+.delete-button:hover {
+  color: #ff6464;
+  box-shadow: none;
 }
 </style>
