@@ -182,14 +182,14 @@ export default {
 }
 
 .planner-container::-webkit-scrollbar-thumb {
-  background-color: #ffb9b9;
+  background-color: #ffe18e;
   /* 스크롤바 색상 */
   border-radius: 5px;
   /* 스크롤바 모서리의 곡률 */
 }
 
 .planner-container::-webkit-scrollbar-thumb:active {
-  background-color: #fc6d6d;
+  background-color: #FFC930;
   /* 스크롤바 색상 */
 }
 
@@ -249,7 +249,7 @@ button:active {
 
 .vc-container {
   border: 0px solid #ffc930 !important;
-  background-color: #ffe294;
+  background-color: #ffffff;
   padding: 10px;
   border-radius: 18px !important;
   font-family: 'CookieRun-Regular';

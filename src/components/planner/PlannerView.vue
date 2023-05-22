@@ -249,12 +249,7 @@ export default {
 </script>
 
 <style scoped>
-.done-button {
-  background-color: #49c46f;
-}
-.edit-button {
-  background-color: #f24849;
-}
+
 .modify-button {
   width: 90px;
   height: 45px;
@@ -279,14 +274,20 @@ a {
   font-size: 1.2rem;
   margin-top: -5px;
 }
+.done-button {
+  background-color: #69beee;
+}
+.edit-button {
+  background-color: #f24849;
+}
 
 .done-button:hover {
-  background-color: #1cad4a;
+  background-color: #3a96cf;
   cursor: pointer;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 .done-button:active {
-  background-color: #a7e7bc;
+  background-color: #b4dcf3;
   color: #525252;
   transform: scale(0.9);
   transition: 0.2s;
@@ -525,10 +526,10 @@ a {
   transition: 0.2s;
 }
 .remove-button {
-  background-color: #f24849;
+  background-color: #969696;
 }
 .remove-button:hover {
-  background-color: #c42828;
+  background-color: #616161;
 }
 .change-button {
   background-color: #69beee;

@@ -268,7 +268,7 @@ export default {
 }
 
 .check {
-  margin-left: 30px;
+  margin-left: 170px;
   font-family: 'CookieRun-Regular';
   font-size: 15px;
   color: #ff7878;

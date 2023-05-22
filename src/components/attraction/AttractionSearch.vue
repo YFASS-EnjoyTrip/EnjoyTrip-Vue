@@ -383,8 +383,6 @@ a {
 input[type='checkbox'] {
   width: 15px;
   height: 15px;
-  border: 3px solid #ff9090;
-  /* 원하는 스타일로 설정 */
   display: none;
 }
 
@@ -395,12 +393,10 @@ input[type='checkbox'] + label {
 }
 
 input[type='checkbox'] + label > span {
-  /* vertical-align: middle; */
   margin-left: 5px;
   font-size: 15px;
-  /* 폰트 크기 설정 */
   font-family: 'CookieRun-Regular';
-  color: #f24849;
+  color: #646464;
 }
 
 /* label:before에 체크하기 전 상태 CSS */
@@ -419,8 +415,8 @@ input[type='checkbox'] + label:before {
 /* label:before에 체크 된 상태 CSS */
 input[type='checkbox']:checked + label:before {
   content: '';
-  background-color: #f24849;
-  border-color: #f24849;
+  background-color: #69beee;
+  border-color: #69beee;
   background-repeat: no-repeat;
   background-position: 50%;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
@@ -497,7 +493,7 @@ input[type='checkbox']:checked + label:before {
   width: 70px;
   height: 30px;
   border-radius: 5px;
-  background-color: #f24849;
+  background-color: #69beee;
   font-family: 'CookieRun-Bold';
   font-size: 16px;
   color: #ffffff;
@@ -511,7 +507,7 @@ input[type='checkbox']:checked + label:before {
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
   transition: 0.2s;
   color: #d8d8d8;
-  background-color: #da4343;
+  background-color: #3795cc;
 }
 .search-button:active {
   transform: scale(0.9);
@@ -528,19 +524,17 @@ input[type='checkbox']:checked + label:before {
 }
 
 .for-scroll::-webkit-scrollbar-thumb {
-  background-color: #ffb9b9;
-  /* 스크롤바 색상 */
+  background-color: #a3d1ec;
   border-radius: 5px;
-  /* 스크롤바 모서리의 곡률 */
 }
 
 .for-scroll::-webkit-scrollbar-thumb:active {
-  background-color: #fc6d6d;
+  background-color: #69beee;
   /* 스크롤바 색상 */
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #fff4d7;
+  background-color: transparent;
   /* 트랙 배경색 */
 }
 
