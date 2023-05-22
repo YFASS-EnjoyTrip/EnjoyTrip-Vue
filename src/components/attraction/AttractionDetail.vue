@@ -13,7 +13,7 @@
     </div>
     <div class="review-container">
       <div class="comment-container">
-        <AttractionReview v-if="this.attractionInfo" :attraction="this.attractionInfo"></AttractionReview>
+        <AttractionReview :attraction="this.attractionInfo"></AttractionReview>
       </div>
       <div class="blog-container">
         <BlogReview :contentTitle="this.attractionInfo.title"></BlogReview>

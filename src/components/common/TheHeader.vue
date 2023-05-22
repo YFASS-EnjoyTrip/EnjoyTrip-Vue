@@ -56,7 +56,7 @@
           </router-link>
         </li>
         <li v-if="isLogin" class="signup">
-          <router-link to="/member/signup">
+          <router-link to="/member/logout">
             <div class="hover-effect" style="margin-top: 10px">
               <span class="nav-item-title">로그아웃</span>
               <img class="nav-item-img member" src="../../assets/img/icon/heart_fill.png" alt="이미지" />
@@ -74,20 +74,26 @@ export default {
   name: 'TheHeader',
   components: {},
   data() {
-    return {
-      isLogin: null,
-      nickname: '',
-      profile: '',
-    };
+    return {};
   },
   computed: {
     ...mapGetters('memberStore', ['checkUserInfo', 'checkIsLogin']),
+    isLogin() {
+      return this.checkIsLogin;
+    },
+    nickname() {
+      return this.checkUserInfo ? this.checkUserInfo.nickname : '';
+    },
+    profile() {
+      return this.checkUserInfo ? this.checkUserInfo.profile : '';
+    },
   },
+
   created() {
-    this.isLogin = this.checkIsLogin;
-    this.nickname = this.checkUserInfo.nickname;
-    this.profile = this.checkUserInfo.profile;
-    console.log(typeof this.isLogin);
+    if (this.checkUserInfo) {
+      this.nickname = this.checkUserInfo.nickname;
+      this.profile = this.checkUserInfo.profile;
+    }
   },
   methods: {},
 };

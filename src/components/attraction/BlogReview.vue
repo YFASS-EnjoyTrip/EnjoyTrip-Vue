@@ -3,7 +3,11 @@
     <div class="blog-title">블로그리뷰</div>
     <div class="container">
       <div class="main-container">
-        <div class="blog-container" v-for="(blog, index) in blogListNaver" :key="index">
+        <div
+          class="blog-container"
+          v-for="(blog, index) in blogListNaver"
+          :key="index"
+        >
           <a :href="blog.link" target="_blank">
             <span class="bloggername">{{ blog.bloggername }}</span>
             <span class="bloggername">{{ formatDate(blog.postdate) }}</span>
@@ -46,20 +50,20 @@ a {
   text-decoration: none;
 }
 .content-text {
-  font-family: 'CookieRun-Regular';
+  font-family: "CookieRun-Regular";
   color: #808080;
   font-size: 13px;
   margin-top: 5px;
   line-height: 20px;
 }
 .content-title {
-  font-family: 'CookieRun-Bold';
+  font-family: "CookieRun-Bold";
   color: #515151;
   font-size: 20px;
   margin-top: 5px;
 }
 .bloggername {
-  font-family: 'CookieRun-Regular';
+  font-family: "CookieRun-Regular";
   color: #929292;
   font-size: 15px;
   margin-right: 10px;
@@ -67,7 +71,7 @@ a {
 .blog-title {
   text-align: center;
   margin-top: 15px;
-  font-family: 'CookieRun-Bold';
+  font-family: "CookieRun-Bold";
   color: #666666;
   font-size: 20px;
 }
@@ -106,8 +110,8 @@ a {
 </style>
 
 <script>
-import axios from 'axios';
-import moment from 'moment';
+import axios from "axios";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -119,23 +123,26 @@ export default {
   },
   methods: {
     getBlogList() {
-      const URL = `/v1/search/blog?query=${encodeURIComponent(sessionStorage.getItem('contentTitle'))}`;
-      const clientId = '7k0ZARFOeii5DyM_2OK0';
-      const clientSecret = 'Bm0xQTFmD7';
+      const URL = `/v1/search/blog?query=${encodeURIComponent(
+        sessionStorage.getItem("contentTitle")
+      )}`;
+      const clientId = "7k0ZARFOeii5DyM_2OK0";
+      const clientSecret = "Bm0xQTFmD7";
       axios
         .get(URL, {
           headers: {
-            Accept: 'application/json',
-            'X-Naver-Client-Id': clientId,
-            'X-Naver-Client-Secret': clientSecret,
+            Accept: "application/json",
+            "X-Naver-Client-Id": clientId,
+            "X-Naver-Client-Secret": clientSecret,
           },
         })
         .then((response) => {
+          console.log(response.data);
           this.blogListNaver = response.data.items;
         });
     },
     formatDate(date) {
-      return moment(date).format('YY-MM-DD');
+      return moment(date).format("YY-MM-DD");
     },
   },
 };
