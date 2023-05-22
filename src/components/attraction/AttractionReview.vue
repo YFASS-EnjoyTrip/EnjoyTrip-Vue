@@ -35,30 +35,21 @@
         :disabled="hasWrittenComment"
       ></textarea>
     </div>
-    <div class="write-button" @click="submitComment()">
+    <div class="write-button">
       <span>작성</span>
     </div>
     <div class="comment-container">
       <div class="comment-in-container">
         <div>
+          <div class="write-comment"></div>
           <div v-for="(comment, index) in comments" :key="index" class="comment-content-container">
             <div class="comment-nickname">
               {{ comment.nickName }}
               <span class="comment-date">
                 {{ formatDate(comment.createdAt) }}
               </span>
-              <img
-                v-for="index in parseInt(comment.rate)"
-                :key="index"
-                :src="require('@/assets/img/icon/star_fill.png')"
-                class="icon2"
-                alt="star"
-              />
             </div>
-            <div class="comment-content">
-              {{ comment.content }}
-            </div>
-            <div v-if="comment.memberId == memberId" @click="deleteComment(comment)">삭제</div>
+            <div class="comment-content">{{ comment.content }}</div>
           </div>
         </div>
       </div>
@@ -68,12 +59,9 @@
 
 <script>
 import { apiInstance } from '@/api';
-import { apiAuthInstance } from '@/api';
-import { mapGetters } from 'vuex';
 import moment from 'moment';
 
 const api = apiInstance();
-const apiAuth = apiAuthInstance();
 
 export default {
   name: 'AttractionReview',
@@ -82,10 +70,8 @@ export default {
     return {
       rating: 3,
       comments: [],
-      memberId: '',
       contentId: '',
       writeContext: '',
-      localAttraction: '',
     };
   },
 
@@ -97,26 +83,21 @@ export default {
   },
 
   computed: {
-    ...mapGetters('memberStore', ['checkUserInfo']),
-
     calculateRate() {
-      if (this.localAttraction.rate && this.localAttraction.totalCount && this.localAttraction.totalCount != 0) {
-        let rate = this.localAttraction.rate / this.localAttraction.totalCount;
-        return parseFloat(rate.toFixed(1));
+      if (this.attraction.rate && this.attraction.totalCount && this.attraction.totalCount != 0) {
+        return this.attraction.rate / this.attraction.totalCount;
       } else {
         return 0;
       }
     },
 
     hasWrittenComment() {
-      return this.comments.some((comment) => comment.memberId == this.memberId);
+      return this.comments.some((comment) => comment.userId === this.userId);
     },
   },
 
   created() {
     this.contentId = sessionStorage.getItem('contentId');
-    this.memberId = this.checkUserInfo.memberId;
-    this.localAttraction = this.attraction;
     this.loadData();
   },
 
@@ -137,50 +118,6 @@ export default {
     setRating(rating) {
       this.rating = rating;
     },
-
-    submitComment() {
-      const commentData = {
-        contentId: this.attraction.contentId,
-        rate: this.rating,
-        content: this.writeContext,
-      };
-
-      apiAuth
-        .post('/locations/detail/reviews', commentData)
-        .then((response) => {
-          if (response.status === 201) {
-            this.localAttraction.rate += this.rating;
-            this.localAttraction.totalCount += 1;
-
-            this.writeContext = '';
-            this.rating = 3;
-
-            this.loadData();
-          } else {
-            console.log('댓글 작성 실패');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-
-    deleteComment(comment) {
-      apiAuth
-        .delete(
-          `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            this.loadData();
-          } else {
-            console.log('댓글 삭제 실패');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
   },
 };
 </script>
@@ -198,12 +135,6 @@ export default {
   cursor: pointer;
 }
 
-.comment-rate {
-}
-.icon2 {
-  width: 15px;
-  height: 15px;
-}
 ::-webkit-scrollbar {
   width: 10px;
   height: 0;
@@ -335,7 +266,6 @@ img {
 
 .comment-date {
   margin-left: auto;
-  margin-right: 10px;
 }
 .comment-content {
   margin-left: 10px;

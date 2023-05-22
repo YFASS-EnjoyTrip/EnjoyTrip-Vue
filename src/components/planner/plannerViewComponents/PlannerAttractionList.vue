@@ -39,8 +39,8 @@
                           </span>
                           <span>
                             <img src="@/assets/img/icon/star_fill.png" alt="별점" />
-                            <span>{{ calculateRate }}</span>
-                            <span>({{ attraction.totalCount }})</span>
+                            <span>{{ attraction.rate }}</span>
+                            <span>({{ attraction.likeCount }})</span>
                           </span>
                         </div>
                       </div>
@@ -150,17 +150,6 @@ export default {
     sidoCode: {
       type: Number,
       required: true,
-    },
-  },
-
-  computed: {
-    calculateRate() {
-      if (this.attraction.rate && this.attraction.totalCount && this.attraction.totalCount != 0) {
-        let rate = this.attraction.rate / this.attraction.totalCount;
-        return parseFloat(rate.toFixed(1));
-      } else {
-        return 0;
-      }
     },
   },
 
