@@ -273,7 +273,7 @@ export default {
       const container = document.getElementById('map');
       const options = {
         center: new kakao.maps.LatLng(firstDay[0].lat, firstDay[0].lng),
-        level: 10,
+        level: 9,
       };
 
       this.map = new kakao.maps.Map(container, options);

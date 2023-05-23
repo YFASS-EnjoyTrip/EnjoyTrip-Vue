@@ -2,8 +2,9 @@
   <div class="container">
     <div class="inner-container">
       <div id="map" class="map"></div>
+      <div class="map-button" @click="updateBounds">이 지역 재검색</div>
       <div class="right-container">
-        <AttractionSearch @attractions-updated="updateAttractions"></AttractionSearch>
+        <AttractionSearch :bounds="bounds" @attractions-updated="updateAttractions"></AttractionSearch>
       </div>
     </div>
   </div>
@@ -19,6 +20,7 @@ export default {
       map: null,
       attractions: [],
       markers: [],
+      bounds: null,
       imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG',
       imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG',
       imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG',
@@ -58,8 +60,8 @@ export default {
 
       this.map = new kakao.maps.Map(container, options);
 
-      // kakao.maps.event.addListener(this.map, 'zoom_changed', () => {
-      //   this.handleZoomChange();
+      // kakao.maps.event.addListener(this.map, 'bounds_changed', () => {
+      //   this.updateBounds();
       // });
 
       let imageSrc = '';
@@ -157,94 +159,25 @@ export default {
         this.markers.push(marker);
       }
     },
+
+    updateBounds() {
+      const bounds = this.map.getBounds();
+      this.bounds = {
+        northEast: {
+          lat: bounds.getNorthEast().getLat(),
+          lng: bounds.getNorthEast().getLng(),
+        },
+        southWest: {
+          lat: bounds.getSouthWest().getLat(),
+          lng: bounds.getSouthWest().getLng(),
+        },
+      };
+    },
   },
 };
 </script>
 
 <style scoped>
-/* .wrap {
-  z-index: 1;
-  position: absolute;
-  left: 300px;
-  bottom: 40px;
-  height: 132px;
-  margin-left: -144px;
-  text-align: left;
-  overflow: hidden;
-  line-height: 1.5;
-}
-
-.info {
-  width: 286px;
-  height: 120px;
-  border-radius: 5px;
-  border-bottom: 2px solid #ccc;
-  border-right: 1px solid #ccc;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 10px;
-}
-.title {
-  padding: 5px 0 0 10px;
-  padding-bottom: 8px;
-  height: 30px;
-  background: #f24849;
-  border-bottom: 1px solid #f24849;
-
-  font-family: 'CookieRun-Regular';
-  color: #ffffff;
-  font-size: 20px;
-  box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.5);
-}
-.title span {
-  display: block;
-  width: 80%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.close {
-  position: absolute;
-  top: 13px;
-  right: 15px;
-  color: #ffffff;
-  width: 17px;
-  height: 17px;
-}
-
-.body {
-  position: relative;
-  overflow: hidden;
-}
-
-.img {
-  position: absolute;
-  top: 6px;
-  left: 5px;
-  width: 100px;
-  height: 63px;
-  border: 1px solid #ddd;
-  color: #888;
-  overflow: hidden;
-  border-radius: 5px;
-  border: 2spx solid #f24849;
-}
-
-.desc {
-  position: relative;
-  margin: 13px 0 0 90px;
-  height: 75px;
-}
-
-.ellipsis {
-  width: 85%;
-  margin-left: 22px;
-  padding-top: 6px;
-  font-family: 'CookieRun-Regular';
-  color: #5a5a5a;
-  font-size: 13px;
-} */
 .container {
   width: 1200px;
   height: 800px;
@@ -269,5 +202,22 @@ export default {
   border-radius: 0px 90px 90px 0px;
   background-color: #fffffffd;
   /* border: 2px solid #69beee; */
+}
+.map-button {
+  position: absolute;
+  margin-left: 14%;
+  margin-top: 2%;
+
+  width: 120px;
+
+  font-family: 'CookieRun-Regular';
+  text-align: center;
+  line-height: 30px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 10px;
+
+  box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
+  cursor: pointer;
 }
 </style>
