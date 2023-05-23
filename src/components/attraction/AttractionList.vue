@@ -57,9 +57,9 @@ export default {
 
       this.map = new kakao.maps.Map(container, options);
 
-      kakao.maps.event.addListener(this.map, 'zoom_changed', () => {
-        this.handleZoomChange();
-      });
+      // kakao.maps.event.addListener(this.map, 'zoom_changed', () => {
+      //   this.handleZoomChange();
+      // });
 
       let imageSrc = '';
 
@@ -81,40 +81,49 @@ export default {
           image: markerImage,
         });
 
+        var overlayContent = `
+          <div class="wrap" style="position: absolute; left: 0; bottom: 40px; width: 288px; height: 132px; margin-left: -144px; text-align: left; overflow: hidden; font-size: 12px; font-family: 'Malgun Gothic', dotum, '돋움', sans-serif; line-height: 1.5;">
+              <div class="info" style="width: 286px; height: 120px; border-radius: 5px; border-bottom: 2px solid #ccc; border-right: 1px solid #ccc; overflow: hidden; background: #fff;">
+                  <div class="title" style="padding: 5px 0 0 10px; height: 30px; background: #eee; border-bottom: 1px solid #ddd; font-size: 18px; font-weight: bold;">
+                      ${attraction.title}
+                      <div class="close" title="닫기" style="position: absolute; top: 10px; right: 10px; color: #888; width: 17px; height: 17px; background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');"></div>
+                  </div>
+                  <div class="body" style="position: relative; overflow: hidden;">
+                      <div class="img" style="position: absolute; top: 6px; left: 5px; width: 73px; height: 71px; border: 1px solid #ddd; color: #888; overflow: hidden;">
+                          <img src=${attraction.image} style="width:73px; height:70px;"/>
+                      </div>
+                      <div class="desc" style="position: relative; margin: 13px 0 0 90px; height: 75px;">
+                          <div class="ellipsis" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${attraction.addr1}</div>
+                      </div>
+                  </div>
+              </div>
+          </div>`;
+
+        const overlay = new kakao.maps.CustomOverlay({
+          content: overlayContent,
+          position: latlng,
+        });
+
         // 마커 클릭 이벤트 리스너를 추가합니다.
         kakao.maps.event.addListener(marker, 'click', () => {
-          marker.infowindow.open(this.map, marker);
+          overlay.setMap(this.map);
+
+          setTimeout(() => {
+            const closeBtn = document.querySelector('.close');
+            if (closeBtn) {
+              closeBtn.addEventListener('click', () => {
+                overlay.setMap(null);
+              });
+            }
+          }, 0);
         });
 
-        var overlayContent = `<div class="wrap">
-        <div class="info">
-            <div class="title">
-                ${attraction.title}
-                <div class="close" @click="closeOverlay" title="닫기">닫기</div>
-            </div>
-            <div class="body">
-                <div class="img">
-
-               </div>
-                <div class="desc">
-                    <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>
-                    <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>
-                    <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-        const infowindow = new kakao.maps.InfoWindow({
-          content: overlayContent,
-        });
-
-        marker.infowindow = infowindow;
+        marker.overlay = overlay;
         this.markers.push(marker);
       }
     },
 
     closeOverlay() {
-      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
       this.markers.forEach((marker) => {
         marker.infowindow.close();
       });
@@ -144,22 +153,22 @@ export default {
         this.markers.push(marker);
       }
     },
-    handleZoomChange() {
-      const level = this.map.getLevel();
-      const bounds = this.map.getBounds();
+    // handleZoomChange() {
+    //   const level = this.map.getLevel();
+    //   const bounds = this.map.getBounds();
 
-      if (level <= 4) {
-        this.markers.forEach((marker) => {
-          if (bounds.contain(marker.getPosition())) {
-            marker.infowindow.open(this.map, marker);
-          }
-        });
-      } else {
-        this.markers.forEach((marker) => {
-          marker.infowindow.close();
-        });
-      }
-    },
+    //   if (level <= 4) {
+    //     this.markers.forEach((marker) => {
+    //       if (bounds.contain(marker.getPosition())) {
+    //         marker.infowindow.open(this.map, marker);
+    //       }
+    //     });
+    //   } else {
+    //     this.markers.forEach((marker) => {
+    //       marker.infowindow.close();
+    //     });
+    //   }
+    // },
   },
 };
 </script>
@@ -189,5 +198,10 @@ export default {
   border-radius: 0px 90px 90px 0px;
   background-color: #fffffffd;
   /* border: 2px solid #69beee; */
+}
+
+.wrap {
+  width: 200px;
+  height: 200px;
 }
 </style>
