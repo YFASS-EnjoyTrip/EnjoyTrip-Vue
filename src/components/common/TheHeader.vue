@@ -85,12 +85,9 @@ export default {
       return this.checkUserInfo ? this.checkUserInfo.nickname : '';
     },
     profile() {
-      console.log(this.checkUserInfo.profileImg);
-      if (this.checkUserInfo.profileImg == 'undefined') {
-        return this.checkUserInfo.profileImg;
-      } else {
-        return 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
-      }
+      return this.checkUserInfo
+        ? this.checkUserInfo.profileImg
+        : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
     },
   },
 

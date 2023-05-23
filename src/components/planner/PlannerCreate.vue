@@ -9,15 +9,13 @@
         <div class="ticket-top">
           <div v-if="loading" class="modal">
             <div class="modal-content">
-              <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+              <img class="gif" :src="gachapon" alt="여행뽑기" />
               <div class="modal-text">
                 <span>{{ this.user.nickname }}</span>
                 님 만을 위한
                 <br />
                 <span>{{ getSelectedText(location) }}</span>
-                여행 계획이
-                <br />
-                만들어지고 있어요!
+                여행 계획이 만들어지고 있어요!
               </div>
             </div>
           </div>
@@ -84,16 +82,13 @@
 <script>
 import { mapGetters } from 'vuex';
 import { apiAuthInstance } from '@/api/index.js';
-// import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 const memberStore = 'memberStore';
 const api = apiAuthInstance();
 
 export default {
   name: 'PlannerCreate',
-  components: {
-    // DatePicker
-  },
+  components: {},
   computed: {
     ...mapGetters(memberStore, ['checkUserInfo']),
     user() {
@@ -112,6 +107,7 @@ export default {
         start: new Date(2023, 4, 1),
         end: new Date(2023, 4, 5),
       },
+      gachapon: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0332.GIF',
       loading: false,
       location: '',
       locName: '',
@@ -164,20 +160,16 @@ export default {
         // 플랜 생성 성공 시
         if (response.status === 201) {
           // 로딩 gif 표시를 위한 데이터 프로퍼티
-          // this.loading = true;
+          this.loading = true;
 
-          // setTimeout(() => {
-          //   this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
 
-          //   this.$router.push({
-          //     name: 'plannerView',
-          //     params: { planId: response.data.result },
-          //   });
-          // }, 4000); // 4초 후에 실행
-          this.$router.push({
-            name: 'plannerView',
-            params: { planId: response.data.result },
-          });
+            this.$router.push({
+              name: 'plannerView',
+              params: { planId: response.data.result },
+            });
+          }, 4000); // 4초 후에 실행
         }
       } catch (error) {
         console.error(error);
@@ -432,34 +424,33 @@ export default {
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 .gif {
-  width: 500px;
-  height: fit-content;
-  margin-top: 100px;
-  margin-left: 20px;
+  width: 600px;
+  /* height: fit-content; */
 }
 .modal-text {
   font-family: 'CookieRun-Regular';
   color: #383838;
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
-  margin-top: 250px;
-  margin: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  /* margin-top: 250px; */
+  /* margin: auto; */
 }
 .modal-text span {
   color: #30b2fd;
 }
 .modal-content {
-  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-  background-color: #ffffff;
+  /* text-align: center; */
+  /* background-color: rgba(255, 255, 255, 0.8); */
   width: 1000px;
-  height: 600px;
+  height: 750px;
   border-radius: 60px;
-  padding-right: 50px;
-  border: 10px solid #fe646f;
+  /* padding-right: 50px; */
+  /* border: 10px solid #fe646f; */
 }
 </style>
