@@ -3,37 +3,27 @@
     <div class="info-text">회원가입</div>
     <div class="input-container">
       <div class="member-input">
-        <span>이메일 </span>
-        <input
-          type="email"
-          class="input-box"
-          v-model="email"
-          @keyup="debouncedCheckEmailDuplicate"
-        />
+        <span>이메일</span>
+        <input type="email" class="input-box" v-model="email" @keyup="debouncedCheckEmailDuplicate" />
       </div>
       <span class="check">{{ emailMessage }}</span>
       <div class="member-input">
-        <span>닉네임 </span>
-        <input
-          class="input-box"
-          type="text"
-          v-model="nickname"
-          @keyup="debouncedCheckNicknameDuplicate"
-        />
+        <span>닉네임</span>
+        <input class="input-box" type="text" v-model="nickname" @keyup="debouncedCheckNicknameDuplicate" />
       </div>
       <span class="check">{{ nicknameMessage }}</span>
       <div class="member-input">
-        <span>비밀번호 </span>
+        <span>비밀번호</span>
         <input type="password" class="input-box" v-model="password" />
       </div>
-      <span class="check password" v-show="password.length <= 3"
-        >비밀번호는 4자 이상이어야 합니다!</span
-      >
+      <span class="check password" v-show="password.length > 0 && password.length < 4">
+        비밀번호는 4자 이상이어야 합니다!
+      </span>
       <div class="member-input">
         <span>비밀번호 확인</span>
         <input type="password" class="input-box" v-model="confirmPassword" />
       </div>
-      <span class="check">
+      <span class="check" v-show="this.confirmPassword.length > 0">
         {{ passwordMessage }}
       </span>
       <div>
@@ -44,22 +34,22 @@
 </template>
 
 <script>
-import { apiInstance } from "@/api/index.js";
-import router from "@/router";
-import _ from "lodash";
+import { apiInstance } from '@/api/index.js';
+import router from '@/router';
+import _ from 'lodash';
 
 const api = apiInstance();
 
 export default {
-  name: "SignupForm",
+  name: 'SignupForm',
   components: {},
   data() {
     return {
-      email: "",
-      nickname: "",
-      password: "",
-      confirmPassword: "",
-      emailMsg: "",
+      email: '',
+      nickname: '',
+      password: '',
+      confirmPassword: '',
+      emailMsg: '',
       emailDuplicate: true,
       nicknameDuplicate: true,
     };
@@ -67,34 +57,27 @@ export default {
   computed: {
     emailMessage() {
       return this.email.length == 0
-        ? ""
+        ? ''
         : this.emailDuplicate
-        ? "이미 사용중인 이메일입니다."
-        : "사용이 가능한 이메일입니다.";
+        ? '이미 사용중인 이메일입니다.'
+        : '사용이 가능한 이메일입니다.';
     },
     nicknameMessage() {
       return this.nickname.length == 0
-        ? ""
+        ? ''
         : this.nicknameDuplicate
-        ? "이미 사용중인 닉네임입니다."
-        : "사용이 가능한 닉네임입니다.";
+        ? '이미 사용중인 닉네임입니다.'
+        : '사용이 가능한 닉네임입니다.';
     },
     passwordMessage() {
-      return this.password !== this.confirmPassword &&
-        this.confirmPassword.length > 0
-        ? "비밀번호가 일치하지 않습니다."
-        : "비밀번호가 일치합니다.";
+      return this.password !== this.confirmPassword && this.confirmPassword.length > 0
+        ? '비밀번호가 일치하지 않습니다.'
+        : '비밀번호가 일치합니다.';
     },
   },
   created() {
-    this.debouncedCheckEmailDuplicate = _.debounce(
-      this.checkEmailDuplicate,
-      500
-    );
-    this.debouncedCheckNicknameDuplicate = _.debounce(
-      this.checkNicknameDuplicate,
-      500
-    );
+    this.debouncedCheckEmailDuplicate = _.debounce(this.checkEmailDuplicate, 500);
+    this.debouncedCheckNicknameDuplicate = _.debounce(this.checkNicknameDuplicate, 500);
   },
 
   methods: {
@@ -135,21 +118,21 @@ export default {
 
       // 이메일 형식이 올바르지 않은 경우
       if (!emailRegex.test(this.email)) {
-        alert("올바른 이메일 형식이 아닙니다.");
+        alert('올바른 이메일 형식이 아닙니다.');
         return;
       }
 
       api
-        .post("/member/signup", {
+        .post('/member/signup', {
           email: this.email,
           password: this.password,
           nickname: this.nickname,
         })
         .then(() => {
-          router.push("/login");
+          router.push('/login');
         })
         .catch((error) => {
-          console.error("Signup failed", error);
+          console.error('Signup failed', error);
         });
     },
   },
@@ -159,7 +142,7 @@ export default {
 <style scoped>
 .check {
   margin-left: 30px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   font-size: 15px;
   color: #ff7878;
   caret-color: transparent;
@@ -175,7 +158,7 @@ export default {
   outline: none;
   font-size: 20px;
   text-indent: 10px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #757575;
 
   margin-right: 20px;
@@ -195,7 +178,7 @@ export default {
   border-radius: 10px;
   width: 120px;
   height: 45px;
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #ffffff;
   font-size: 24px;
 
@@ -224,7 +207,7 @@ export default {
 .info-text {
   margin-top: 40px;
   margin-bottom: 40px;
-  font-family: "CookieRun-Black";
+  font-family: 'CookieRun-Black';
   color: #69beee;
   font-size: 64px;
   caret-color: transparent;
@@ -241,7 +224,7 @@ export default {
   user-select: none;
   pointer-events: none;
 
-  font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #636363;
   font-size: 20px;
 }

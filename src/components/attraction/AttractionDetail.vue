@@ -23,9 +23,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { apiInstance } from '@/api';
 import AttractionReview from './AttractionReview.vue';
 import BlogReview from './BlogReview.vue';
+
+const api = apiInstance();
+
 export default {
   name: 'AttractionDetail',
   components: { AttractionReview, BlogReview },
@@ -40,8 +43,8 @@ export default {
 
   created() {
     this.contentId = sessionStorage.getItem('contentId');
-    axios
-      .get(`http://localhost:8080/locations/detail?contentId=${this.contentId}`)
+    api
+      .get(`/locations/detail?contentId=${this.contentId}`)
       .then((response) => {
         this.attractionInfo = response.data.result;
         this.loadKakaoMap();

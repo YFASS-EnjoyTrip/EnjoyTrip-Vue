@@ -1,144 +1,160 @@
 <template>
   <div>
-    <div class="comment-in-container">
-      <div class="like-rank"><span>블로그리뷰</span></div>
-    </div>
-    <div class="comment-container">
-      <div class="comment-in-container">
-        <div>
-          <div
-            v-for="(review, index) in reviews"
-            :key="index"
-            class="comment-content-container"
-          >
-            <a :href="'//' + review.blogUrl" style="text-decoration: none" target="_blank">
-              <div class="comment-nickname">
-                {{ review.userNickname }} <span>{{ review.blogName }}</span>
-              </div>
-              <div class="comment-content">
-                {{ review.content }}
-              </div>
-            </a>
-          </div>
+    <div class="blog-title">블로그리뷰</div>
+    <div class="container">
+      <div class="main-container">
+        <div class="blog-container" v-for="(blog, index) in blogListNaver" :key="index">
+          <a :href="blog.link" target="_blank">
+            <span class="bloggername">{{ blog.bloggername }}</span>
+            <span class="bloggername">{{ formatDate(blog.postdate) }}</span>
+            <div class="content-title" v-html="blog.title"></div>
+          </a>
+          <div></div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "AttractionBlogReview",
-  components: {},
-  data() {
-    return {
-      likeCnt: 5,
-      rankCnt: 3.5,
-      reviews: [
-        {
-          userNickname: "닉네임1",
-          blogName: "지영블로그~~",
-          blogUrl: "www.naver.com",
-          content:
-            "좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임1",
-          blogName: "지영블로그~~",
-          blogUrl: "www.naver.com",
-          content:
-            "좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임1",
-          blogName: "지영블로그~~",
-          blogUrl: "www.naver.com",
-          content:
-            "좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!",
-        },
-        {
-          userNickname: "닉네임1",
-          blogName: "지영블로그~~",
-          blogUrl: "www.naver.com",
-          content:
-            "좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!좋아요~~!~!~!!~!!",
-        },
-      ],
-    };
-  },
-  created() {},
-  methods: {},
-};
-</script>
-
 <style scoped>
-.like-rank > span {
-  font-family: "CookieRun-Bold";
-  color: #5f5f5f;
-  font-size: 0.8rem;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
 }
-.comment-container {
-  height: 175px;
-  overflow: scroll;
-  scrollbar-width: thin;
+
+::-webkit-scrollbar-thumb {
+  background-color: #ffe6a1;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+  /* 스크롤바 모서리의 곡률 */
 }
-.comment-container::-webkit-scrollbar {
-  width: 0px;
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #ffc930;
+  /* 스크롤바 색상 */
 }
-.comment-in-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  /* 트랙 배경색 */
 }
-.like-rank {
+.container {
+  height: 150px;
+  overflow-y: scroll;
+}
+a {
+  text-decoration: none;
+}
+.content-text {
+  font-family: 'CookieRun-Regular';
+  color: #808080;
+  font-size: 12px;
   margin-top: 5px;
-  display: flex;
-  padding-bottom: 2px;
+  line-height: 15px;
 }
-.rank {
-  margin-left: 30px;
+.content-title {
+  font-family: 'CookieRun-Bold';
+  color: #515151;
+  font-size: 15px;
+  margin-top: 5px;
 }
-img {
+.bloggername {
+  font-family: 'CookieRun-Regular';
+  color: #929292;
+  font-size: 12px;
   margin-right: 10px;
-  width: 15px;
 }
-.cnt {
-  font-family: "CookieRun-Regular";
-  color: #353535;
-  font-size: 0.7rem;
+.blog-title {
+  text-align: center;
+  font-family: 'CookieRun-Bold';
+  color: #666666;
+  font-size: 20px;
 }
-.comment-content-container {
+.main-container {
   margin-top: 5px;
-  width: 230px;
-  background-color: #ffffff;
-  border: 1px solid #ffc930;
-  border-radius: 10px;
 }
-.comment-content-container:hover{
-  background-color: #fff3f4;
-  border: 1px solid #FE646F;
+.blog-container {
+  margin: 0 auto;
+  width: 210px;
+  background-color: rgb(255, 255, 255);
+  margin-top: 7px;
+  margin-bottom: 7px;
+  padding-right: 15px;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 2px solid #ffc930;
+  border-radius: 11px;
+  box-shadow: 0px 2px 3px 2px rgba(103, 103, 103, 0.315);
+}
+.blog-container:hover {
+  background-color: #fff1c9;
   transition: 0.2s;
+  cursor: pointer;
 }
-.comment-content-container:hover .comment-nickname{
-  color: #ff8e95;
+.blog-container:active {
+  transform: scale(0.9);
   transition: 0.2s;
-}
-.comment-nickname {
-  margin-left: 10px;
-  margin-top: 3px;
-  font-family: "CookieRun-Regular";
-  color: #aaaaaa;
-  font-size: 0.8rem;
-}
-.comment-nickname > span {
-  margin-left: 10px;
-  font-size: 0.6rem;
-}
-.comment-content {
-  margin-left: 10px;
-  margin-top: 3px;
-  font-family: "CookieRun-Regular";
-  color: #757575;
-  font-size: 0.8rem;
 }
 </style>
+
+<style scoped>
+.main-container {
+  margin-top: 5px;
+}
+</style>
+
+<script>
+import axios from 'axios';
+import moment from 'moment';
+export default {
+  data() {
+    return {
+      blogListNaver: [],
+    };
+  },
+
+  props: {
+    attraction: {
+      type: Object,
+      require: true,
+    },
+  },
+
+  created() {
+    this.getBlogList();
+  },
+
+  watch: {
+    attraction: {
+      handler() {
+        this.getBlogList();
+      },
+      deep: true,
+    },
+  },
+
+  methods: {
+    getBlogList() {
+      const URL = `/v1/search/blog?query=${encodeURIComponent(this.attraction.title)}`;
+      const clientId = '7k0ZARFOeii5DyM_2OK0';
+      const clientSecret = 'Bm0xQTFmD7';
+      axios
+        .get(URL, {
+          headers: {
+            Accept: 'application/json',
+            'X-Naver-Client-Id': clientId,
+            'X-Naver-Client-Secret': clientSecret,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.blogListNaver = response.data.items;
+        });
+    },
+    formatDate(date) {
+      return moment(date).format('YY.MM.DD');
+    },
+  },
+};
+</script>

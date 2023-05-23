@@ -163,8 +163,6 @@ export default {
 
         // 플랜 생성 성공 시
         if (response.status === 201) {
-          console.log(response.data.result);
-
           // 로딩 gif 표시를 위한 데이터 프로퍼티
           this.loading = true;
 

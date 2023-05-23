@@ -63,8 +63,7 @@
 </template>
 
 <script>
-import { apiInstance } from '@/api';
-import { apiAuthInstance } from '@/api';
+import { apiInstance, apiAuthInstance } from '@/api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
@@ -111,7 +110,9 @@ export default {
 
   created() {
     this.contentId = sessionStorage.getItem('contentId');
-    this.memberId = this.checkUserInfo.memberId;
+    if (this.checkUserInfo && this.checkUserInfo.isLogin) {
+      this.memberId = this.checkUserInfo.memberId;
+    }
     this.localAttraction = this.attraction;
     this.loadData();
   },
@@ -119,7 +120,7 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await api.get(`http://localhost:8080/locations/detail/${this.contentId}/reviews`);
+        const response = await api.get(`/locations/detail/${this.contentId}/reviews`);
 
         this.comments = response.data.result;
       } catch (error) {
@@ -135,30 +136,37 @@ export default {
     },
 
     submitComment() {
-      const commentData = {
-        contentId: this.attraction.contentId,
-        rate: this.rating,
-        content: this.writeContext,
-      };
-
-      apiAuth
-        .post('/locations/detail/reviews', commentData)
-        .then((response) => {
-          if (response.status === 201) {
-            this.localAttraction.rate += this.rating;
-            this.localAttraction.totalCount += 1;
-
-            this.writeContext = '';
-            this.rating = 3;
-
-            this.loadData();
-          } else {
-            console.log('댓글 작성 실패');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
+      if (this.memberId === '') {
+        this.$toast.error('로그인이 필요한 서비스입니다!', {
+          timeout: 3000,
+          position: 'bottom-center',
         });
+      } else {
+        const commentData = {
+          contentId: this.attraction.contentId,
+          rate: this.rating,
+          content: this.writeContext,
+        };
+
+        apiAuth
+          .post('/locations/detail/reviews', commentData)
+          .then((response) => {
+            if (response.status === 201) {
+              this.localAttraction.rate += this.rating;
+              this.localAttraction.totalCount += 1;
+
+              this.writeContext = '';
+              this.rating = 3;
+
+              this.loadData();
+            } else {
+              console.log('댓글 작성 실패');
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     },
 
     deleteComment(comment) {
