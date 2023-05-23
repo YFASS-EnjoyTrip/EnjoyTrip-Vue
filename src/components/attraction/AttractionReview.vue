@@ -67,8 +67,7 @@
 </template>
 
 <script>
-import { apiInstance } from '@/api';
-import { apiAuthInstance } from '@/api';
+import { apiInstance, apiAuthInstance } from '@/api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 
@@ -123,7 +122,7 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await api.get(`http://localhost:8080/locations/detail/${this.contentId}/reviews`);
+        const response = await api.get(`/locations/detail/${this.contentId}/reviews`);
 
         this.comments = response.data.result;
       } catch (error) {

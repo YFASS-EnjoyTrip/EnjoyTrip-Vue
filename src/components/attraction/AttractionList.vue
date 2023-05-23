@@ -41,6 +41,7 @@ export default {
             this.initKakaoMap();
           });
         script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f';
+        console.log('OK');
         document.head.appendChild(script);
       }
     },

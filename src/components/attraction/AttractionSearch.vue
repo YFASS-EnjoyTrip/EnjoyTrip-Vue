@@ -80,10 +80,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { apiAuthInstance } from '@/api';
+import { apiInstance, apiAuthInstance } from '@/api';
 
-const api = apiAuthInstance();
+const apiAuth = apiAuthInstance();
+const api = apiInstance();
 
 export default {
   name: 'AttractionSearch',
@@ -163,13 +163,13 @@ export default {
         this.guguns = [{ text: '전체', value: '0' }];
         this.gugunOption = this.guguns[0].value;
       } else {
-        const response = await axios.get(`http://localhost:8080/locations/search/gugun?sido=${option}`);
+        const response = await api.get(`/locations/search/gugun?sido=${option}`);
         this.guguns = response.data.result;
         this.gugunOption = this.guguns[0].value;
       }
     },
     async initAttractions() {
-      const response = await axios.get(`http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`);
+      const response = await api.get(`/locations?page=${this.page}&pageSize=${this.pageSize}`);
       this.attractions = response.data.result;
       this.$emit('attractions-updated', this.attractions);
     },
@@ -188,8 +188,8 @@ export default {
       if (this.keyword == null) this.keyword = '';
 
       this.page = 1; // 검색하면 page 초기화
-      const response = await axios.get(
-        `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`,
+      const response = await api.get(
+        `/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`,
       );
       this.attractions = response.data.result;
       this.$emit('attractions-updated', this.attractions);
@@ -198,7 +198,7 @@ export default {
     // 좋아요 클릭 이벤트
     async clickedLike(attraction, index) {
       try {
-        const response = await api.post(`/locations/${attraction.contentId}/like`);
+        const response = await apiAuth.post(`/locations/${attraction.contentId}/like`);
         if (response.status === 200) {
           this.attractions[index].likeCount = response.data.result;
         } else {
@@ -228,11 +228,11 @@ export default {
 
         // 만약 검색중인 상태라면
         if (this.keyword == null) {
-          url = `http://localhost:8080/locations?page=${this.page}&pageSize=${this.pageSize}`;
+          url = `/locations?page=${this.page}&pageSize=${this.pageSize}`;
         } else {
-          url = `http://localhost:8080/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`;
+          url = `/locations/search?keyword=${this.keyword}&sido=${this.sidoOption}&gugun=${this.gugunOption}&page=${this.page}&pageSize=${this.pageSize}&contentType=${selectedTypeCodes}`;
         }
-        const response = await axios.get(url);
+        const response = await api.get(url);
         const additionalData = response.data.result;
         this.attractions = [...this.attractions, ...additionalData];
         this.$emit('attractions-updated', this.attractions);
