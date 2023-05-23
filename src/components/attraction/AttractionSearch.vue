@@ -336,8 +336,7 @@ a {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 18px;
-  /* 폰트 크기 설정 */
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #4d4d4d;
 }
 
