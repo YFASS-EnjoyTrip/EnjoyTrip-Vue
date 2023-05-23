@@ -58,10 +58,6 @@ export default {
 
       this.map = new kakao.maps.Map(container, options);
 
-      // kakao.maps.event.addListener(this.map, 'zoom_changed', () => {
-      //   this.handleZoomChange();
-      // });
-
       let imageSrc = '';
 
       for (let i = 0; i < this.attractions.length; i++) {
@@ -162,89 +158,6 @@ export default {
 </script>
 
 <style scoped>
-/* .wrap {
-  z-index: 1;
-  position: absolute;
-  left: 300px;
-  bottom: 40px;
-  height: 132px;
-  margin-left: -144px;
-  text-align: left;
-  overflow: hidden;
-  line-height: 1.5;
-}
-
-.info {
-  width: 286px;
-  height: 120px;
-  border-radius: 5px;
-  border-bottom: 2px solid #ccc;
-  border-right: 1px solid #ccc;
-  overflow: hidden;
-  background: #fff;
-  border-radius: 10px;
-}
-.title {
-  padding: 5px 0 0 10px;
-  padding-bottom: 8px;
-  height: 30px;
-  background: #f24849;
-  border-bottom: 1px solid #f24849;
-
-  font-family: 'CookieRun-Regular';
-  color: #ffffff;
-  font-size: 20px;
-  box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.5);
-}
-.title span {
-  display: block;
-  width: 80%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.close {
-  position: absolute;
-  top: 13px;
-  right: 15px;
-  color: #ffffff;
-  width: 17px;
-  height: 17px;
-}
-
-.body {
-  position: relative;
-  overflow: hidden;
-}
-
-.img {
-  position: absolute;
-  top: 6px;
-  left: 5px;
-  width: 100px;
-  height: 63px;
-  border: 1px solid #ddd;
-  color: #888;
-  overflow: hidden;
-  border-radius: 5px;
-  border: 2spx solid #f24849;
-}
-
-.desc {
-  position: relative;
-  margin: 13px 0 0 90px;
-  height: 75px;
-}
-
-.ellipsis {
-  width: 85%;
-  margin-left: 22px;
-  padding-top: 6px;
-  font-family: 'CookieRun-Regular';
-  color: #5a5a5a;
-  font-size: 13px;
-} */
 .container {
   width: 1200px;
   height: 800px;

@@ -44,6 +44,11 @@ export default {
       if (this.isLogin) {
         await this.getUserInfo(token);
         this.$router.push({ name: 'AppMain' });
+      } else {
+        this.$toast.error('로그인이 필요한 서비스입니다!', {
+          timeout: 3000,
+          position: 'bottom-center',
+        });
       }
     },
     movePage() {

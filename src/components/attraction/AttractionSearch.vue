@@ -3,14 +3,10 @@
     <div class="search-container">
       <div class="input-container">
         <select class="sido-dropdown" name="sido" id="location" v-model="sidoOption">
-          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">
-            {{ sido.text }}
-          </option>
+          <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
         </select>
         <select class="gugun-dropdown" name="gugun" id="location" v-model="gugunOption">
-          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">
-            {{ gugun.text }}
-          </option>
+          <option v-for="gugun in guguns" :value="gugun.value" :key="gugun.value">{{ gugun.text }}</option>
         </select>
         <input
           class="input-keyword"
@@ -31,7 +27,13 @@
           </label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
-              <input type="checkbox" name="types" :id="item.code" :value="item.code" v-model="selectedTypes" />
+              <input
+                type="checkbox"
+                name="types"
+                :id="item.code"
+                :value="item.code"
+                v-model="selectedTypes"
+              />
               <label :for="item.code">
                 <span>{{ item.name }}</span>
               </label>
@@ -149,11 +151,11 @@ export default {
   },
   computed: {
     allSelected: {
-      get: function () {
+      get: function() {
         return this.allTypes.length === this.selectedTypes.length;
       },
-      set: function (e) {
-        this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
+      set: function(e) {
+        this.selectedTypes = e ? this.allTypes.map(item => item.code) : [];
       },
     },
   },
@@ -183,7 +185,7 @@ export default {
       }
     },
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
+      const selectedTypeCodes = this.selectedTypes.filter(code => !!code).join(',');
 
       if (this.keyword == null) this.keyword = '';
 
@@ -224,7 +226,7 @@ export default {
       try {
         this.page++; // 다음 페이지로 이동
         let url = '';
-        const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
+        const selectedTypeCodes = this.selectedTypes.filter(code => !!code).join(',');
 
         // 만약 검색중인 상태라면
         if (this.keyword == null) {
@@ -355,17 +357,20 @@ a {
   margin-left: 3px;
   margin-right: 2px;
 }
-
+.img-heart {
+  width: 140px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
+}
 .attractionImg {
   width: 140px;
   height: 100px;
-  border-radius: 10px;
-  box-shadow: 2px 4px 5px rgba(85, 85, 85, 0.5);
-  /* 그림자 스타일 및 값 설정 */
 }
 .attractionImg:hover {
   transform: scale(1.1);
-  filter: brightness(60%);
+  filter: brightness(70%);
   transition: 0.2s;
 }
 

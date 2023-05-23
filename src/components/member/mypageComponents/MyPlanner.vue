@@ -289,12 +289,6 @@ button:active {
   width: 110%;
   height: 110%;
 }
-
-/* .attractionImg:active {
-  transform: scale(0.9);
-  transition: 0.2s;
-} */
-
 .delete-button {
   position: absolute;
   top: 0;
