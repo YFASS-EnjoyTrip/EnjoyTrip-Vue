@@ -23,7 +23,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 Vue.use(Toast);
-
+Vue.prototype.$toast = Toast;
 new Vue({
   router,
   store,

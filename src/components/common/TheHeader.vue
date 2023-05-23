@@ -85,6 +85,7 @@ export default {
       return this.checkUserInfo ? this.checkUserInfo.nickname : '';
     },
     profile() {
+      console.log(this.checkUserInfo.profileImg);
       if (this.checkUserInfo.profileImg == 'undefined') {
         return this.checkUserInfo.profileImg;
       } else {

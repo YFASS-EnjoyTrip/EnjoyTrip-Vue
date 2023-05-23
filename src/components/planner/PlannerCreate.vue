@@ -164,16 +164,20 @@ export default {
         // 플랜 생성 성공 시
         if (response.status === 201) {
           // 로딩 gif 표시를 위한 데이터 프로퍼티
-          this.loading = true;
+          // this.loading = true;
 
-          setTimeout(() => {
-            this.loading = false;
+          // setTimeout(() => {
+          //   this.loading = false;
 
-            this.$router.push({
-              name: 'plannerView',
-              params: { planId: response.data.result },
-            });
-          }, 4000); // 4초 후에 실행
+          //   this.$router.push({
+          //     name: 'plannerView',
+          //     params: { planId: response.data.result },
+          //   });
+          // }, 4000); // 4초 후에 실행
+          this.$router.push({
+            name: 'plannerView',
+            params: { planId: response.data.result },
+          });
         }
       } catch (error) {
         console.error(error);

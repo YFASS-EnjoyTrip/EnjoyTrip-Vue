@@ -175,11 +175,12 @@ export default {
           const response = await api.post(`/planner/reroll`, param);
 
           if (response.status === 201) {
-            this.loading = true;
-            setTimeout(() => {
-              this.loading = false;
-              window.location.reload();
-            }, 4000); // 4초 후에 실행
+            // this.loading = true;
+            // setTimeout(() => {
+            //   this.loading = false;
+            //   window.location.reload();
+            // }, 4000); // 4초 후에 실행
+            window.location.reload();
           } else {
             console.log('서버에 문제가 발생');
           }
@@ -294,7 +295,6 @@ export default {
 </script>
 
 <style scoped>
-
 .modify-button {
   width: 90px;
   height: 45px;
