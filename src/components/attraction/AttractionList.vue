@@ -19,9 +19,9 @@ export default {
       map: null,
       attractions: [],
       markers: [],
-      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png',
-      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png',
-      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png',
+      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG',
+      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG',
+      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG',
     };
   },
 
@@ -128,7 +128,7 @@ export default {
     },
 
     closeOverlay() {
-      this.markers.forEach(marker => {
+      this.markers.forEach((marker) => {
         marker.infowindow.close();
       });
     },
