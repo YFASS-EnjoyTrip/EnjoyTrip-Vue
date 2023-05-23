@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="plannerCreate-text">{{ this.user.nickname }} 님의 여행가챠 쿠폰이 발급되었습니다</div>
+    <div class="plannerCreate-text">{{ this.user.nickname }} 님의 쿠폰이 발급되었습니다</div>
     <div class="img-container">
       <img src="../../assets/img/ticket.png" alt="티켓" />
     </div>
@@ -11,10 +11,13 @@
             <div class="modal-content">
               <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
               <div class="modal-text">
-                <span>{{ this.user.nickname }}</span>님 만을 위한
+                <span>{{ this.user.nickname }}</span>
+                님 만을 위한
                 <br />
-                <span>{{getSelectedText(location)}}</span>여행 계획이
-                <br />만들어지고 있어요!
+                <span>{{ getSelectedText(location) }}</span>
+                여행 계획이
+                <br />
+                만들어지고 있어요!
               </div>
             </div>
           </div>
@@ -73,7 +76,7 @@
       </div>
     </div>
     <div class="confirm-button">
-      <div class="button cancel">취소</div>
+      <div class="button cancel" @click="goBack">취소</div>
       <div class="button submit" @click="createaPlan">사용</div>
     </div>
   </div>
@@ -140,8 +143,11 @@ export default {
     this.todayDate = new Date().toISOString().split('T')[0];
   },
   methods: {
+    goBack() {
+      this.$router.go(-1); // -1은 이전 페이지로 이동
+    },
     getSelectedText(value) {
-      const selectedSido = this.sidos.find(sido => sido.value === value);
+      const selectedSido = this.sidos.find((sido) => sido.value === value);
       this.locName = selectedSido ? selectedSido.text : '';
       return this.locName;
     },
@@ -289,7 +295,7 @@ export default {
   padding-top: 30px;
   font-size: 30px;
   font-family: 'CookieRun-Bold';
-  color: #3a3a3a;
+  color: #292929;
   text-align: center;
 }
 
@@ -351,8 +357,9 @@ export default {
 .nickname {
   font-family: 'CookieRun-Regular';
   color: #fff0c7;
-  font-size: 1.8rem;
-  padding-top: 40px;
+  font-size: 1.5rem;
+  padding-top: 32px;
+  margin-bottom: -10px;
 }
 
 .ticket-title {

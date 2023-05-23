@@ -26,12 +26,14 @@
         <span>비밀번호</span>
         <input type="password" class="input-box" v-model="password" />
       </div>
-      <span class="check password" v-show="password.length <= 3">비밀번호는 4자 이상이어야 합니다!</span>
+      <span class="check password" v-show="password.length <= 3 && password.length > 0">
+        비밀번호는 4자 이상이어야 합니다!
+      </span>
       <div class="member-input">
         <span>비밀번호 확인</span>
         <input type="password" class="input-box" v-model="confirmPassword" />
       </div>
-      <span class="check">
+      <span class="check" v-show="confirmPassword.length > 0">
         {{ passwordMessage }}
       </span>
       <div>

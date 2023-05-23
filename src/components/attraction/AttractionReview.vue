@@ -52,11 +52,7 @@
                 class="icon2"
                 alt="star"
               />
-              <div
-                class="delete-button"
-                v-if="comment.memberId == memberId"
-                @click="deleteComment(comment)"
-              >삭제</div>
+              <div class="delete-button" v-if="comment.memberId == memberId" @click="deleteComment(comment)">삭제</div>
             </div>
             <div class="comment-content">{{ comment.content }}</div>
           </div>
@@ -109,7 +105,7 @@ export default {
     },
 
     hasWrittenComment() {
-      return this.comments.some(comment => comment.memberId == this.memberId);
+      return this.comments.some((comment) => comment.memberId == this.memberId);
     },
   },
 
@@ -147,7 +143,7 @@ export default {
 
       apiAuth
         .post('/locations/detail/reviews', commentData)
-        .then(response => {
+        .then((response) => {
           if (response.status === 201) {
             this.localAttraction.rate += this.rating;
             this.localAttraction.totalCount += 1;
@@ -160,7 +156,7 @@ export default {
             console.log('댓글 작성 실패');
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     },
@@ -171,14 +167,14 @@ export default {
           .delete(
             `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
           )
-          .then(response => {
+          .then((response) => {
             if (response.status === 200) {
               this.loadData();
             } else {
               console.log('댓글 삭제 실패');
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(error);
           });
       }
@@ -269,13 +265,12 @@ export default {
 .write-input {
   margin-left: 3px;
   margin-top: 3px;
-  padding-left: 10px;
   font-family: 'CookieRun-Regular';
   color: #6b6b6b;
   font-size: 20px;
   height: 100px;
   border: 0;
-  outline-color: #fe6b8b00;
+  width: 370px;
 }
 .write-container {
   margin-top: 10px;
