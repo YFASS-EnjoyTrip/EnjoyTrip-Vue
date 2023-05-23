@@ -144,9 +144,9 @@ const memberStore = {
       await logout(
         userid,
         ({ data }) => {
-          if (data.message === 'success') {
-            commit('SET_IS_LOGIN', false);
+          if (data.status == 200) {
             commit('SET_USER_INFO', null);
+            commit('SET_IS_LOGIN', false);
             commit('SET_IS_VALID_TOKEN', false);
           } else {
             console.log('유저 정보 없음!!!!');

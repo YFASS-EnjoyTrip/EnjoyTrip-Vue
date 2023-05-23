@@ -56,12 +56,10 @@
           </router-link>
         </li>
         <li v-if="isLogin" class="signup">
-          <router-link to="/member/logout">
-            <div class="hover-effect" style="margin-top: 10px">
-              <span class="nav-item-title">로그아웃</span>
-              <img class="nav-item-img member" src="../../assets/img/icon/heart_fill.png" alt="이미지" />
-            </div>
-          </router-link>
+          <div class="hover-effect" style="margin-top: 10px" @click="onClickLogout">
+            <span class="nav-item-title">로그아웃</span>
+            <img class="nav-item-img member" src="../../assets/img/icon/heart_fill.png" alt="이미지" />
+          </div>
         </li>
       </div>
     </nav>
@@ -69,7 +67,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
+const memberStore = 'memberStore';
 export default {
   name: 'TheHeader',
   components: {},
@@ -77,6 +76,7 @@ export default {
     return {};
   },
   computed: {
+    ...mapState(memberStore, ['isLogin', 'userInfo']),
     ...mapGetters('memberStore', ['checkUserInfo', 'checkIsLogin']),
     isLogin() {
       return this.checkIsLogin;
@@ -92,7 +92,16 @@ export default {
   },
 
   created() {},
-  methods: {},
+  methods: {
+    ...mapActions(memberStore, ['userLogout']),
+
+    onClickLogout() {
+      this.userLogout(this.userInfo.memberId);
+      sessionStorage.removeItem('access-token'); //저장된 토큰 없애기
+      sessionStorage.removeItem('refresh-token'); //저장된 토큰 없애기
+      if (this.$route.path != '/') this.$router.push({ name: 'AppMain' });
+    },
+  },
 };
 </script>
 
