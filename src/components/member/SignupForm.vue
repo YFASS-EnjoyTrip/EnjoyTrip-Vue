@@ -4,7 +4,13 @@
     <div class="input-container">
       <div class="member-input">
         <span>이메일</span>
-        <input type="email" class="input-box" v-model="email" @keyup="debouncedCheckEmailDuplicate" />
+        <input type="email" class="input-box" v-model="emailPrefix" @keyup="debouncedCheckEmailDuplicate" />
+        <select v-model="emailDomain" @change="debouncedCheckEmailDuplicate">
+          <option disabled value=""></option>
+          <option>gmail.com</option>
+          <option>naver.com</option>
+          <option>nate.com</option>
+        </select>
       </div>
       <span class="check">{{ emailMessage }}</span>
       <div class="member-input">
@@ -45,7 +51,8 @@ export default {
   components: {},
   data() {
     return {
-      email: '',
+      emailPrefix: '',
+      emailDomain: '',
       nickname: '',
       password: '',
       confirmPassword: '',
@@ -55,6 +62,9 @@ export default {
     };
   },
   computed: {
+    email() {
+      return `${this.emailPrefix}${this.emailDomain}`;
+    },
     emailMessage() {
       return this.email.length == 0
         ? ''
@@ -152,8 +162,24 @@ export default {
 .password {
   margin-left: 70px;
 }
-.input-box {
+
+.email-input-box {
   border: 3px solid #ffc930;
+  border-radius: 8px;
+  outline: none;
+  font-size: 20px;
+  text-indent: 10px;
+  font-family: 'CookieRun-Regular';
+  color: #757575;
+
+  margin-right: 20px;
+  width: 180px;
+  height: 40px;
+  caret-color: #6e6e6e;
+}
+.input-box {
+  background-color: #f8e4a7;
+  border: none;
   border-radius: 8px;
   outline: none;
   font-size: 20px;
@@ -198,7 +224,7 @@ export default {
 .input-container {
   width: 600px;
   height: 500px;
-  background-color: #ffedba;
+  background-color: #ffffff;
   margin: auto;
   border-radius: 50px;
   padding-top: 30px;
