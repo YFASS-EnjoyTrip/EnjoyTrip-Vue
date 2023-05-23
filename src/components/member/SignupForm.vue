@@ -4,12 +4,13 @@
     <div class="input-container">
       <div class="member-input">
         <span>이메일</span>
-        <input type="email" class="input-box" v-model="emailPrefix" @keyup="debouncedCheckEmailDuplicate" />
+        <input type="email" class="input-box email" v-model="emailPrefix" @keyup="debouncedCheckEmailDuplicate" />
+        <!-- <span class="email-span">@</span> -->
         <select v-model="emailDomain" @change="debouncedCheckEmailDuplicate">
           <option disabled value=""></option>
-          <option>gmail.com</option>
-          <option>naver.com</option>
-          <option>nate.com</option>
+          <option>@gmail.com</option>
+          <option>@naver.com</option>
+          <option>@nate.com</option>
         </select>
       </div>
       <span class="check">{{ emailMessage }}</span>
@@ -139,7 +140,7 @@ export default {
           nickname: this.nickname,
         })
         .then(() => {
-          router.push('/login');
+          router.push('login');
         })
         .catch((error) => {
           console.error('Signup failed', error);
@@ -176,6 +177,14 @@ export default {
   width: 180px;
   height: 40px;
   caret-color: #6e6e6e;
+}
+.email-span{
+  margin-left: -100px;
+  margin-right: 10px !important;
+}
+.email{
+  width: 160px !important;
+  margin-right: 10px !important;
 }
 .input-box {
   background-color: #f8e4a7;
@@ -239,6 +248,18 @@ export default {
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
+
+}
+.member-input select{
+  width: 130px;
+  margin-right: 20px;
+  border-radius: 10px;
+  background-color: #f8e4a7;
+  border: none;
+
+   font-family: "CookieRun-Regular";
+  color: #616161;
+  font-size: 1.2rem;
 }
 .member-input span {
   margin-right: 30px;

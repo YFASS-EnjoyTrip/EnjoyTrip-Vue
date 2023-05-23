@@ -85,9 +85,16 @@ export default {
       return this.checkUserInfo ? this.checkUserInfo.nickname : '';
     },
     profile() {
-      return this.checkUserInfo
-        ? this.checkUserInfo.profileImg
-        : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
+      if(this.checkUserInfo) {
+
+        if (this.checkUserInfo.profileImg == null) {
+          return 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
+        }
+        return this.checkUserInfo.profileImg
+
+      } else {
+        return 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/profile_default.png';
+      }
     },
   },
 
