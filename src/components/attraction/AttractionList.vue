@@ -81,8 +81,31 @@ export default {
           image: markerImage,
         });
 
+        // 마커 클릭 이벤트 리스너를 추가합니다.
+        kakao.maps.event.addListener(marker, 'click', () => {
+          marker.infowindow.open(this.map, marker);
+        });
+
+        var overlayContent = `<div class="wrap">
+        <div class="info">
+            <div class="title">
+                ${attraction.title}
+                <div class="close" @click="closeOverlay" title="닫기">닫기</div>
+            </div>
+            <div class="body">
+                <div class="img">
+
+               </div>
+                <div class="desc">
+                    <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>
+                    <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>
+                    <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>
+                </div>
+            </div>
+        </div>
+    </div>`;
         const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">${attraction.title}</div>`,
+          content: overlayContent,
         });
 
         marker.infowindow = infowindow;
@@ -90,6 +113,12 @@ export default {
       }
     },
 
+    closeOverlay() {
+      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+      this.markers.forEach((marker) => {
+        marker.infowindow.close();
+      });
+    },
     async updateAttractions(attractions) {
       this.attractions = attractions;
       this.loadKakaoMap();
