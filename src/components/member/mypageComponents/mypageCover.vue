@@ -56,7 +56,7 @@ export default {
   margin: auto;
   border-radius: 18px;
   margin-top: 30px;
-  box-shadow: 4px 4px 4px rgba(255, 162, 162, 0.5);
+  box-shadow: 4px 4px 4px rgba(165, 152, 95, 0.5);
 }
 
 .nickname {
@@ -74,8 +74,8 @@ export default {
   overflow: hidden;
   margin: auto;
   margin-top: 30px;
-  border: 5px solid #fe646f;
-  box-shadow: 4px 4px 4px rgba(255, 162, 162, 0.5);
+  border: 5px solid #FFC930;
+  box-shadow: 4px 4px 4px rgba(165, 152, 95, 0.5);
 }
 
 .profile-img img {
@@ -95,9 +95,10 @@ export default {
   margin-top: 50px;
   width: 500px;
   height: 700px;
-  background-color: #e2e2e2;
+  background-color: #fff4d7;
+  border: 5px solid #FFC930;
   border-radius: 60px;
-  box-shadow: 4px 4px 4px rgba(138, 138, 138, 0.466);
+  box-shadow: 4px 4px 4px rgba(165, 152, 95, 0.5);
   caret-color: transparent;
   user-select: none;
   pointer-events: none;

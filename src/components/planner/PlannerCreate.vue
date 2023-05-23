@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="plannerCreate-text">{{ this.user.nickname }} 님의 여행가챠 쿠폰이 발급되었습니다</div>
+    <div class="plannerCreate-text">{{ this.user.nickname }} 님의 쿠폰이 발급되었습니다</div>
     <div class="img-container">
       <img src="../../assets/img/ticket.png" alt="티켓" />
     </div>
@@ -76,7 +76,7 @@
       </div>
     </div>
     <div class="confirm-button">
-      <div class="button cancel">취소</div>
+      <div class="button cancel" @click="goBack">취소</div>
       <div class="button submit" @click="createaPlan">사용</div>
     </div>
   </div>
@@ -143,6 +143,9 @@ export default {
     this.todayDate = new Date().toISOString().split('T')[0];
   },
   methods: {
+    goBack() {
+      this.$router.go(-1); // -1은 이전 페이지로 이동
+    },
     getSelectedText(value) {
       const selectedSido = this.sidos.find((sido) => sido.value === value);
       this.locName = selectedSido ? selectedSido.text : '';
@@ -183,15 +186,21 @@ export default {
 <style scoped>
 .plannerCreate-text {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 60px;
   margin-bottom: 10px;
   font-size: 30px;
   font-family: 'CookieRun-Regular';
-  color: #8d8d8d;
-
+  color: #494949;
+  width: 700px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #e6e6e6;
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
+  border-radius: 10px;
 }
 .button {
   width: 120px;
@@ -246,7 +255,7 @@ export default {
   color: #8d8d8d;
 }
 .confirm-container {
-  margin-top: 60px;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
 }
@@ -284,7 +293,7 @@ export default {
   padding-top: 30px;
   font-size: 30px;
   font-family: 'CookieRun-Bold';
-  color: #3a3a3a;
+  color: #292929;
   text-align: center;
 }
 
@@ -346,8 +355,9 @@ export default {
 .nickname {
   font-family: 'CookieRun-Regular';
   color: #fff0c7;
-  font-size: 1.8rem;
-  padding-top: 40px;
+  font-size: 1.5rem;
+  padding-top: 32px;
+  margin-bottom: -10px;
 }
 
 .ticket-title {

@@ -159,7 +159,7 @@ export default {
   width: 600px;
   height: 800px;
   border-radius: 0px 90px 90px 0px;
-  background-color: #fff4d7;
+  background-color: #fffffffd;
   /* border: 2px solid #69beee; */
 }
 </style>
