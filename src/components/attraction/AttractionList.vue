@@ -83,22 +83,25 @@ export default {
         });
 
         var overlayContent = `
-          <div class="wrap" style="position: absolute; left: 0; bottom: 40px; width: 288px; height: 132px; margin-left: -144px; text-align: left; overflow: hidden; font-size: 12px; font-family: 'Malgun Gothic', dotum, '돋움', sans-serif; line-height: 1.5;">
-              <div class="info" style="width: 286px; height: 120px; border-radius: 5px; border-bottom: 2px solid #ccc; border-right: 1px solid #ccc; overflow: hidden; background: #fff;">
-                  <div class="title" style="padding: 5px 0 0 10px; height: 30px; background: #eee; border-bottom: 1px solid #ddd; font-size: 18px; font-weight: bold;">
-                      ${attraction.title}
-                      <div class="close" title="닫기" style="position: absolute; top: 10px; right: 10px; color: #888; width: 17px; height: 17px; background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');"></div>
-                  </div>
-                  <div class="body" style="position: relative; overflow: hidden;">
-                      <div class="img" style="position: absolute; top: 6px; left: 5px; width: 73px; height: 71px; border: 1px solid #ddd; color: #888; overflow: hidden;">
-                          <img src=${attraction.image} style="width:73px; height:70px;"/>
-                      </div>
-                      <div class="desc" style="position: relative; margin: 13px 0 0 90px; height: 75px;">
-                          <div class="ellipsis" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${attraction.addr1}</div>
-                      </div>
-                  </div>
+        <div class="wrap" style="z-index: 1; position: absolute; left: 0px; bottom: 40px; height: 132px; margin-left: -144px; text-align: left; overflow: hidden; line-height: 1.5;">
+         <div class="info" style="width: 286px; height: 120px; border-radius: 5px; border-bottom: 2px solid #ccc; border-right: 1px solid #ccc; overflow: hidden; background: #fff; border-radius: 10px;">
+          <div class="title" style="padding: 5px 0 0 10px; padding-bottom: 8px; height: 30px; background: #f24849; border-bottom: 1px solid #f24849; font-family: 'CookieRun-Regular'; color: #ffffff; font-size: 20px; box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.5);">
+            <span style="display: block; width: 80%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${attraction.title}</span>
+            <img class="close" @click="closeOverlay" src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/close+(1).png" alt="" style="position: absolute; top: 13px; right: 15px; color: #ffffff; width: 17px; height: 17px;" />
+          </div>
+        <div class="body" style="position: relative; overflow: hidden;">
+          <div class="img" style="position: absolute; top: 6px; left: 5px; width: 100px; height: 63px; border: 1px solid #ddd; color: #888; overflow: hidden; border-radius: 5px; border: 2px solid #f24849;">
+            <img src="${attraction.image}" style="width: 100px; height: 63px;" />
+          </div>
+        <div class="desc" style="position: relative; margin: 13px 0 0 90px; height: 75px;">
+          <div class="ellipsis" style="width: 85%; margin-left: 22px; padding-top: 6px; font-family: 'CookieRun-Regular'; color: #5a5a5a; font-size: 13px; white-space: normal;">
+            <span>${attraction.addr1}</span>
               </div>
-          </div>`;
+            </div>
+          </div>
+        </div>
+      </div>
+          `;
 
         const overlay = new kakao.maps.CustomOverlay({
           content: overlayContent,
@@ -125,7 +128,7 @@ export default {
     },
 
     closeOverlay() {
-      this.markers.forEach((marker) => {
+      this.markers.forEach(marker => {
         marker.infowindow.close();
       });
     },
@@ -154,27 +157,94 @@ export default {
         this.markers.push(marker);
       }
     },
-    // handleZoomChange() {
-    //   const level = this.map.getLevel();
-    //   const bounds = this.map.getBounds();
-
-    //   if (level <= 4) {
-    //     this.markers.forEach((marker) => {
-    //       if (bounds.contain(marker.getPosition())) {
-    //         marker.infowindow.open(this.map, marker);
-    //       }
-    //     });
-    //   } else {
-    //     this.markers.forEach((marker) => {
-    //       marker.infowindow.close();
-    //     });
-    //   }
-    // },
   },
 };
 </script>
 
 <style scoped>
+/* .wrap {
+  z-index: 1;
+  position: absolute;
+  left: 300px;
+  bottom: 40px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px;
+}
+.title {
+  padding: 5px 0 0 10px;
+  padding-bottom: 8px;
+  height: 30px;
+  background: #f24849;
+  border-bottom: 1px solid #f24849;
+
+  font-family: 'CookieRun-Regular';
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.5);
+}
+.title span {
+  display: block;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.close {
+  position: absolute;
+  top: 13px;
+  right: 15px;
+  color: #ffffff;
+  width: 17px;
+  height: 17px;
+}
+
+.body {
+  position: relative;
+  overflow: hidden;
+}
+
+.img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 100px;
+  height: 63px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 2spx solid #f24849;
+}
+
+.desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+
+.ellipsis {
+  width: 85%;
+  margin-left: 22px;
+  padding-top: 6px;
+  font-family: 'CookieRun-Regular';
+  color: #5a5a5a;
+  font-size: 13px;
+} */
 .container {
   width: 1200px;
   height: 800px;
@@ -199,10 +269,5 @@ export default {
   border-radius: 0px 90px 90px 0px;
   background-color: #fffffffd;
   /* border: 2px solid #69beee; */
-}
-
-.wrap {
-  width: 200px;
-  height: 200px;
 }
 </style>

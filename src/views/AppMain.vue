@@ -14,6 +14,24 @@
         <img src="../assets/img/icon/search_Y.png" alt="검색아이콘" class="search-icon" @click="attractionSearch()" />
       </div>
     </div>
+
+    <div class="wrap" >
+              <div class="info" >
+                  <div class="title" >
+                      ${attraction.title}
+                      <div class="close" title="닫기" ></div>
+                  </div>
+                  <div class="body" >
+                      <div class="img" >
+                          <img src=${attraction.image} />
+                      </div>
+                      <div class="desc" >
+                          <div class="ellipsis" >${attraction.addr1}</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    
     <img src="../assets/img/background.png" alt="배경" class="background" />
     <img class="car1" src="../assets/img/bus.png" alt="" />
     <img class="car2" src="../assets/img/car_B.png" alt="" />
