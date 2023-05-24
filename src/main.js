@@ -10,6 +10,7 @@ import {
   faBookmark,
   faPenToSquare,
   faTrash,
+  faArrowRotateRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -17,7 +18,13 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 
-library.add(faUserSecret, faBookmark, faPenToSquare, faTrash);
+library.add(
+  faUserSecret,
+  faBookmark,
+  faPenToSquare,
+  faTrash,
+  faArrowRotateRight,
+);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

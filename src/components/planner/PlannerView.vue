@@ -141,6 +141,9 @@ export default {
       addItemMode: false,
       rerollCnt: 5,
       loading: false,
+      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_food.PNG',
+      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_acom.PNG',
+      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_location.PNG',
     };
   },
 
@@ -317,17 +320,14 @@ export default {
       this.markers = [];
 
       let imageSrc = '';
-      const imageFood = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG';
-      const imageAcom = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG';
-      const imageLoca = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG';
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
         var imageSize = new kakao.maps.Size(45, 45);
 
-        if (planType == 39) imageSrc = imageFood;
-        else if (planType == 32) imageSrc = imageAcom;
-        else imageSrc = imageLoca;
+        if (planType == 39) imageSrc = this.imageFood;
+        else if (planType == 32) imageSrc = this.imageAcom;
+        else imageSrc = this.imageLoca;
 
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
         var latlng = new kakao.maps.LatLng(firstDay[i].lat, firstDay[i].lng);
