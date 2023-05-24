@@ -29,6 +29,7 @@ export default {
       imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_food.PNG',
       imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_acom.PNG',
       imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_location.PNG',
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
     };
   },
 
@@ -80,6 +81,7 @@ export default {
 
       for (let i = 0; i < this.attractions.length; i++) {
         const attraction = this.attractions[i];
+        const attractionImg = attraction.image ? attraction.image : this.defaultImage;
         const planType = attraction.contentType;
 
         if (planType == 39) imageSrc = this.imageFood;
@@ -105,7 +107,7 @@ export default {
           </div>
         <div class="body" style="position: relative; overflow: hidden;">
           <div class="img" style="position: absolute; top: 6px; left: 5px; width: 100px; height: 63px; border: 1px solid #ddd; color: #888; overflow: hidden; border-radius: 5px; border: 2px solid #f24849;">
-            <img src="${attraction.image}" style="width: 100px; height: 63px;" />
+            <img src="${attractionImg}" style="width: 100px; height: 63px;" />
           </div>
         <div class="desc" style="position: relative; margin: 13px 0 0 90px; height: 75px;">
           <div class="ellipsis" style="width: 85%; margin-left: 22px; padding-top: 6px; font-family: 'CookieRun-Regular'; color: #5a5a5a; font-size: 13px; white-space: normal;">

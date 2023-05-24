@@ -176,6 +176,7 @@ export default {
         this.gugunOption = this.guguns[0].value;
       }
     },
+
     async initAttractions() {
       const response = await api.get(`/locations?page=${this.page}&pageSize=${this.pageSize}`);
       this.attractions = response.data.result;
@@ -190,6 +191,7 @@ export default {
         return 0;
       }
     },
+
     async selectAllAttractions() {
       const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
 
@@ -259,8 +261,10 @@ export default {
 
     // 23.05.24 범위를 기준으로 검색
     async fetchAttractionsWithBounds(bounds) {
+      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
+
       if (Object.keys(bounds).length) {
-        const response = await api.get(`/locations/search/bounds`, {
+        const response = await api.get(`/locations/search/bounds?contentType=${selectedTypeCodes}`, {
           params: {
             northEastLat: bounds.northEast.lat,
             northEastLng: bounds.northEast.lng,

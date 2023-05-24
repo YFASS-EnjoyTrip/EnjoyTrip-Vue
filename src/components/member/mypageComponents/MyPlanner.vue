@@ -57,7 +57,9 @@ export default {
       sessionStorage.setItem('planTitle', planner.title);
       this.$router.push({
         name: 'plannerView',
-        params: { planId: planner.planId },
+        params: {
+          planId: planner.planId,
+        },
       });
     },
 
@@ -189,7 +191,7 @@ export default {
 }
 
 .planner-container::-webkit-scrollbar-thumb:active {
-  background-color: #FFC930;
+  background-color: #ffc930;
   /* 스크롤바 색상 */
 }
 
