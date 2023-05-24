@@ -86,6 +86,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { apiAuthInstance } from '@/api/index.js';
+import Swal from 'sweetalert2';
 
 const memberStore = 'memberStore';
 const api = apiAuthInstance();
@@ -156,10 +157,18 @@ export default {
 
     async createaPlan() {
       if (!this.startDate || !this.endDate || !this.location) {
-        this.$toast.error('모든 정보를 입력해주세요!', {
-          type: 'error',
-          position: 'top-center',
-          duration: 2000,
+        Swal.fire({
+          // title: '모든 정보를 입력해주세요!',
+          // icon: 'warning',
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png" style="width:50px" />
+          <h2>모든 정보를 입력해주세요!</h2>`,
+          iconColor: '#69Beee',
+          // confirmButtonText: '확인',
+          // confirmButtonColor: '#F24849',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          // timer: 1000,
         });
         return;
       }
@@ -354,7 +363,7 @@ export default {
   color: #757575;
 
   margin-right: 10px;
-  width: 150px;
+  width: 170px;
 }
 
 .location-input {
@@ -367,6 +376,7 @@ export default {
   color: #757575;
   font-size: 1.5rem;
   margin-right: 20px;
+  margin-left: -241px;
 }
 
 .date-input {

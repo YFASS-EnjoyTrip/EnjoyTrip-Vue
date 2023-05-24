@@ -10,7 +10,6 @@
             <div class="content-title" v-html="blog.title"></div>
             <div class="content-text" v-html="blog.description"></div>
           </a>
-          <div></div>
         </div>
       </div>
     </div>
@@ -53,7 +52,7 @@ a {
   line-height: 20px;
 }
 .content-title {
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #515151;
   font-size: 20px;
   margin-top: 5px;
@@ -70,6 +69,8 @@ a {
   font-family: 'CookieRun-Bold';
   color: #666666;
   font-size: 20px;
+  caret-color: transparent;
+  user-select: none;
 }
 .main-container {
   margin-top: 5px;

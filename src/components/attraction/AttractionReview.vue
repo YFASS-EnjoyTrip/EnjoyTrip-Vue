@@ -242,11 +242,13 @@ export default {
   margin-top: 20px;
   margin-left: 40px;
   font-family: 'CookieRun-Regular';
-  color: #ffbb00;
+  color: #636363;
   font-size: 20px;
+  caret-color: transparent;
+  user-select: none;
 }
 .write-button {
-  margin-left: 340px;
+  margin-left: 330px;
   text-align: center;
   margin-top: 10px;
   width: 80px;
@@ -255,6 +257,8 @@ export default {
   border-radius: 8px;
   box-shadow: 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
   cursor: pointer;
+  caret-color: transparent;
+  user-select: none;
 }
 .write-button span {
   font-family: 'CookieRun-Regular';
@@ -280,13 +284,16 @@ export default {
   border: 0;
   width: 370px;
 }
+.write-input:focus {
+  border: none;
+}
 .write-container {
   margin-top: 10px;
   width: 380px;
   height: 110px;
   background-color: #ffffff;
   border: 2px solid #ffc930;
-  margin-left: 35px;
+  margin-left: 30px;
   border-radius: 10px;
   box-shadow: 0px 2px 2px 1px rgba(103, 103, 103, 0.315);
 }
@@ -304,6 +311,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  caret-color: transparent;
+  user-select: none;
 }
 .like-rank {
   margin-top: 20px;
@@ -352,8 +361,8 @@ img {
 .comment-content {
   margin-left: 10px;
   margin-top: 3px;
-  font-family: 'CookieRun-Bold';
-  color: #757575;
+  font-family: 'CookieRun-Regular';
+  color: #3b3b3b;
   font-size: 20px;
   margin-bottom: 10px;
 }

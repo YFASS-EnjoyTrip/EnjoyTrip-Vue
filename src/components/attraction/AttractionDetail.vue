@@ -97,13 +97,13 @@ export default {
 <style scoped>
 .blog-container {
   width: 630px;
-  background-color: #fff8e5;
+  background-color: #ffffff;
   border-radius: 18px;
 }
 .comment-container {
   width: 450px;
   margin-right: 20px;
-  background-color: #fff8e5;
+  background-color: #ffffff;
   border-radius: 18px;
 }
 .review-container {
