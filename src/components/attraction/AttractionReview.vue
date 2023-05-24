@@ -92,7 +92,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('memberStore', ['checkUserInfo']),
+    ...mapGetters('memberStore', ['checkIsLogin', 'checkUserInfo']),
 
     calculateRate() {
       if (this.localAttraction.rate && this.localAttraction.totalCount && this.localAttraction.totalCount != 0) {
@@ -110,7 +110,7 @@ export default {
 
   created() {
     this.contentId = sessionStorage.getItem('contentId');
-    if (this.checkUserInfo && this.checkUserInfo.isLogin) {
+    if (this.checkUserInfo && this.checkIsLogin) {
       this.memberId = this.checkUserInfo.memberId;
     }
     this.localAttraction = this.attraction;
