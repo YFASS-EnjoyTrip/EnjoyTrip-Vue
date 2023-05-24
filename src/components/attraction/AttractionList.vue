@@ -3,7 +3,7 @@
     <div class="inner-container">
       <div id="map" class="map">
         <div class="map-button" @click="updateBounds">
-          <font-awesome-icon icon="fa-arrow-rotate-right" style="color: #000000" />
+          <font-awesome-icon class="map-button-icon" icon="fa-arrow-rotate-right" style="color: #000000" />
           이 지역 재검색
         </div>
       </div>
@@ -237,5 +237,10 @@ export default {
   transform: scale(0.98);
   box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+.map-button:hover .map-button-icon {
+  transform: rotate(360deg);
+  transition: 0.5s;
 }
 </style>

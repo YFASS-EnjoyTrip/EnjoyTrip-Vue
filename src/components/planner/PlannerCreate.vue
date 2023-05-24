@@ -155,6 +155,15 @@ export default {
     },
 
     async createaPlan() {
+      if (!this.startDate || !this.endDate || !this.location) {
+        this.$toast.error('모든 정보를 입력해주세요!', {
+          type: 'error',
+          position: 'top-center',
+          duration: 2000,
+        });
+        return;
+      }
+
       try {
         const response = await api.post('/planner/create', {
           startDate: this.startDate,

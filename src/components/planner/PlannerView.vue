@@ -294,7 +294,6 @@ export default {
       // 클릭된 마커찾기
       const selectedMarker = this.markers.find((marker) => marker.getTitle() === attraction.title);
 
-      console.log(selectedMarker);
       // 마커있으면 이동 후 포커스
       if (selectedMarker) {
         this.map.panTo(selectedMarker.getPosition());

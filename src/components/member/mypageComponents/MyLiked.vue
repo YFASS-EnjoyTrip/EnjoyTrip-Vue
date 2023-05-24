@@ -101,7 +101,6 @@ export default {
       const response = await api.get(`/member/mypage/like?sido=${this.sidoOption}&gugun=${this.gugunOption}`);
 
       if (response.status === 200) {
-        console.log(response.data);
         this.attractions = response.data.result;
       }
     } catch (error) {
@@ -132,7 +131,6 @@ export default {
         const response = await api.get(`/member/mypage/like?sido=${this.sidoOption}&gugun=${this.gugunOption}`);
 
         if (response.status === 200) {
-          console.log(response.data);
           this.attractions = response.data.result;
         }
       } catch (error) {
