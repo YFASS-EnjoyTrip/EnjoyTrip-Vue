@@ -21,7 +21,7 @@
       <div class="left-container">
         <mypageCover></mypageCover>
       </div>
-      <transition name="fade">
+      <transition name="router-transition" class="right-container">
         <router-view></router-view>
       </transition>
     </div>
@@ -62,17 +62,37 @@ export default {
     movePage() {
       this.$router.push({ name: 'join' });
     },
+    leaveAnimation() {
+      return new Promise((resolve) => {
+        this.$refs.myElement.classList.add('slide-out');
+
+        // 애니메이션 종료 후에 resolve 호출
+        setTimeout(() => {
+          resolve();
+        }, 700); // 애니메이션의 지속 시간에 맞게 설정해야 함
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.fade-enter-active {
-  transition: opacity 0.7s;
+.router-transition-enter-active {
+  transition: transform 0.5s;
 }
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+
+.router-transition-leave-active {
+  transition: transform 0.5s;
+}
+.router-transition-enter-to {
+  transform: translateX(100%);
+}
+.router-transition-enter {
+  transform: translateX(100%);
+}
+
+.router-transition-leave-to {
+  transform: translateX(-100%);
 }
 .bookmark-icon1 {
   color: #ffc930;
@@ -123,7 +143,18 @@ export default {
   border-radius: 90px 0px 0px 90px;
   background-color: #ffffff;
   box-shadow: 4px 0px 8px rgba(63, 63, 63, 0.3);
+  z-index: 2;
+  position: absolute; /* 변경된 부분 */
+  left: 0; /* 변경된 부분 */
+  top: 0; /* 변경된 부분 */
+}
+.right-container {
+  width: 600px; /* 추가된 부분 */
+  height: 800px; /* 추가된 부분 */
   z-index: 1;
+  position: absolute; /* 변경된 부분 */
+  right: 0; /* 변경된 부분 */
+  top: 0; /* 변경된 부분 */
 }
 
 .this-main-container {
@@ -132,6 +163,8 @@ export default {
   height: 800px;
   border-radius: 90px;
   box-shadow: 5px 5px 10px 2px rgba(102, 128, 150, 0.5);
-  display: flex;
+  position: relative; /* 변경된 부분 */
+  overflow: hidden; /* 변경된 부분 */
+  background-color: #ffffff;
 }
 </style>
