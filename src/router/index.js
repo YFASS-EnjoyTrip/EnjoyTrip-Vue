@@ -20,6 +20,8 @@ import MyPlanner from '../components/member/mypageComponents/MyPlanner.vue';
 import MyLiked from '../components/member/mypageComponents/MyLiked.vue';
 import MyInfo from '../components/member/mypageComponents/MyInfo.vue';
 import NotFound from '../components/common/NotFound.vue';
+import EventPage from '../components/eventPage.vue';
+import EventResultPage from '../components/eventResultPage.vue';
 
 import store from '@/store';
 // import ToastService from '@/util/ToastService';
@@ -166,6 +168,16 @@ const routes = [
         ],
       },
     ],
+  },
+  {
+    path: '/eventresult',
+    name: 'eventresult',
+    component: EventResultPage,
+  },
+  {
+    path: '/eventevent',
+    name: 'event',
+    component: EventPage,
   },
   {
     path: '*',
