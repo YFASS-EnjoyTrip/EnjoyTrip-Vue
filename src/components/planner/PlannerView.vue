@@ -131,7 +131,7 @@ export default {
       };
     },
   },
-  props: ['planId'],
+  props: ['planId', 'isCreate'],
 
   data() {
     return {
@@ -194,9 +194,9 @@ export default {
           requestAnimationFrame(animate);
         }
       };
-
       animate();
     },
+
     async fetchAttractions() {
       const response = await api.get(`/planner/list/${this.planId}`);
       const { data } = response;
@@ -229,6 +229,7 @@ export default {
             this.loading = true;
             setTimeout(() => {
               this.loading = false;
+
               window.location.reload();
             }, 4000); // 4초 후에 실행
           } else {

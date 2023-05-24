@@ -191,7 +191,9 @@ export default {
 
             this.$router.push({
               name: 'plannerView',
-              params: { planId: response.data.result },
+              params: {
+                planId: response.data.result,
+              },
             });
           }, 4000); // 4초 후에 실행
         }
