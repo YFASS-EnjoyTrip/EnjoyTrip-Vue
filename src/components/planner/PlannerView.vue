@@ -14,8 +14,11 @@
     <div class="inner-container">
       <div class="left-container">
         <div id="map" class="map"></div>
-        <div class="detail-view">
+        <div v-if="!addItemMode" class="detail-view">
           <plannerAttractionDetail ref="attractionDetail"></plannerAttractionDetail>
+        </div>
+        <div v-else class="detail-view">
+          <planner-attraction-like :sidoCode="planInfo.sidoCode"></planner-attraction-like>
         </div>
       </div>
       <div class="right-container">
@@ -98,12 +101,14 @@ const api = apiAuthInstance();
 
 import plannerAttractionDetail from './plannerViewComponents/PlannerAttractionDetail.vue';
 import PlannerAttractionList from './plannerViewComponents/PlannerAttractionList.vue';
+import PlannerAttractionLike from './plannerViewComponents/PlannerAttractionLike.vue';
 
 export default {
   name: 'PlannerView',
   components: {
     plannerAttractionDetail,
     PlannerAttractionList,
+    PlannerAttractionLike,
   },
   computed: {
     ...mapGetters(memberStore, ['checkUserInfo']),
@@ -243,12 +248,11 @@ export default {
       this.$refs.plannerAttractionList.openChangeModal();
     },
 
-    updatePlan(updateAttraction) {
+    async updatePlan(updateAttraction) {
       try {
-        const response = api.put(`/planner/update/${this.planId}`, {
+        await api.put(`/planner/update/${this.planId}`, {
           data: updateAttraction,
         });
-        console.log('update 성공', response.status);
       } catch (error) {
         console.log('update 실패', error);
       }
@@ -547,19 +551,15 @@ a {
 
 .for-scroll::-webkit-scrollbar-thumb {
   background-color: #69beee;
-  /* 스크롤바 색상 */
   border-radius: 5px;
-  /* 스크롤바 모서리의 곡률 */
 }
 
 .for-scroll::-webkit-scrollbar-thumb:active {
   background-color: #2e88bd;
-  /* 스크롤바 색상 */
 }
 
 ::-webkit-scrollbar-track {
   background-color: #e3f5ff;
-  /* 트랙 배경색 */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -567,7 +567,6 @@ a {
 }
 
 .for-scroll {
-  /* max-height: 550px; */
   overflow: scroll;
   border-radius: 30px;
 }
@@ -601,7 +600,7 @@ a {
   padding-top: 15px;
   display: flex;
   width: 500px;
-  align-items: center; /* 버튼들을 세로 중앙에 배치 */
+  align-items: center;
   margin: auto;
 }
 .modify-list-item div {
@@ -672,16 +671,15 @@ a {
 }
 
 .modal {
-  /* 모달의 위치를 고정하고 전체 페이지를 덮게 하려면 다음을 사용하세요 */
   position: fixed;
-  z-index: 9999; /* 다른 콘텐츠 위에 표시 */
+  z-index: 9999;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .gif {
   width: 600px;

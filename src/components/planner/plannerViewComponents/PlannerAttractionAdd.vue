@@ -1,4 +1,17 @@
 <template>
+  <div>
+    <div class="search-container">
+      <input
+        class="input-keyword"
+        type="text"
+        v-model="keyword"
+        placeholder="검색어를 입력하세요"
+        @keyup.enter="handleSearch"
+      />
+      <div class="search-button" @click="handleSearch">
+        <span>검색</span>
+      </div>
+    </div>
     <div class="add-item-container">
       <div
         class="attraction-container"
@@ -22,10 +35,10 @@
             <img
               class="icon"
               :src="
-              attraction.isLike
-                ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
-                : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
-            "
+                attraction.isLike
+                  ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
+                  : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
+              "
               alt="하트"
             />
             <span>({{ attraction.likeCount }})</span>
@@ -36,6 +49,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -51,6 +65,8 @@ export default {
       attractions: [],
       page: 1,
       pageSize: 50,
+      keyword: '',
+
       defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
       localPlan: [],
     };
@@ -76,6 +92,20 @@ export default {
         this.$emit('attractionClicked2', attraction);
       }
     },
+
+    async handleSearch() {
+      try {
+        const response = await api.get(
+          `/locations/search?keyword=${this.keyword}&sido=${this.sidoCode}&page=${this.page}&pageSize=${this.pageSize}`,
+        );
+
+        if (response.status === 200) {
+          this.attractions = response.data.result;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
@@ -88,6 +118,60 @@ export default {
   align-content: flex-start;
   margin-top: 10px;
   width: 500px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+}
+.input-keyword {
+  border: 2px solid #c4c4c4;
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+  text-indent: 10px;
+  font-family: 'CookieRun-Regular';
+  color: #757575;
+
+  margin-top: 10px;
+  width: 200px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.search-button {
+  display: flex;
+  justify-content: center;
+  width: 70px;
+  height: 30px;
+
+  margin-top: 10px;
+  margin-left: 10px;
+
+  border-radius: 5px;
+  background-color: #69beee;
+  font-family: 'CookieRun-Regular';
+  font-size: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  caret-color: transparent;
+  user-select: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.search-button:hover {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: 0.2s;
+  color: #d8d8d8;
+  background-color: #3795cc;
+}
+.search-button:active {
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+
+.search-button > span {
+  margin-top: 3px;
 }
 .attraction-container {
   margin-left: 20px;
