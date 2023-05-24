@@ -1,8 +1,10 @@
 <template>
   <div class="container">
     <div class="inner-container">
-      <div id="map" class="map"></div>
-      <div class="map-button" @click="updateBounds">이 지역 재검색</div>
+      <div id="map" class="map">
+        <div class="map-button" @click="updateBounds">이 지역 재검색</div>
+      </div>
+
       <div class="right-container">
         <AttractionSearch :bounds="bounds" @attractions-updated="updateAttractions"></AttractionSearch>
       </div>
@@ -205,9 +207,8 @@ export default {
 }
 .map-button {
   position: absolute;
-  margin-left: 14%;
-  margin-top: 2%;
-
+  left: 250px;
+  top: 30px;
   width: 120px;
 
   font-family: 'CookieRun-Regular';

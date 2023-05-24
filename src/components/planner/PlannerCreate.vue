@@ -1,66 +1,70 @@
 <template>
   <div class="container">
     <div class="plannerCreate-text">{{ this.user.nickname }} 님의 쿠폰이 발급되었습니다</div>
-    <div class="img-container">
-      <img src="../../assets/img/ticket.png" alt="티켓" />
-    </div>
-    <div class="text-container">
-      <div>
-        <div class="ticket-top">
-          <div v-if="loading" class="modal">
-            <div class="modal-content">
-              <img class="gif" :src="gachapon" alt="여행뽑기" />
-              <div class="modal-text">
-                <span>{{ this.user.nickname }}</span>
-                님 만을 위한
-                <br />
-                <span>{{ getSelectedText(location) }}</span>
-                여행 계획이 만들어지고 있어요!
+    <transition name="bounce">
+      <div v-if="show">
+        <div class="img-container">
+          <img src="../../assets/img/ticket.png" alt="티켓" />
+        </div>
+        <div class="text-container">
+          <div>
+            <div class="ticket-top">
+              <div v-if="loading" class="modal">
+                <div class="modal-content">
+                  <img class="gif" :src="gachapon" alt="여행뽑기" />
+                  <div class="modal-text">
+                    <span>{{ this.user.nickname }}</span>
+                    님 만을 위한
+                    <br />
+                    <span>{{ getSelectedText(location) }}</span>
+                    여행 계획이 만들어지고 있어요!
+                  </div>
+                </div>
+              </div>
+              <div class="nickname">
+                <span>{{ this.user.nickname }} 님의</span>
+              </div>
+              <div class="ticket-title">
+                <span>가챠 쿠폰</span>
+              </div>
+            </div>
+            <div class="ticket-bottom">
+              <div class="location-input">
+                <span>지역</span>
+                <select class="sido-dropdown" name="sido" id="location" v-model="location">
+                  <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
+                </select>
+              </div>
+              <div class="date-input">
+                <span>일정</span>
+                <!-- <date-picker v-model='selectedDate' is-range/> -->
+                <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
+                <span>~</span>
+                <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
               </div>
             </div>
           </div>
-          <div class="nickname">
-            <span>{{ this.user.nickname }} 님의</span>
-          </div>
-          <div class="ticket-title">
-            <span>가챠 쿠폰</span>
-          </div>
-        </div>
-        <div class="ticket-bottom">
-          <div class="location-input">
-            <span>지역</span>
-            <select class="sido-dropdown" name="sido" id="location" v-model="location">
-              <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
-            </select>
-          </div>
-          <div class="date-input">
-            <span>일정</span>
-            <!-- <date-picker v-model='selectedDate' is-range/> -->
-            <input class="calendar-pick" type="date" :min="todayDate" v-model="startDate" />
-            <span>~</span>
-            <input class="calendar-pick" type="date" :min="startDate" v-model="endDate" />
+          <div class="ticket-right">
+            <div class="side-title">-플래너 정보-</div>
+            <div class="info">
+              <div>
+                <div class="info-title">사용자</div>
+                <div class="info-value">{{ this.user.nickname }}</div>
+              </div>
+              <div class="locationInfo">
+                <div class="info-title">여행지역</div>
+                <div class="info-value">{{ getSelectedText(location) }}</div>
+              </div>
+              <div class="dateInfo">
+                <div class="info-title">일자</div>
+                <div class="info-value">시작일 : {{ startDate }}</div>
+                <div class="info-value end">종료일 : {{ endDate }}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="ticket-right">
-        <div class="side-title">-플래너 정보-</div>
-        <div class="info">
-          <div>
-            <div class="info-title">사용자</div>
-            <div class="info-value">{{ this.user.nickname }}</div>
-          </div>
-          <div class="locationInfo">
-            <div class="info-title">여행지역</div>
-            <div class="info-value">{{ getSelectedText(location) }}</div>
-          </div>
-          <div class="dateInfo">
-            <div class="info-title">일자</div>
-            <div class="info-value">시작일 : {{ startDate }}</div>
-            <div class="info-value end">종료일 : {{ endDate }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </transition>
     <div class="confirm-container">
       <div class="confirm-text">
         <span>
@@ -103,6 +107,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       selectedDate: {
         start: new Date(2023, 4, 1),
         end: new Date(2023, 4, 5),
@@ -137,6 +142,7 @@ export default {
   },
   mounted() {
     this.todayDate = new Date().toISOString().split('T')[0];
+    this.show = true;
   },
   methods: {
     goBack() {
@@ -180,6 +186,23 @@ export default {
 </script>
 
 <style scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.7s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.7s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .plannerCreate-text {
   text-align: center;
   margin-top: 60px;

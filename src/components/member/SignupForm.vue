@@ -178,11 +178,11 @@ export default {
   height: 40px;
   caret-color: #6e6e6e;
 }
-.email-span{
+.email-span {
   margin-left: -100px;
   margin-right: 10px !important;
 }
-.email{
+.email {
   width: 160px !important;
   margin-right: 10px !important;
 }
@@ -248,18 +248,17 @@ export default {
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
-
 }
-.member-input select{
+.member-input select {
   width: 130px;
   margin-right: 20px;
   border-radius: 10px;
   background-color: #f8e4a7;
   border: none;
 
-   font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #616161;
-  font-size: 1.2rem;
+  font-size: 15px;
 }
 .member-input span {
   margin-right: 30px;

@@ -15,23 +15,23 @@
       </div>
     </div>
 
-    <div class="wrap" >
-              <div class="info" >
-                  <div class="title" >
-                      ${attraction.title}
-                      <div class="close" title="닫기" ></div>
-                  </div>
-                  <div class="body" >
-                      <div class="img" >
-                          <img src=${attraction.image} />
-                      </div>
-                      <div class="desc" >
-                          <div class="ellipsis" >${attraction.addr1}</div>
-                      </div>
-                  </div>
-              </div>
+    <div class="wrap">
+      <div class="info">
+        <div class="title">
+          ${attraction.title}
+          <div class="close" title="닫기"></div>
+        </div>
+        <div class="body">
+          <div class="img">
+            <img src="${attraction.image}" />
           </div>
-    
+          <div class="desc">
+            <div class="ellipsis">${attraction.addr1}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <img src="../assets/img/background.png" alt="배경" class="background" />
     <img class="car1" src="../assets/img/bus.png" alt="" />
     <img class="car2" src="../assets/img/car_B.png" alt="" />
@@ -64,8 +64,7 @@ export default {
 .car1 {
   position: fixed;
   width: 100px;
-  margin-top: -180px;
-  /* margin-left: 300px; */
+  margin-top: -300px;
   width: 10%;
   z-index: -1;
   transform: translateY(-50%);
@@ -74,7 +73,7 @@ export default {
 .car2 {
   position: fixed;
   width: 100px;
-  margin-top: -170px;
+  margin-top: -280px;
   width: 10%;
   z-index: -1;
   transform: translateY(-50%);
@@ -83,7 +82,7 @@ export default {
 .car3 {
   position: fixed;
   width: 100px;
-  margin-top: -160px;
+  margin-top: -260px;
   width: 10%;
   z-index: -1;
   transform: translateY(-50%);
