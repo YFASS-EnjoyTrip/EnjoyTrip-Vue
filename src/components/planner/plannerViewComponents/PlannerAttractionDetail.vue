@@ -67,6 +67,7 @@ export default {
   margin-left: 20px;
 }
 .attraction-title {
+  width: 300px;
   font-family: 'CookieRun-Bold';
   color: #4d4d4d;
   font-size: 1.5rem;

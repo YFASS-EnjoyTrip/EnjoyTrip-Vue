@@ -53,22 +53,24 @@ a {
   line-height: 15px;
 }
 .content-title {
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #515151;
   font-size: 15px;
   margin-top: 5px;
 }
 .bloggername {
   font-family: 'CookieRun-Regular';
-  color: #929292;
-  font-size: 12px;
+  color: #aaaaaa;
+  font-size: 10px;
   margin-right: 10px;
 }
 .blog-title {
   text-align: center;
-  font-family: 'CookieRun-Bold';
+  font-family: 'CookieRun-Regular';
   color: #666666;
-  font-size: 20px;
+  font-size: 15px;
+  margin-bottom: 2px;
+  margin-top: 3px;
 }
 .main-container {
   margin-top: 5px;

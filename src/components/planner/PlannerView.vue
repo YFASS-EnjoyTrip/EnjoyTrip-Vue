@@ -678,8 +678,7 @@ a {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(255, 255, 255, 0.753); 
 }
 .gif {
   width: 600px;
@@ -690,7 +689,6 @@ a {
   color: #383838;
   font-size: 40px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 30px;
 }
 .modal-text span {

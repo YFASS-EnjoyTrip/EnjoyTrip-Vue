@@ -99,11 +99,13 @@ export default {
 img {
   margin-right: 10px;
   width: 15px;
+  height: 15px;
 }
 .cnt {
   font-family: 'CookieRun-Bold';
   color: #5f5f5f;
-  font-size: 0.7rem;
+  font-size: 15px;
+  margin-top: -3px;
 }
 .comment-content-container {
   margin-top: 5px;
@@ -127,7 +129,7 @@ img {
   margin-left: 10px;
   margin-top: 3px;
   font-family: 'CookieRun-Regular';
-  color: #757575;
-  font-size: 0.8rem;
+  color: #515151;
+  font-size: 15px;
 }
 </style>

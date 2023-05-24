@@ -462,8 +462,7 @@ export default {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  background-color: rgba(255, 255, 255, 0.753); /* Black w/ opacity */
 }
 .gif {
   width: 600px;
@@ -474,7 +473,6 @@ export default {
   color: #383838;
   font-size: 40px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 30px;
 }
 .modal-text span {
@@ -486,7 +484,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 1000px;
-  height: 750px;
   border-radius: 60px;
 }
 </style>

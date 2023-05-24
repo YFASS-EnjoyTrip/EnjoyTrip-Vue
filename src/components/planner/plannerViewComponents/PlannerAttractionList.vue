@@ -394,6 +394,7 @@ img {
 .attraction-info {
   display: flex;
   overflow: hidden;
+  width: 250px;
 }
 
 .attraction-name {
