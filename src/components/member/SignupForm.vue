@@ -4,7 +4,13 @@
     <div class="input-container">
       <div class="member-input">
         <span>이메일</span>
-        <input type="email" class="input-box email" v-model="emailPrefix" @keyup="debouncedCheckEmailDuplicate" />
+        <input
+          type="email"
+          class="input-box email"
+          v-model="emailPrefix"
+          @keyup="debouncedCheckEmailDuplicate"
+          ref="email"
+        />
         <!-- <span class="email-span">@</span> -->
         <select v-model="emailDomain" @change="debouncedCheckEmailDuplicate">
           <option disabled value=""></option>
@@ -13,24 +19,34 @@
           <option>@nate.com</option>
         </select>
       </div>
-      <span class="check">{{ emailMessage }}</span>
+      <span class="check" v-bind:class="{ 'green-text': emailMessage === '사용이 가능한 이메일입니다.' }">
+        {{ emailMessage }}
+      </span>
       <div class="member-input">
         <span>닉네임</span>
-        <input class="input-box" type="text" v-model="nickname" @keyup="debouncedCheckNicknameDuplicate" />
+        <input
+          class="input-box"
+          type="text"
+          v-model="nickname"
+          @keyup="debouncedCheckNicknameDuplicate"
+          ref="nickname"
+        />
       </div>
-      <span class="check">{{ nicknameMessage }}</span>
+      <span class="check" v-bind:class="{ 'green-text': nicknameMessage === '사용이 가능한 닉네임입니다.' }">
+        {{ nicknameMessage }}
+      </span>
       <div class="member-input">
         <span>비밀번호</span>
         <input type="password" class="input-box" v-model="password" />
       </div>
-      <span class="check password" v-show="password.length > 0 && password.length < 4">
+      <span class="check password" v-show="password.length > 0 && password.length < 4" ref="password">
         비밀번호는 4자 이상이어야 합니다!
       </span>
       <div class="member-input">
         <span>비밀번호 확인</span>
-        <input type="password" class="input-box" v-model="confirmPassword" />
+        <input type="password" class="input-box" v-model="confirmPassword" ref="confirmPassword" />
       </div>
-      <span class="check" v-show="this.confirmPassword.length > 0">
+      <span class="check" v-bind:class="{ 'green-text': passwordMessage === '비밀번호가 일치합니다.' }">
         {{ passwordMessage }}
       </span>
       <div>
@@ -81,7 +97,9 @@ export default {
         : '사용이 가능한 닉네임입니다.';
     },
     passwordMessage() {
-      return this.password !== this.confirmPassword && this.confirmPassword.length > 0
+      return this.confirmPassword.length == 0
+        ? ''
+        : this.password !== this.confirmPassword
         ? '비밀번호가 일치하지 않습니다.'
         : '비밀번호가 일치합니다.';
     },
@@ -124,12 +142,68 @@ export default {
     },
 
     submitForm() {
-      // 이메일 형식 검증을 위한 정규 표현식
       const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
-      // 이메일 형식이 올바르지 않은 경우
       if (!emailRegex.test(this.email)) {
-        alert('올바른 이메일 형식이 아닙니다.');
+        this.$toast.error('이메일을 입력해주세요', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.email.focus();
+        return;
+      }
+
+      if (this.nickname === '') {
+        this.$toast.error('닉네임을 입력해주세요', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.nickname.focus();
+        return;
+      }
+
+      if (this.password === '') {
+        this.$toast.error('비밀번호를 입력해주세요', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.password.focus();
+        return;
+      }
+
+      if (this.confirmPassword === '') {
+        this.$toast.error('비밀번호 확인을 입력해주세요', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.confirmPassword.focus();
+        return;
+      }
+
+      if (this.emailMessage !== '사용이 가능한 이메일입니다.') {
+        this.$toast.error('이미 사용중인 이메일입니다.', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.email.focus();
+        return;
+      }
+
+      if (this.nicknameMessage !== '사용이 가능한 닉네임입니다.') {
+        this.$toast.error('이미 사용중인 닉네임입니다.', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.nickname.focus();
+        return;
+      }
+
+      if (this.passwordMessage !== '비밀번호가 일치합니다.') {
+        this.$toast.error('비밀번호가 일치하지 않습니다.', {
+          position: 'top-center',
+          timeout: 1500,
+        });
+        this.$refs.confirmPassword.focus();
         return;
       }
 
@@ -163,7 +237,9 @@ export default {
 .password {
   margin-left: 70px;
 }
-
+.green-text {
+  color: green;
+}
 .email-input-box {
   border: 3px solid #ffc930;
   border-radius: 8px;
@@ -178,11 +254,11 @@ export default {
   height: 40px;
   caret-color: #6e6e6e;
 }
-.email-span{
+.email-span {
   margin-left: -100px;
   margin-right: 10px !important;
 }
-.email{
+.email {
   width: 160px !important;
   margin-right: 10px !important;
 }
@@ -248,16 +324,15 @@ export default {
   caret-color: transparent;
   user-select: none;
   pointer-events: none;
-
 }
-.member-input select{
+.member-input select {
   width: 130px;
   margin-right: 20px;
   border-radius: 10px;
   background-color: #f8e4a7;
   border: none;
 
-   font-family: "CookieRun-Regular";
+  font-family: 'CookieRun-Regular';
   color: #616161;
   font-size: 1.2rem;
 }
