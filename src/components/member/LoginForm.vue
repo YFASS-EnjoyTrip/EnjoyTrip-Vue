@@ -45,9 +45,9 @@ export default {
         await this.getUserInfo(token);
         this.$router.push({ name: 'AppMain' });
       } else {
-        this.$toast.error('로그인이 필요한 서비스입니다!', {
+        this.$toast.error('이메일 또는 비밀번호를 확인해주세요!', {
           timeout: 3000,
-          position: 'bottom-center',
+          position: 'top-center',
         });
       }
     },
