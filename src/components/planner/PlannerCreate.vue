@@ -168,7 +168,7 @@ export default {
           // confirmButtonColor: '#F24849',
           showConfirmButton: false,
           timerProgressBar: true,
-          // timer: 1000,
+          timer: 1000,
         });
         return;
       }
