@@ -60,7 +60,7 @@
 import { apiInstance } from '@/api/index.js';
 import router from '@/router';
 import _ from 'lodash';
-
+import Swal from 'sweetalert2';
 const api = apiInstance();
 
 export default {
@@ -145,63 +145,105 @@ export default {
       const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
       if (!emailRegex.test(this.email)) {
-        this.$toast.error('이메일을 입력해주세요', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">이메일을 확인해주세요!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.email.focus();
         return;
       }
 
       if (this.nickname === '') {
-        this.$toast.error('닉네임을 입력해주세요', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">닉네임을 입력해주세요!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.nickname.focus();
         return;
       }
 
       if (this.password === '') {
-        this.$toast.error('비밀번호를 입력해주세요', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">비밀번호를 입력해주세요!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.password.focus();
         return;
       }
 
       if (this.confirmPassword === '') {
-        this.$toast.error('비밀번호 확인을 입력해주세요', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">비밀번호 확인을<br/>입력해주세요!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.confirmPassword.focus();
         return;
       }
 
       if (this.emailMessage !== '사용이 가능한 이메일입니다.') {
-        this.$toast.error('이미 사용중인 이메일입니다.', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">이미 사용중인<br/>이메일입니다!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.email.focus();
         return;
       }
 
       if (this.nicknameMessage !== '사용이 가능한 닉네임입니다.') {
-        this.$toast.error('이미 사용중인 닉네임입니다.', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">이미 사용중인<br/>닉네임입니다!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.nickname.focus();
         return;
       }
 
       if (this.passwordMessage !== '비밀번호가 일치합니다.') {
-        this.$toast.error('비밀번호가 일치하지 않습니다.', {
-          position: 'top-center',
-          timeout: 1500,
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">비밀번호가 일치하지<br/>않습니다</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
         this.$refs.confirmPassword.focus();
         return;

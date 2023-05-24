@@ -22,7 +22,8 @@ import MyInfo from '../components/member/mypageComponents/MyInfo.vue';
 import NotFound from '../components/common/NotFound.vue';
 
 import store from '@/store';
-import ToastService from '@/util/ToastService';
+// import ToastService from '@/util/ToastService';
+import Swal from 'sweetalert2';
 
 const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters['memberStore/checkUserInfo'];
@@ -33,9 +34,15 @@ const onlyAuthUser = async (to, from, next) => {
     await store.dispatch('memberStore/getUserInfo', token);
   }
   if (!checkToken || checkUserInfo === null) {
-    ToastService.error('로그인이 필요한 서비스입니다', {
-      position: 'top-center',
-      timeout: 3000,
+    Swal.fire({
+      toast: true,
+      background: '#ffbdbd',
+      html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+      <h2 style="text-align: center;">로그인이 필요한<br/>서비스입니다!</h2>`,
+      iconColor: '#69Beee',
+      showConfirmButton: false,
+      timerProgressBar: true,
+      timer: 500,
     });
 
     router.push({ name: 'login' }).catch((err) => {

@@ -52,7 +52,11 @@
                 class="icon2"
                 alt="star"
               />
-              <div class="delete-button" v-if="comment.memberId == memberId" @click="deleteComment(comment)">삭제</div>
+              <div
+                class="delete-button"
+                v-if="comment.memberId == memberId"
+                @click="deleteComment(comment)"
+              >삭제</div>
             </div>
             <div class="comment-content">{{ comment.content }}</div>
           </div>
@@ -66,6 +70,7 @@
 import { apiInstance, apiAuthInstance } from '@/api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 const api = apiInstance();
 const apiAuth = apiAuthInstance();
@@ -104,7 +109,7 @@ export default {
     },
 
     hasWrittenComment() {
-      return this.comments.some((comment) => comment.memberId == this.memberId);
+      return this.comments.some(comment => comment.memberId == this.memberId);
     },
   },
 
@@ -150,7 +155,7 @@ export default {
 
         apiAuth
           .post('/locations/detail/reviews', commentData)
-          .then((response) => {
+          .then(response => {
             if (response.status === 201) {
               this.localAttraction.rate += this.rating;
               this.localAttraction.totalCount += 1;
@@ -163,29 +168,41 @@ export default {
               console.log('댓글 작성 실패');
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
           });
       }
     },
 
     deleteComment(comment) {
-      if (window.confirm('댓글을 삭제하시겠습니까?')) {
-        apiAuth
-          .delete(
-            `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              this.loadData();
-            } else {
-              console.log('댓글 삭제 실패');
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
+      Swal.fire({
+        background: '#ffe8a9',
+        html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_Y.png" style="width:70px" />
+        <h2>리뷰를 삭제하시겠습니까?</h2>`,
+        confirmButtonText: '확인',
+        confirmButtonColor: '#F24849',
+        cancelButtonColor: '#7c7c7c',
+        cancelButtonText: '취소',
+        showCancelButton: true,
+        reverseButtons: true, 
+      }).then(result => {
+        if (result.isConfirmed) {
+          apiAuth
+            .delete(
+              `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
+            )
+            .then(response => {
+              if (response.status === 200) {
+                this.loadData();
+              } else {
+                console.log('댓글 삭제 실패');
+              }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
+      });
     },
   },
 };

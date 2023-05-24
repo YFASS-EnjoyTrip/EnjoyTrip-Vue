@@ -32,7 +32,11 @@
               <div class="location-input">
                 <span>지역</span>
                 <select class="sido-dropdown" name="sido" id="location" v-model="location">
-                  <option v-for="sido in sidos" :value="sido.value" :key="sido.value">{{ sido.text }}</option>
+                  <option
+                    v-for="sido in sidos"
+                    :value="sido.value"
+                    :key="sido.value"
+                  >{{ sido.text }}</option>
                 </select>
               </div>
               <div class="date-input">
@@ -150,7 +154,7 @@ export default {
       this.$router.go(-1); // -1은 이전 페이지로 이동
     },
     getSelectedText(value) {
-      const selectedSido = this.sidos.find((sido) => sido.value === value);
+      const selectedSido = this.sidos.find(sido => sido.value === value);
       this.locName = selectedSido ? selectedSido.text : '';
       return this.locName;
     },
@@ -160,15 +164,16 @@ export default {
         Swal.fire({
           // title: '모든 정보를 입력해주세요!',
           // icon: 'warning',
+          toast:true,
           background: '#ffbdbd',
-          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_R.png" style="width:50px" />
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
           <h2>모든 정보를 입력해주세요!</h2>`,
           iconColor: '#69Beee',
           // confirmButtonText: '확인',
           // confirmButtonColor: '#F24849',
           showConfirmButton: false,
           timerProgressBar: true,
-          // timer: 1000,
+          timer: 500,
         });
         return;
       }

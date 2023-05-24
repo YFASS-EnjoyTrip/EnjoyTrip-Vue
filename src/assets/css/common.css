@@ -20,10 +20,16 @@
   font-family: 'CookieRun-Regular' !important;
   color: #5c5c5c !important;
   font-size: 20px !important;
+  text-align: center;
+  align-items: center;
 }
 .swal2-content {
+  /* background-color: aliceblue; */
 }
 .swal2-confirm {
+  font-family: 'CookieRun-Regular' !important;
+}
+.swal2-cancel {
   font-family: 'CookieRun-Regular' !important;
 }
 .swal2-html-container {
@@ -35,4 +41,5 @@
   display: flex !important;
   flex-direction: column;
   align-items: center;
+
 }

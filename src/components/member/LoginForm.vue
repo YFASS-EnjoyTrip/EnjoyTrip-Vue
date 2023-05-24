@@ -20,6 +20,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import Swal from 'sweetalert2';
 const memberStore = 'memberStore';
 
 export default {
@@ -45,10 +46,25 @@ export default {
         await this.getUserInfo(token);
         this.$router.push({ name: 'AppMain' });
       } else {
-        this.$toast.error('이메일 또는 비밀번호를 확인해주세요!', {
-          timeout: 3000,
-          position: 'top-center',
+        Swal.fire({
+          // title: '모든 정보를 입력해주세요!',
+          // icon: 'warning',
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">이메일 또는 비밀번호를 <br/>확인해주세요!</h2>`,
+          iconColor: '#69Beee',
+          // confirmButtonText: '확인',
+          // confirmButtonColor: '#F24849',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
+
+        // this.$toast.error('이메일 또는 비밀번호를 확인해주세요!', {
+        //   timeout: 3000,
+        //   position: 'top-center',
+        // });
       }
     },
     movePage() {
