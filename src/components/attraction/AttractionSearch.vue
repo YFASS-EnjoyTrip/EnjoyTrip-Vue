@@ -27,13 +27,7 @@
           </label>
           <div v-for="(item, index) in allTypes" :key="index">
             <div>
-              <input
-                type="checkbox"
-                name="types"
-                :id="item.code"
-                :value="item.code"
-                v-model="selectedTypes"
-              />
+              <input type="checkbox" name="types" :id="item.code" :value="item.code" v-model="selectedTypes" />
               <label :for="item.code">
                 <span>{{ item.name }}</span>
               </label>
@@ -163,11 +157,11 @@ export default {
   },
   computed: {
     allSelected: {
-      get: function() {
+      get: function () {
         return this.allTypes.length === this.selectedTypes.length;
       },
-      set: function(e) {
-        this.selectedTypes = e ? this.allTypes.map(item => item.code) : [];
+      set: function (e) {
+        this.selectedTypes = e ? this.allTypes.map((item) => item.code) : [];
       },
     },
   },
@@ -197,7 +191,7 @@ export default {
       }
     },
     async selectAllAttractions() {
-      const selectedTypeCodes = this.selectedTypes.filter(code => !!code).join(',');
+      const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
 
       if (this.keyword == null) this.keyword = '';
 
@@ -238,7 +232,7 @@ export default {
       try {
         this.page++; // 다음 페이지로 이동
         let url = '';
-        const selectedTypeCodes = this.selectedTypes.filter(code => !!code).join(',');
+        const selectedTypeCodes = this.selectedTypes.filter((code) => !!code).join(',');
 
         // 만약 검색중인 상태라면
         if (this.keyword == null) {
@@ -265,7 +259,6 @@ export default {
 
     // 23.05.24 범위를 기준으로 검색
     async fetchAttractionsWithBounds(bounds) {
-      console.log('OK');
       if (Object.keys(bounds).length) {
         const response = await api.get(`/locations/search/bounds`, {
           params: {
@@ -277,7 +270,6 @@ export default {
         });
 
         this.attractions = response.data.result;
-        console.log(this.attractions);
         this.$emit('attractions-updated', this.attractions);
       }
     },

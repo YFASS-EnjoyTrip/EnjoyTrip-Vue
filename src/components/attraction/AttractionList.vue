@@ -2,7 +2,10 @@
   <div class="container">
     <div class="inner-container">
       <div id="map" class="map">
-        <div class="map-button" @click="updateBounds">이 지역 재검색</div>
+        <div class="map-button" @click="updateBounds">
+          <font-awesome-icon icon="fa-arrow-rotate-right" style="color: #000000" />
+          이 지역 재검색
+        </div>
       </div>
 
       <div class="right-container">
@@ -23,9 +26,9 @@ export default {
       attractions: [],
       markers: [],
       bounds: null,
-      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG',
-      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG',
-      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG',
+      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_food.PNG',
+      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_acom.PNG',
+      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_location.PNG',
     };
   },
 
@@ -45,21 +48,28 @@ export default {
             this.initKakaoMap();
           });
         script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6611e5bdfed1654bf775e5e7c8e0625f';
-        console.log('OK');
         document.head.appendChild(script);
       }
     },
 
     initKakaoMap() {
       const container = document.getElementById('map');
-      const options = {
-        center:
-          this.attractions.length > 0
-            ? new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng)
-            : new kakao.maps.LatLng(37.5665, 126.978), // Default location
-        level: 5,
-      };
+      let options;
 
+      if (this.map) {
+        options = {
+          center: this.map.getCenter(),
+          level: this.map.getLevel(),
+        };
+      } else {
+        options = {
+          center:
+            this.attractions.length > 0
+              ? new kakao.maps.LatLng(this.attractions[0].lat, this.attractions[0].lng)
+              : new kakao.maps.LatLng(37.5665, 126.978), // Default location
+          level: 5,
+        };
+      }
       this.map = new kakao.maps.Map(container, options);
 
       // kakao.maps.event.addListener(this.map, 'bounds_changed', () => {
@@ -209,7 +219,7 @@ export default {
   position: absolute;
   left: 250px;
   top: 30px;
-  width: 120px;
+  width: 130px;
 
   font-family: 'CookieRun-Regular';
   text-align: center;
@@ -218,7 +228,14 @@ export default {
   background-color: white;
   border-radius: 10px;
 
-  box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+
+  transition: all 0.1s ease-in-out;
+}
+.map-button:hover {
+  transform: scale(0.98);
+  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
 </style>
