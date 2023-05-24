@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import TheHeader from "../src/components/common/TheHeader.vue";
+import TheHeader from '../src/components/common/TheHeader.vue';
 export default {
   components: {
     TheHeader,
   },
   data() {
     return {
-      message: "",
+      message: '',
     };
   },
   created() {},

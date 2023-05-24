@@ -2,8 +2,9 @@
   <div class="container">
     <div class="inner-container">
       <div id="map" class="map"></div>
+      <div class="map-button" @click="updateBounds">이 지역 재검색</div>
       <div class="right-container">
-        <AttractionSearch @attractions-updated="updateAttractions"></AttractionSearch>
+        <AttractionSearch :bounds="bounds" @attractions-updated="updateAttractions"></AttractionSearch>
       </div>
     </div>
   </div>
@@ -19,9 +20,10 @@ export default {
       map: null,
       attractions: [],
       markers: [],
-      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png',
-      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png',
-      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png',
+      bounds: null,
+      imageFood: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG',
+      imageAcom: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG',
+      imageLoca: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG',
     };
   },
 
@@ -57,6 +59,10 @@ export default {
       };
 
       this.map = new kakao.maps.Map(container, options);
+
+      // kakao.maps.event.addListener(this.map, 'bounds_changed', () => {
+      //   this.updateBounds();
+      // });
 
       let imageSrc = '';
 
@@ -124,7 +130,7 @@ export default {
     },
 
     closeOverlay() {
-      this.markers.forEach(marker => {
+      this.markers.forEach((marker) => {
         marker.infowindow.close();
       });
     },
@@ -152,6 +158,20 @@ export default {
 
         this.markers.push(marker);
       }
+    },
+
+    updateBounds() {
+      const bounds = this.map.getBounds();
+      this.bounds = {
+        northEast: {
+          lat: bounds.getNorthEast().getLat(),
+          lng: bounds.getNorthEast().getLng(),
+        },
+        southWest: {
+          lat: bounds.getSouthWest().getLat(),
+          lng: bounds.getSouthWest().getLng(),
+        },
+      };
     },
   },
 };
@@ -182,5 +202,22 @@ export default {
   border-radius: 0px 90px 90px 0px;
   background-color: #fffffffd;
   /* border: 2px solid #69beee; */
+}
+.map-button {
+  position: absolute;
+  margin-left: 14%;
+  margin-top: 2%;
+
+  width: 120px;
+
+  font-family: 'CookieRun-Regular';
+  text-align: center;
+  line-height: 30px;
+  z-index: 10;
+  background-color: white;
+  border-radius: 10px;
+
+  box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
+  cursor: pointer;
 }
 </style>

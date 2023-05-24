@@ -193,7 +193,8 @@ export default {
     },
 
     handleAttractionClick2(attraction) {
-      this.localAttractions = [...this.localAttractions, attraction];
+      // this.localAttractions = [...this.localAttractions, attraction];
+      this.localAttractions.push(attraction);
       this.updateAttractions();
       this.$emit('addAttraction');
     },
@@ -211,7 +212,6 @@ export default {
     },
 
     removeItem() {
-      console.log(this.selectedAttractions.length);
       const sortedSelectedAttractions = [...this.selectedAttractions].sort((a, b) => b - a);
 
       sortedSelectedAttractions.forEach((index) => {

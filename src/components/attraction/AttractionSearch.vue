@@ -89,7 +89,13 @@ const api = apiInstance();
 
 export default {
   name: 'AttractionSearch',
-  components: {},
+  props: {
+    bounds: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+
   data() {
     return {
       // 23.05.16 기본이미지, 페이지네이션 추가
@@ -132,6 +138,12 @@ export default {
     };
   },
   watch: {
+    bounds: {
+      deep: true,
+      handler(newBounds) {
+        this.fetchAttractionsWithBounds(newBounds);
+      },
+    },
     sidoOption(newOption) {
       this.updateGuguns(newOption);
     },
@@ -249,6 +261,25 @@ export default {
       this.$router.push({
         name: 'attractionDetail',
       });
+    },
+
+    // 23.05.24 범위를 기준으로 검색
+    async fetchAttractionsWithBounds(bounds) {
+      console.log('OK');
+      if (Object.keys(bounds).length) {
+        const response = await api.get(`/locations/search/bounds`, {
+          params: {
+            northEastLat: bounds.northEast.lat,
+            northEastLng: bounds.northEast.lng,
+            southWestLat: bounds.southWest.lat,
+            southWestLng: bounds.southWest.lng,
+          },
+        });
+
+        this.attractions = response.data.result;
+        console.log(this.attractions);
+        this.$emit('attractions-updated', this.attractions);
+      }
     },
   },
 };

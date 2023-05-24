@@ -40,15 +40,17 @@
         </div>
         <div v-if="loading" class="modal">
           <div class="modal-content">
-            <img class="gif" src="@/assets/img/gachapon.gif" alt="여행뽑기" />
+            <img
+              class="gif"
+              src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0332.GIF"
+              alt="여행뽑기"
+            />
             <div class="modal-text">
               <span>{{ planInfo.nickName }}</span>
               님 만을 위한
               <br />
               <span>{{ planInfo.title }}</span>
-              여행 계획이
-              <br />
-              만들어지고 있어요!
+              여행 계획을 다시 뽑아 볼게요!
             </div>
           </div>
         </div>
@@ -132,11 +134,21 @@ export default {
       attractions: [],
       planInfo: {},
       planDetailInfo: [],
+      markers: [],
       editMode: false,
       addItemMode: false,
       rerollCnt: 5,
       loading: false,
     };
+  },
+
+  watch: {
+    planDetailInfo: {
+      handler() {
+        this.renderMap();
+      },
+      deep: true,
+    },
   },
 
   async mounted() {
@@ -151,7 +163,6 @@ export default {
 
       if (data.status === 200) {
         this.planInfo = data.result.planInfo;
-        console.log(this.planInfo);
         Object.keys(data.result.dayInfo).forEach((key) => {
           this.planDetailInfo.push(data.result.dayInfo[key]);
         });
@@ -175,12 +186,11 @@ export default {
           const response = await api.post(`/planner/reroll`, param);
 
           if (response.status === 201) {
-            // this.loading = true;
-            // setTimeout(() => {
-            //   this.loading = false;
-            //   window.location.reload();
-            // }, 4000); // 4초 후에 실행
-            window.location.reload();
+            this.loading = true;
+            setTimeout(() => {
+              this.loading = false;
+              window.location.reload();
+            }, 4000); // 4초 후에 실행
           } else {
             console.log('서버에 문제가 발생');
           }
@@ -199,10 +209,6 @@ export default {
     },
 
     updatePlan(updateAttraction) {
-      //   this.planDetailInfo = updateAttraction;
-
-      // updateplan 후 redirect 해도 될거같은데
-      // 1. planId, token, planDetatilInfo를 던진다
       try {
         const response = api.put(`/planner/update/${this.planId}`, {
           data: updateAttraction,
@@ -211,8 +217,6 @@ export default {
       } catch (error) {
         console.log('update 실패', error);
       }
-
-      // 2. 서버가 캐치 업데이트 칠건데... 그전에 order를 서버가 처리한다
     },
 
     addAttraction() {
@@ -252,6 +256,14 @@ export default {
 
     handleAttractionClick(attraction) {
       this.$refs.attractionDetail.setAttraction(attraction);
+      // 클릭된 마커찾기
+      const selectedMarker = this.markers.find((marker) => marker.getTitle() === attraction.title);
+
+      console.log(selectedMarker);
+      // 마커있으면 이동 후 포커스
+      if (selectedMarker) {
+        this.map.panTo(selectedMarker.getPosition());
+      }
     },
 
     renderMap() {
@@ -261,15 +273,21 @@ export default {
       const container = document.getElementById('map');
       const options = {
         center: new kakao.maps.LatLng(firstDay[0].lat, firstDay[0].lng),
-        level: 5,
+        level: 9,
       };
 
       this.map = new kakao.maps.Map(container, options);
 
+      // 기존의 모든 마커를 지도에서 제거
+      for (let i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(null);
+      }
+      this.markers = [];
+
       let imageSrc = '';
-      const imageFood = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_Y.png';
-      const imageAcom = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_B.png';
-      const imageLoca = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/pin_G.png';
+      const imageFood = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0333.PNG';
+      const imageAcom = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0334.PNG';
+      const imageLoca = 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/IMG_0335.PNG';
 
       for (let i = 0; i < firstDay.length; i++) {
         const planType = firstDay[i].type;
@@ -282,12 +300,14 @@ export default {
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
         var latlng = new kakao.maps.LatLng(firstDay[i].lat, firstDay[i].lng);
 
-        new kakao.maps.Marker({
+        const marker = new kakao.maps.Marker({
           map: this.map,
           position: latlng,
           title: firstDay[i].title,
           image: markerImage,
         });
+
+        this.markers.push(marker);
       }
     },
   },
@@ -633,34 +653,27 @@ a {
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 .gif {
-  width: 500px;
-  height: fit-content;
-  margin-top: 100px;
-  margin-left: 20px;
+  width: 600px;
+  margin-left: 190px;
 }
 .modal-text {
   font-family: 'CookieRun-Regular';
   color: #383838;
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
-  margin-top: 250px;
-  margin: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
 }
 .modal-text span {
   color: #30b2fd;
 }
 .modal-content {
-  display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-  background-color: #ffffff;
   width: 1000px;
-  height: 600px;
+  height: 750px;
   border-radius: 60px;
-  padding-right: 50px;
-  border: 10px solid #fe646f;
 }
 </style>

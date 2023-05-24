@@ -434,8 +434,6 @@ export default {
   text-align: center;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 30px;
-  /* margin-top: 250px; */
-  /* margin: auto; */
 }
 .modal-text span {
   color: #30b2fd;
@@ -445,12 +443,8 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* text-align: center; */
-  /* background-color: rgba(255, 255, 255, 0.8); */
   width: 1000px;
   height: 750px;
   border-radius: 60px;
-  /* padding-right: 50px; */
-  /* border: 10px solid #fe646f; */
 }
 </style>
