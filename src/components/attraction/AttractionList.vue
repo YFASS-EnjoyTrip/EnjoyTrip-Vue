@@ -217,7 +217,9 @@ export default {
   z-index: 10;
   background-color: white;
   border-radius: 10px;
-
+  caret-color: transparent;
+  user-select: none;
+  color: #474747;
   box-shadow: 0 2px 4px rgba(68, 68, 68, 0.5);
   cursor: pointer;
 }

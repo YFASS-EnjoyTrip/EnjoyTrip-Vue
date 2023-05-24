@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import confetti from 'canvas-confetti';
 import { apiAuthInstance } from '@/api/index.js';
 import { mapGetters } from 'vuex';
 
@@ -129,6 +130,7 @@ export default {
 
   data() {
     return {
+      colors: ['#69beee', '#FFC930', '#49C46F', '#F24849'],
       map: null,
       selectedDay: 1,
       attractions: [],
@@ -154,9 +156,39 @@ export default {
   async mounted() {
     await this.fetchAttractions();
     this.initKakaoMap();
+    this.frame();
   },
 
   methods: {
+    frame() {
+      const duration = 300; // 원하는 유지 시간 (밀리초 단위)
+      const startTime = Date.now();
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+
+        confetti({
+          particleCount: 20,
+          angle: 60,
+          spread: 500,
+          origin: { x: 0 },
+          colors: this.colors,
+        });
+        confetti({
+          particleCount: 20,
+          angle: 120,
+          spread: 500,
+          origin: { x: 1 },
+          colors: this.colors,
+        });
+
+        if (elapsed < duration) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      animate();
+    },
     async fetchAttractions() {
       const response = await api.get(`/planner/list/${this.planId}`);
       const { data } = response;
