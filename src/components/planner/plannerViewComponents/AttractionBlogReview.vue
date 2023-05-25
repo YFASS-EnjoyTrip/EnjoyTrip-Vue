@@ -85,9 +85,8 @@ a {
   padding-left: 5px;
   padding-top: 5px;
   padding-bottom: 5px;
-  border: 2px solid #ffc930;
+  border: 1px solid #ffc930;
   border-radius: 11px;
-  box-shadow: 0px 2px 3px 2px rgba(103, 103, 103, 0.315);
 }
 .blog-container:hover {
   background-color: #fff1c9;
