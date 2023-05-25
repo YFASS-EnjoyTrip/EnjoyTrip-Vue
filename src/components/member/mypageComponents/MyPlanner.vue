@@ -40,6 +40,7 @@
 <script>
 import VCalendar from 'v-calendar/lib/components/calendar.umd';
 import { apiAuthInstance } from '@/api';
+import Swal from 'sweetalert2';
 
 const api = apiAuthInstance();
 
@@ -72,7 +73,19 @@ export default {
 
     async deletePlan(planner) {
       try {
-        if (window.confirm('삭제하시겠습니까?')) {
+        const result = await Swal.fire({
+          background: '#ffe8a9',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_Y.png" style="width:70px" />
+    <h2>플래너를 삭제하시겠습니까?</h2>`,
+          confirmButtonText: '확인',
+          confirmButtonColor: '#F24849',
+          cancelButtonColor: '#7c7c7c',
+          cancelButtonText: '취소',
+          showCancelButton: true,
+          reverseButtons: true,
+        });
+
+        if (result.isConfirmed) {
           await api.delete(`/planner/${planner.planId}`);
           await this.fetchPlanners();
         }

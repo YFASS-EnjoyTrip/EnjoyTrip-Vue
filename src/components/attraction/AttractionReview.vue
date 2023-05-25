@@ -52,11 +52,7 @@
                 class="icon2"
                 alt="star"
               />
-              <div
-                class="delete-button"
-                v-if="comment.memberId == memberId"
-                @click="deleteComment(comment)"
-              >삭제</div>
+              <div class="delete-button" v-if="comment.memberId == memberId" @click="deleteComment(comment)">삭제</div>
             </div>
             <div class="comment-content">{{ comment.content }}</div>
           </div>
@@ -109,7 +105,7 @@ export default {
     },
 
     hasWrittenComment() {
-      return this.comments.some(comment => comment.memberId == this.memberId);
+      return this.comments.some((comment) => comment.memberId == this.memberId);
     },
   },
 
@@ -142,9 +138,15 @@ export default {
 
     submitComment() {
       if (this.memberId === '') {
-        this.$toast.error('로그인이 필요한 서비스입니다!', {
-          timeout: 3000,
-          position: 'bottom-center',
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">로그인을 해주세요!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 500,
         });
       } else {
         const commentData = {
@@ -155,7 +157,7 @@ export default {
 
         apiAuth
           .post('/locations/detail/reviews', commentData)
-          .then(response => {
+          .then((response) => {
             if (response.status === 201) {
               this.localAttraction.rate += this.rating;
               this.localAttraction.totalCount += 1;
@@ -168,7 +170,7 @@ export default {
               console.log('댓글 작성 실패');
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.error(error);
           });
       }
@@ -184,21 +186,21 @@ export default {
         cancelButtonColor: '#7c7c7c',
         cancelButtonText: '취소',
         showCancelButton: true,
-        reverseButtons: true, 
-      }).then(result => {
+        reverseButtons: true,
+      }).then((result) => {
         if (result.isConfirmed) {
           apiAuth
             .delete(
               `/locations/detail/reviews?contentId=${comment.contentId}&reviewId=${comment.reviewId}&rate=${comment.rate}`,
             )
-            .then(response => {
+            .then((response) => {
               if (response.status === 200) {
                 this.loadData();
               } else {
                 console.log('댓글 삭제 실패');
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.error(error);
             });
         }

@@ -54,7 +54,7 @@
 
 <script>
 import { apiInstance } from '@/api/index.js';
-
+import Swal from 'sweetalert2';
 const api = apiInstance();
 
 export default {
@@ -88,9 +88,21 @@ export default {
 
   methods: {
     handleAttractionClick2(attraction) {
-      if (window.confirm('플래너에 추가하시겠습니까?')) {
-        this.$emit('attractionClicked2', attraction);
-      }
+      Swal.fire({
+        background: '#ffe8a9',
+        html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/capsule_Y.png" style="width:70px" />
+        <h2>여행지를 추가하시겠습니까?</h2>`,
+        confirmButtonText: '확인',
+        confirmButtonColor: '#F24849',
+        cancelButtonColor: '#7c7c7c',
+        cancelButtonText: '취소',
+        showCancelButton: true,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$emit('attractionClicked2', attraction);
+        }
+      });
     },
 
     async handleSearch() {

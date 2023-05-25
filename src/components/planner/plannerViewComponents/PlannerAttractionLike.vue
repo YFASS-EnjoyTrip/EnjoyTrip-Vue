@@ -29,8 +29,8 @@
             />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="@/assets/img/icon/star_fill.png" alt="별" />
-            <span>{{ attraction.rank }}</span>
-            <span>({{ attraction.rankCnt }})</span>
+            <span>{{ calculateRate(attraction) }}</span>
+            <span>({{ attraction.totalCount }})</span>
           </div>
         </div>
       </div>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       attractions: [],
+      defaultImage: 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/Attraction_default.png',
     };
   },
   props: {
@@ -60,17 +61,27 @@ export default {
     try {
       const response = await api.get(`/member/mypage/like?sido=${this.sidoCode}`);
       this.attractions = response.data.result;
+      console.log(this.attractions);
     } catch (error) {
       console.log(error);
     }
   },
-  methods: {},
+  methods: {
+    calculateRate(attraction) {
+      if (attraction.rate && attraction.totalCount && attraction.totalCount != 0) {
+        let rate = attraction.rate / attraction.totalCount;
+        return parseFloat(rate.toFixed(1));
+      } else {
+        return 0;
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.like-header{
-  font-family: "CookieRun-Regular";
+.like-header {
+  font-family: 'CookieRun-Regular';
   color: #383838;
   font-size: 20px;
   text-align: center;

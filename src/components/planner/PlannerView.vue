@@ -102,6 +102,7 @@ const api = apiAuthInstance();
 import plannerAttractionDetail from './plannerViewComponents/PlannerAttractionDetail.vue';
 import PlannerAttractionList from './plannerViewComponents/PlannerAttractionList.vue';
 import PlannerAttractionLike from './plannerViewComponents/PlannerAttractionLike.vue';
+import Swal from 'sweetalert2';
 
 export default {
   name: 'PlannerView',
@@ -213,7 +214,16 @@ export default {
 
     async reRollPlanner() {
       if (this.rerollCnt - this.planInfo.rerollCount === 0) {
-        alert('기회를 모두 사용하셨습니다!');
+        Swal.fire({
+          toast: true,
+          background: '#ffbdbd',
+          html: `<img src="https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/alert_capsule.png" style="width:70px" />
+          <h2 style="text-align: center;">남은 기회가 없습니다!</h2>`,
+          iconColor: '#69Beee',
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 700,
+        });
       } else {
         const param = {
           planId: this.planInfo.planId,
@@ -679,7 +689,7 @@ a {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(255, 255, 255, 0.753); 
+  background-color: rgba(255, 255, 255, 0.753);
 }
 .gif {
   width: 600px;
