@@ -34,17 +34,13 @@
           <div class="like-heart">
             <img
               class="icon"
-              :src="
-                attraction.isLike
-                  ? 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'
-                  : 'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_empty.png'
-              "
+              :src="'https://enjoytrip-file-storage.s3.ap-northeast-2.amazonaws.com/heart_fill.png'"
               alt="하트"
             />
             <span>({{ attraction.likeCount }})</span>
             <img class="icon" src="@/assets/img/icon/star_fill.png" alt="별" />
-            <span>{{ attraction.rank }}</span>
-            <span>({{ attraction.rankCnt }})</span>
+            <span>{{ calculateRate(attraction) }}</span>
+            <span>({{ attraction.totalCount }})</span>
           </div>
         </div>
       </div>
@@ -87,6 +83,14 @@ export default {
   mounted() {},
 
   methods: {
+    calculateRate(attraction) {
+      if (attraction.rate && attraction.totalCount && attraction.totalCount != 0) {
+        let rate = attraction.rate / attraction.totalCount;
+        return parseFloat(rate.toFixed(1));
+      } else {
+        return 0;
+      }
+    },
     handleAttractionClick2(attraction) {
       Swal.fire({
         background: '#ffe8a9',
