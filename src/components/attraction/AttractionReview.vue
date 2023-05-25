@@ -195,6 +195,8 @@ export default {
             )
             .then((response) => {
               if (response.status === 200) {
+                this.localAttraction.rate -= comment.rate;
+                this.localAttraction.totalCount -= 1;
                 this.loadData();
               } else {
                 console.log('댓글 삭제 실패');

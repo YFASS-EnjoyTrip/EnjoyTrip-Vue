@@ -5,7 +5,8 @@
         <img src="../../../assets/img/icon/heart_fill.png" alt="좋아요" />
         <div class="cnt">{{ attraction.likeCount }}</div>
         <img src="@/assets/img/icon/star_fill.png" alt="별점" class="rank" />
-        <div class="cnt">{{ attraction.rate }}</div>
+        <div class="cnt">{{ calculateRate(attraction) }}</div>
+        <div class="cnt">({{ attraction.totalCount }})</div>
       </div>
     </div>
     <div class="comment-container">
@@ -58,6 +59,14 @@ export default {
   },
 
   methods: {
+    calculateRate(attraction) {
+      if (attraction.rate && attraction.totalCount && attraction.totalCount != 0) {
+        let rate = attraction.rate / attraction.totalCount;
+        return parseFloat(rate.toFixed(1));
+      } else {
+        return 0;
+      }
+    },
     formatDate(date) {
       return moment(date).format('YY-MM-DD');
     },
