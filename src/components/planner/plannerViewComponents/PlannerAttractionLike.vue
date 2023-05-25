@@ -95,6 +95,21 @@ export default {
   height: 280px;
   margin-left: -25px;
 }
+
+.add-item-container::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+}
+
+.add-item-container::-webkit-scrollbar-thumb {
+  background-color: #ffe6a2;
+  /* 스크롤바 색상 */
+  border-radius: 5px;
+}
+
+.add-item-container::-webkit-scrollbar-thumb:active {
+  background-color: #ffc930;
+}
 .attraction-container {
   margin-left: 20px;
   margin-top: 15px;
